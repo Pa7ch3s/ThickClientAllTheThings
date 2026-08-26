@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-label="Exploit Nation">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c8ffd6"/><stop offset=".5" stop-color="#39ff5e"/><stop offset="1" stop-color="#0aa63a"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#g)" stroke-width="6" stroke-linejoin="round">
+    <path d="M50 6 L86 28 V72 L50 94 L14 72 V28 Z"/>
+    <path d="M38 34 H60 M38 34 V66 M38 50 H55 M38 66 H60" stroke-width="7"/>
+    <path d="M64 34 V66 L48 44" stroke-width="7"/>
+  </g>
+  <g fill="#39ff5e"><circle cx="50" cy="6" r="2.4"/><circle cx="86" cy="50" r="2.4"/><circle cx="14" cy="50" r="2.4"/></g>
+</svg>

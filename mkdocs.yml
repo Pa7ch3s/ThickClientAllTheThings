@@ -1,5 +1,5 @@
-site_name: ThickClientAllTheThings
-site_description: The desktop-app security testing reference nobody wrote down.
+site_name: Exploit Nation
+site_description: The modern Hack The Planet reference. Book 01, ThickClientAllTheThings.
 site_url: https://pa7ch3s.github.io/ThickClientAllTheThings/
 repo_url: https://github.com/Pa7ch3s/ThickClientAllTheThings
 repo_name: Pa7ch3s/ThickClientAllTheThings
@@ -7,29 +7,30 @@ copyright: Maintained by pa7ch3s. Authorized testing only.
 
 theme:
   name: material
+  custom_dir: overrides
+  logo: assets/en-mark.svg
+  favicon: assets/en-mark.svg
   palette:
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      primary: black
-      accent: red
-      toggle:
-        icon: material/weather-night
-        name: Switch to light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      primary: black
-      accent: red
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to dark mode
+    scheme: slate
+    primary: black
+    accent: green
+  font:
+    text: IBM Plex Sans
+    code: JetBrains Mono
   features:
     - navigation.instant
     - navigation.top
     - navigation.tracking
+    - navigation.sections
     - search.suggest
     - search.highlight
     - content.code.copy
     - toc.follow
+
+extra_css:
+  - stylesheets/exploit-nation.css
+extra_javascript:
+  - js/matrix.js
 
 markdown_extensions:
   - admonition
@@ -47,7 +48,7 @@ plugins:
   - search
 
 nav:
-  - Home: index.md
+  - ThickClientAllTheThings: index.md
   - Reconnaissance & Unpacking: recon-and-unpacking.md
   - Secrets & Data at Rest: secrets-at-rest.md
   - Inter-Process Communication: ipc.md
