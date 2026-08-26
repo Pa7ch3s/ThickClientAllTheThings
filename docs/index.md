@@ -61,7 +61,6 @@ issue or a PR.
 
 ## Author
 
-Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s), offensive security engineer and
-founder of [Wickmark Group](https://wickmarkgroup.org). A decade of breaking things on purpose,
-including a fair amount of thick-client work that needed a reference like this and didn't have one.
-So here it is. Welcome home.
+Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s), offensive security engineer. A decade
+of breaking things on purpose, including a fair amount of thick-client work that needed a reference
+like this and didn't have one. So here it is. Welcome home.

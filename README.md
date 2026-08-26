@@ -38,5 +38,4 @@ verify it, the frameworks it hits, and the impact if it holds. Open an issue or 
 
 ## Author
 
-Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s), offensive security engineer and
-founder of [Wickmark Group](https://wickmarkgroup.org). Welcome home.
+Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s), offensive security engineer. Welcome home.

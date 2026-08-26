@@ -3,7 +3,7 @@ site_description: The desktop-app security testing reference nobody wrote down.
 site_url: https://pa7ch3s.github.io/ThickClientAllTheThings/
 repo_url: https://github.com/Pa7ch3s/ThickClientAllTheThings
 repo_name: Pa7ch3s/ThickClientAllTheThings
-copyright: Maintained by pa7ch3s / Wickmark Group. Authorized testing only.
+copyright: Maintained by pa7ch3s. Authorized testing only.
 
 theme:
   name: material
