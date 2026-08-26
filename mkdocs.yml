@@ -1,0 +1,61 @@
+site_name: ThickClientAllTheThings
+site_description: The desktop-app security testing reference nobody wrote down.
+site_url: https://pa7ch3s.github.io/ThickClientAllTheThings/
+repo_url: https://github.com/Pa7ch3s/ThickClientAllTheThings
+repo_name: Pa7ch3s/ThickClientAllTheThings
+copyright: Maintained by pa7ch3s / Wickmark Group. Authorized testing only.
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: red
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: red
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+  features:
+    - navigation.instant
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - tables
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.details
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Reconnaissance & Unpacking: recon-and-unpacking.md
+  - Secrets & Data at Rest: secrets-at-rest.md
+  - Inter-Process Communication: ipc.md
+  - Embedded Web Layer: embedded-web-layer.md
+  - Update Mechanism: update-mechanism.md
+  - Binary Protections & Tampering: binary-and-tampering.md
+  - Network & API: network-and-api.md
+  - Runtime, Memory & Instrumentation: runtime-and-memory.md
+  - Auth, Licensing & Authorization: auth-licensing-authz.md
+  - Deep Links & Protocol Handlers: deep-links-and-protocol-handlers.md
+  - Checklist: CHECKLIST.md
