@@ -1,3 +1,5 @@
+**EXPLOIT NATION :: BOOK 01**
+
 # ThickClientAllTheThings
 
 **The desktop-app security testing reference nobody wrote down, so I did.**
@@ -29,6 +31,12 @@ Methodology, not a weapon. Authorized testing only.
 10. [Deep Links & Protocol Handlers](docs/deep-links-and-protocol-handlers.md)
 
 Fast index: [CHECKLIST.md](docs/CHECKLIST.md).
+
+## Exploit Nation
+
+This is Book 01. Exploit Nation is the shelf it lives on: field notes from a decade of authorized
+offensive work, written up properly instead of left in a private notes app. One surface per book, one
+reference that survives past the engagement it was learned on. Book 02 is whatever breaks next.
 
 ## Author
 

@@ -1,3 +1,5 @@
+<p class="en-kicker">Exploit Nation :: Book 01</p>
+
 # ThickClientAllTheThings
 
 The desktop-app security reference nobody wrote down, so I did.
@@ -51,6 +53,12 @@ The techniques are framework-tagged throughout. Quick orientation for where each
 Everything here is for testing software you are authorized to test. Written agreement, defined scope,
 explicit rules of engagement. Nothing in this repository is a packaged exploit; it is how you find
 the weak spots and close them.
+
+## Exploit Nation
+
+This is Book 01. Exploit Nation is the shelf it lives on: field notes from a decade of authorized
+offensive work, written up properly instead of left in a private notes app. One surface per book, one
+reference that survives past the engagement it was learned on. Book 02 is whatever breaks next.
 
 ## Author
 
