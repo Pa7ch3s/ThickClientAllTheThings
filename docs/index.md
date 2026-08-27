@@ -52,13 +52,6 @@ Everything here is for testing software you are authorized to test. Written agre
 explicit rules of engagement. Nothing in this repository is a packaged exploit; it is how you find
 the weak spots and close them.
 
-## Contributing
-
-This is meant to become the reference, which means it only gets there with other operators in it.
-Additions welcome if they're concrete and reproducible: a technique with a clear starting condition,
-a way to verify it, the frameworks it hits, and the impact if it holds. Vague is the enemy. Open an
-issue or a PR.
-
 ## Author
 
 Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s), offensive security engineer. A decade

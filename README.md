@@ -30,12 +30,6 @@ Methodology, not a weapon. Authorized testing only.
 
 Fast index: [CHECKLIST.md](docs/CHECKLIST.md).
 
-## Contributing
-
-This is meant to become the reference, which only happens with other operators in it. Additions
-welcome if they're concrete and reproducible: a technique with a clear starting condition, a way to
-verify it, the frameworks it hits, and the impact if it holds. Open an issue or a PR.
-
 ## Author
 
 Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s), offensive security engineer. Welcome home.
