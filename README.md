@@ -2,7 +2,7 @@
 
 **The desktop-app security testing reference nobody wrote down, so I did.**
 
-### 📖 Read it as a site: **https://pa7ch3s.github.io/ThickClientAllTheThings/**
+### 📖 Read it as a site: **https://pa7ch3s.github.io/exploitnation/**
 
 Searchable, navigable, dark-mode. The repo is the source; the site is how you actually use it.
 
