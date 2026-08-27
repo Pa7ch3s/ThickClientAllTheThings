@@ -4,7 +4,7 @@
 (function () {
   function cap() {
     var input = document.querySelector('.md-search__input');
-    if (input && !input.maxLength) input.maxLength = 64;
+    if (input && !input.maxLength) input.maxLength = 10;
   }
   document.addEventListener('DOMContentLoaded', cap);
   if (document.body) cap();
