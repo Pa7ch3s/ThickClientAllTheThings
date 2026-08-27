@@ -1,8 +1,8 @@
 site_name: Exploit Nation
 site_description: The modern Hack The Planet reference. Book 01, ThickClientAllTheThings.
-site_url: https://pa7ch3s.github.io/ThickClientAllTheThings/
-repo_url: https://github.com/Pa7ch3s/ThickClientAllTheThings
-repo_name: Pa7ch3s/ThickClientAllTheThings
+site_url: https://pa7ch3s.github.io/exploitnation/
+repo_url: https://github.com/Pa7ch3s/exploitnation
+repo_name: Pa7ch3s/exploitnation
 copyright: Maintained by pa7ch3s. Authorized testing only.
 
 extra:
