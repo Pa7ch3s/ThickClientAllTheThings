@@ -1,6 +1,6 @@
 # ThickClientAllTheThings
 
-The desktop-app security reference nobody wrote down, so I did.
+Notes from everything I've learned in the field... made pretty.
 
 Everyone points their tooling at web and mobile. Meanwhile the thick client sitting on someone's
 machine, with local admin, a signing cert, an auto-updater, an IPC bus, and an entire browser engine

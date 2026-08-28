@@ -1,6 +1,6 @@
 # ThickClientAllTheThings
 
-**The desktop-app security testing reference nobody wrote down, so I did.**
+**Notes from everything I've learned in the field... made pretty.**
 
 ### 📖 Read it as a site: **https://pa7ch3s.github.io/exploitnation/**
 
