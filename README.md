@@ -1,19 +1,13 @@
 # ThickClientAllTheThings
 
-**Notes from everything I've learned in the field... made pretty.**
-
-### 📖 Read it as a site: **https://pa7ch3s.github.io/exploitnation/**
-
-Searchable, navigable, dark-mode. The repo is the source; the site is how you actually use it.
-
+### 📖 site: **https://pa7ch3s.github.io/exploitnation/**
 ---
+**Not going to pawn this off like these are all my notes. This is simply the repo I've always wanted.
+Notes from everything I could find with my own. And everything made pretty.**
 
-Everyone points their tooling at web and mobile. Meanwhile the thick client sitting on someone's
-machine, with local admin, a signing cert, an auto-updater, an IPC bus, and an entire browser engine
-bolted inside it, gets a shrug. That's the gap. This is the map for it: how to test Electron, Tauri,
-CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker moves through one.
+This maps: how to test Electron, Tauri, CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker would move through one.
 
-Methodology, not a weapon. Authorized testing only.
+### `Methodology, not a weapon. Authorized testing only.`
 
 ## Contents
 
