@@ -53,7 +53,7 @@ plugins:
   - search
 
 nav:
-  - ThickClientAllTheThings: index.md
+  - ThickClientGalore: index.md
   - Reconnaissance & Unpacking: recon-and-unpacking.md
   - Secrets & Data at Rest: secrets-at-rest.md
   - Inter-Process Communication: ipc.md
