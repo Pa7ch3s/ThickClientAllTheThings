@@ -1,4 +1,4 @@
-# ThickClientAllTheThings
+# ThickClientGalore
 
 ### 📖 site: **https://pa7ch3s.github.io/exploitnation/**
 ---
@@ -27,4 +27,4 @@ Fast index: [CHECKLIST.md](docs/CHECKLIST.md).
 
 ## Author
 
-Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s), offensive security engineer. Welcome home.
+Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s) Welcome home!
