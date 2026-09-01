@@ -8,7 +8,7 @@ Notes from everything I could find (WITH my own notes included); made pretty jus
 
 This maps: how to test Electron, Tauri, CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker would move through one.
 
-### `Methodology, not a weapon. Authorized testing only.`
+### `For Educational purposes only.`
 
 ## Contents
 
