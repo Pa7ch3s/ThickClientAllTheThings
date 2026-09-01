@@ -1,13 +1,9 @@
 # ThickClientAllTheThings
 
-Notes from everything I've learned in the field... made pretty.
+Not going to pawn this off like these are all my personal notes. 
+This is simply my research and the repo I've always wanted. Notes from everything I could find (WITH my own notes included); made pretty just for you.
 
-Everyone points their tooling at web and mobile. Meanwhile the thick client sitting on someone's
-machine, with local admin, a signing cert, an auto-updater, an IPC bus, and an entire browser engine
-bolted inside it, gets a shrug. That's the gap. This is the map for it: how to test Electron, Tauri,
-CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker actually moves
-through one instead of a web checklist stapled onto a binary.
-
+This maps: how to test Electron, Tauri, CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker would move through one.
 Methodology, not a weapon. Authorized testing only.
 
 ## Contents
