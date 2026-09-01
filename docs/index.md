@@ -1,10 +1,10 @@
-# ThickClientAllTheThings
+# ThickClientGalore
 
 Not going to pawn this off like these are all my personal notes. 
 This is simply my research and the repo I've always wanted. Notes from everything I could find (WITH my own notes included); made pretty just for you.
 
 This maps: how to test Electron, Tauri, CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker would move through one.
-Methodology, not a weapon. Authorized testing only.
+### `For Educational purposes only.`
 
 ## Contents
 
@@ -50,6 +50,4 @@ the weak spots and close them.
 
 ## Author
 
-Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s), offensive security engineer. A decade
-of breaking things on purpose, including a fair amount of thick-client work that needed a reference
-like this and didn't have one. So here it is. Welcome home.
+Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s)
