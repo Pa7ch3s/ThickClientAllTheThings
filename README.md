@@ -4,7 +4,7 @@
 ---
 **Not going to pawn this off like these are all my personal notes. 
 This is simply my research and the repo I've always wanted.
-Notes from everything I could find (WITH my own included); made pretty.**
+Notes from everything I could find (WITH my own notes included); made pretty just for you.**
 
 This maps: how to test Electron, Tauri, CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker would move through one.
 
