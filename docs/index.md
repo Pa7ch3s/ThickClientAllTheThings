@@ -50,4 +50,4 @@ the weak spots and close them.
 
 ## Author
 
-Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s)
+Built and maintained by [pa7ch3s](https://github.com/Pa7ch3s).
