@@ -1,6 +1,7 @@
-<figure class="en-hero" markdown="0">
-  <img src="assets/logo.png" alt="Exploit Nation">
-</figure>
+<div class="en-hero-stage" markdown="0">
+  <canvas id="en-hero-fx" aria-hidden="true"></canvas>
+  <img class="en-hero-mark" src="assets/logo.png" alt="Exploit Nation">
+</div>
 
 # ThickClientGalore
 
