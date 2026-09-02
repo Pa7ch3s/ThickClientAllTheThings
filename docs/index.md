@@ -1,5 +1,9 @@
 <figure class="en-hero" markdown="0">
-  <img src="assets/logo.png" alt="Exploit Nation">
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset="assets/logo.png">
+    <source srcset="assets/en-hero.webp" type="image/webp">
+    <img src="assets/en-hero.apng" alt="Exploit Nation">
+  </picture>
 </figure>
 
 # ThickClientGalore
