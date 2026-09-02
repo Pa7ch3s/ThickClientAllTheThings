@@ -3,7 +3,7 @@ site_description: The modern Hack The Planet reference. Book 01, ThickClientGalo
 site_url: https://pa7ch3s.github.io/exploitnation/
 repo_url: https://github.com/Pa7ch3s/exploitnation
 repo_name: Pa7ch3s/exploitnation
-copyright: Maintained by pa7ch3s. Authorized testing only.
+copyright: "© 2026 pa7ch3s — authorized testing only."
 
 extra:
   generator: false
