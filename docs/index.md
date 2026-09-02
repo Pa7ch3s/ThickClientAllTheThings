@@ -1,5 +1,5 @@
 <figure class="en-hero" markdown="0">
-  <img src="assets/exploit-nation-hero.jpg" alt="Exploit Nation">
+  <img src="assets/logo.png" alt="Exploit Nation">
 </figure>
 
 # ThickClientGalore
