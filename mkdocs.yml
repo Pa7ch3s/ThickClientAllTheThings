@@ -34,6 +34,7 @@ extra_css:
   - stylesheets/exploit-nation.css
 extra_javascript:
   - js/matrix.js
+  - js/hero-bg.js
   - js/search-cap.js
 
 markdown_extensions:

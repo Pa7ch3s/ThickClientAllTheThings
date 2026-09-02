@@ -1,21 +1,9 @@
-<div class="en-hero-banner" markdown="1">
-
-<figure class="en-hero" markdown="0">
-  <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset="assets/logo.png">
-    <source srcset="assets/en-hero.webp" type="image/webp">
-    <img src="assets/en-hero.apng" alt="Exploit Nation">
-  </picture>
-</figure>
-
 # ThickClientGalore
 
 **This is simply my research and the repo I've always wanted.
 Notes from everything I could find (WITH my own notes included); made pretty just for you.**
 
 This maps: how to test Electron, Tauri, CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker would move through one.
-
-</div>
 
 ### `For Educational purposes only.`
 
