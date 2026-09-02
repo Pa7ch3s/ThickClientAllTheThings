@@ -2,12 +2,11 @@
 
 ### 📖 site: **https://pa7ch3s.github.io/exploitnation/**
 ---
-**This is simply my research and the repo I've always wanted.
-Notes from everything I could find (WITH my own notes included); made pretty just for you.**
+**This is simply my research and the repo I've always wanted; made pretty just for you.**
 
-This maps: how to test Electron, Tauri, CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker would move through one.
+This maps how to test: Electron, Tauri, CEF/WebView2, .NET, Java, and native desktop apps, organized the way an attacker would move through one.
 
-### `For Educational purposes only.`
+### `Educational purposes only.`
 
 ## Contents
 
