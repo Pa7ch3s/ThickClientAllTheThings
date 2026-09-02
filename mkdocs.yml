@@ -29,7 +29,6 @@ theme:
     - search.highlight
     - content.code.copy
     - toc.follow
-    - toc.integrate
 
 extra_css:
   - stylesheets/exploit-nation.css
