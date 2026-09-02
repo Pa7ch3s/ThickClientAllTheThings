@@ -1,3 +1,7 @@
+<figure class="en-hero" markdown="0">
+  <img src="assets/exploit-nation-hero.jpg" alt="Exploit Nation">
+</figure>
+
 # ThickClientGalore
 
 **This is simply my research and the repo I've always wanted.
