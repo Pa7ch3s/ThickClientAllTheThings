@@ -1,0 +1,987 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/update-mechanism/">
+      
+      
+        <link rel="prev" href="../embedded-web-layer/">
+      
+      
+        <link rel="next" href="../binary-and-tampering/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Update Mechanism - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Update Mechanism">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/update-mechanism/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Update Mechanism">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-update-mechanism" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Update Mechanism
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recon-and-unpacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secrets-at-rest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../embedded-web-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#update-channel-transport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update Channel Transport
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mitm-of-the-update-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MITM of the Update Check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#payload-signature-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payload Signature Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downgrade-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Downgrade / Rollback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feed-appcast-tampering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feed / Appcast Tampering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-delivery-path-local-tampering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update Delivery Path &amp; Local Tampering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methodology-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methodology Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binary-and-tampering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-and-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-licensing-authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#update-channel-transport" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update Channel Transport
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mitm-of-the-update-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MITM of the Update Check
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#payload-signature-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payload Signature Verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#downgrade-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Downgrade / Rollback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feed-appcast-tampering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feed / Appcast Tampering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#update-delivery-path-local-tampering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Update Delivery Path &amp; Local Tampering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methodology-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methodology Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="the-update-mechanism">The Update Mechanism<a class="headerlink" href="#the-update-mechanism" title="Permanent link">&para;</a></h1>
+<p>The auto-updater is the one component of a desktop app that is explicitly designed to download code from the internet and run it with the user's privileges. That makes it the highest-value target in the whole binary: break the update channel and you are not exploiting a bug, you are using the vendor's own signed pipe to deliver whatever you want. This chapter is about testing that pipe against your own instance before someone else tests it against production.</p>
+<p>Every technique below assumes an authorized-testing posture: your own installed copy, your own MITM proxy, your own malicious update server pointed at a machine you control. Never point a tampered feed at another party's client.</p>
+<ul>
+<li>Update-channel transport (HTTP vs HTTPS, TLS validation)</li>
+<li>MITM of the update check / feed</li>
+<li>Payload signature verification (or its absence)</li>
+<li>Downgrade / rollback to a known-vulnerable version</li>
+<li>Feed / appcast tampering</li>
+<li>Framework-specific quirks (Squirrel, electron-updater, Sparkle/WinSparkle, NSIS)</li>
+</ul>
+<hr />
+<h3 id="update-channel-transport">Update Channel Transport<a class="headerlink" href="#update-channel-transport" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> The first question is whether the update check and the payload download happen over TLS at all, and whether the client actually validates the certificate. A plaintext HTTP update feed is a network-position-to-code-execution primitive. Even an HTTPS feed is worthless if the client disables cert validation, accepts any CA, or pins nothing and trusts a user-installed root.</p>
+<p><strong>How to test.</strong>
+- Capture the update traffic with an intercepting proxy (Burp Suite, mitmproxy, Fiddler) or at the packet level with Wireshark. Identify the check URL and the payload URL. Note the scheme of each independently: some clients check over HTTPS but download the package over HTTP.
+- Trigger a check on demand (menu "Check for updates", or delete the local "last checked" timestamp / registry value to force one on launch).
+- With your proxy's CA trusted by the OS store, see if interception succeeds. Then remove the CA / present a self-signed or hostname-mismatched cert and confirm the client rejects it. A client that connects anyway does not validate TLS.
+- Test whether the client honors the system proxy vs. its own network stack. Some Electron/Chromium updaters and some native HTTP libraries bypass the system proxy, so use transparent redirection (hosts-file override to your listener, or DNS spoofing on a lab network) when a proxy alone sees nothing.</p>
+<p><strong>Framework notes.</strong>
+- <strong>electron-updater / Squirrel</strong>: feed URLs are configured at build time; Squirrel.Windows historically expects an HTTPS or file/UNC feed. Confirm the shipped URL, not the documented default.
+- <strong>Sparkle / WinSparkle</strong>: the appcast URL (<code>SUFeedURL</code> in Info.plist, or the WinSparkle-configured URL) may be HTTP in older integrations. Modern Sparkle enforces HTTPS for the appcast by default and will refuse an insecure feed unless the developer explicitly opted out.</p>
+<p><strong>Impact.</strong> Plaintext or unvalidated transport lets a network attacker (same LAN, malicious Wi-Fi, upstream device, compromised CDN) rewrite the feed and/or the payload. Combined with weak signature checking, this is remote code execution as the user, delivered on the next update.</p>
+<p><strong>Remediation.</strong> HTTPS for both the check and the download, with full certificate validation and no opt-out flags shipped in release builds. Consider certificate pinning for the update host. Never fall back to HTTP on TLS failure.</p>
+<hr />
+<h3 id="mitm-of-the-update-check">MITM of the Update Check<a class="headerlink" href="#mitm-of-the-update-check" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> Even before touching the payload, the check response itself is worth tampering. It tells the client what version exists, where to get it, and (in signed schemes) what the expected hash/signature is. Controlling that response lets you force, suppress, or redirect an update.</p>
+<p><strong>How to test.</strong>
+- Proxy the check and capture the exact response format (JSON, XML appcast, <code>RELEASES</code> manifest). Replay it with modifications: bump the advertised version, point the download URL at your own server, alter the release notes.
+- Confirm what the client does with a redirected download URL. Does it follow cross-origin redirects? Does it re-validate the host? Serve a <code>302</code> to an attacker host and watch.
+- Test the "no update" path too: can you suppress updates indefinitely by always answering "you're current"? That keeps a victim on a known-vulnerable build (see Downgrade).</p>
+<p><strong>Framework notes.</strong>
+- <strong>Squirrel.Windows</strong> consumes a <code>RELEASES</code> file listing package filenames and SHA1 hashes plus a base URL. Tampering with <code>RELEASES</code> redirects which <code>.nupkg</code> is fetched.
+- <strong>electron-updater</strong> consumes <code>latest.yml</code> / <code>latest-mac.yml</code> / <code>latest-linux.yml</code> containing version, path, and a <code>sha512</code>. That hash is the integrity anchor for updaters that do not verify a code signature themselves.
+- <strong>Sparkle</strong> consumes an RSS/XML appcast where each <code>&lt;item&gt;</code> carries an <code>enclosure</code> with the URL, length, version, and a signature attribute.</p>
+<p><strong>Impact.</strong> Full control of update selection and destination without ever touching the vendor's servers, given a network position.</p>
+<p><strong>Remediation.</strong> Sign the manifest content or bind its integrity to a verified TLS channel plus payload-signature verification, so a rewritten check response cannot by itself cause a bad install.</p>
+<hr />
+<h3 id="payload-signature-verification">Payload Signature Verification<a class="headerlink" href="#payload-signature-verification" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> This is the crux. If the client verifies a cryptographic signature over the downloaded package against a public key baked into the app, then transport and feed tampering downgrade to denial-of-service. If it verifies only a hash it read from the (attacker-controlled) manifest, or verifies nothing, or verifies but ignores the result, then a served package runs.</p>
+<p><strong>How to test.</strong>
+- Stand up your own update server. Reproduce the real feed format and host a tampered package: repackage the installer with a benign marker payload (e.g., a file drop or a callback to a host you own) so you can prove execution without doing damage.
+- Serve it to your test instance via the MITM setup and watch whether it installs and runs. If it does, verification is absent or broken.
+- Isolate what is actually checked: change one byte of the package and see if it is rejected (hash check present); then also break the signature specifically. A client that accepts a package whose hash matches the manifest but whose signature is invalid is trusting the manifest, not the vendor key.
+- On Windows, check whether the installer relies solely on Authenticode. An unsigned or self-signed package that still installs means the updater does not enforce publisher identity.
+- Inspect the binary for the embedded public key / expected signer and the verification call so you can reason about what "valid" means to this client.</p>
+<p><strong>Framework notes.</strong>
+- <strong>Sparkle / WinSparkle</strong>: modern Sparkle signs the payload with <strong>EdDSA (Ed25519)</strong>; the public key lives in <code>Info.plist</code> (<code>SUPublicEDKey</code>) and each appcast item carries <code>sparkle:edSignature</code>. Legacy Sparkle used <strong>DSA</strong> (<code>sparkle:dsaSignature</code> + <code>SUPublicDSAKeyFile</code>). Verify which is in force; a project still on DSA-only, or with signature enforcement disabled, is the finding. WinSparkle mirrors this model.
+- <strong>electron-updater</strong>: on Windows it can enforce the publisher name from the Authenticode signature via <code>publisherName</code> and validates the <code>sha512</code> from <code>latest.yml</code>. The sha512 is integrity-only, not authenticity, so where code-signing verification is off or the platform doesn't enforce it, the manifest hash is the whole defense, and the manifest is attacker-controlled over a broken channel.
+- <strong>Squirrel.Windows</strong>: integrity rests on the <code>RELEASES</code> SHA1 and on Authenticode signing of the packaged binaries. Squirrel does not perform an independent vendor-key signature check of the <code>.nupkg</code> beyond that, so unsigned or improperly signed contents plus a rewritten <code>RELEASES</code> is the classic weakness.
+- <strong>NSIS-based updaters</strong>: often just download an <code>.exe</code> and execute it. Authenticity depends entirely on whether the app verifies Authenticode (or a custom signature) before launching. Many custom NSIS update stubs verify nothing.</p>
+<p><strong>Impact.</strong> Code execution as the user on next update, from a network position, with no vendor-server compromise. This is the top-severity outcome for the whole app class.</p>
+<p><strong>Remediation.</strong> Verify a cryptographic signature over the payload against a public key embedded in the app, before executing anything. Do not treat a manifest-supplied hash as authenticity. Keep signing keys off the build/distribution host where practical, and rotate if exposure is suspected. Enforce publisher identity on Windows.</p>
+<hr />
+<h3 id="downgrade-rollback">Downgrade / Rollback<a class="headerlink" href="#downgrade-rollback" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> A client that will install any advertised version, including one older than what is running, can be forced back onto a build with known, patched vulnerabilities. The attacker then exploits the old bug. Even with perfect signature verification, if the vendor's older packages are still validly signed, the updater will happily accept them unless it enforces monotonic versioning.</p>
+<p><strong>How to test.</strong>
+- In the check response, advertise a legitimate, still-validly-signed older release. Point the download at the real (or your cached) old signed package. Observe whether the client installs it.
+- Note whether the client compares versions at all, and whether it refuses "same or lower". Test edge cases: equal version, pre-release/channel switches, and build-metadata-only differences.
+- Verify whether a downgrade is silent or prompts the user, and whether the old build then re-updates forward (a loop you can suppress via the "no update" MITM).</p>
+<p><strong>Framework notes.</strong>
+- <strong>electron-updater</strong> exposes <code>allowDowngrade</code>; if enabled (or if channel logic permits it), forced rollback is in scope. Confirm the shipped setting rather than assuming the default.
+- <strong>Sparkle</strong> compares versions and normally won't offer an older item, but a tampered appcast advertising an old signed enclosure with a spoofed-higher <code>sparkle:version</code> while pointing at the old binary is worth testing.
+- <strong>Squirrel</strong> selects from <code>RELEASES</code>; a curated <code>RELEASES</code> listing only an old signed <code>.nupkg</code> can pin a victim backward.</p>
+<p><strong>Impact.</strong> Re-introduction of any historically patched vulnerability, reachable remotely on a machine that was fully patched.</p>
+<p><strong>Remediation.</strong> Enforce monotonic version policy: refuse to install a version equal to or lower than the installed one unless an explicit, authenticated rollback is intended. Ship <code>allowDowngrade</code> disabled. Consider security-version counters or minimum-version floors so old-but-signed packages stop being accepted after a fixed vuln.</p>
+<hr />
+<h3 id="feed-appcast-tampering">Feed / Appcast Tampering<a class="headerlink" href="#feed-appcast-tampering" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> The manifest is structured, parsed input from the network, so it is both a redirection primitive (covered above) and a parser attack surface in its own right. Injecting content into release-notes rendering, oversized fields, or malformed XML/YAML can yield UI spoofing, XSS-in-a-webview, or parser crashes.</p>
+<p><strong>How to test.</strong>
+- Where release notes are rendered, test HTML/script injection. Sparkle renders release notes; if they display in a web context, inject markup and script and see what executes and in which security context. A webview with node/system access rendering attacker-controlled notes is a serious finding.
+- Fuzz the manifest: malformed XML/YAML/JSON, huge version strings, unexpected fields, duplicate <code>&lt;item&gt;</code>s, signature attributes that are present-but-empty vs. absent (some verifiers fail open when a signature field is missing rather than invalid).
+- Specifically test the "missing signature" case: does the client reject an item with no signature, or only reject an item with a wrong one? Fail-open on absence is a common, high-impact bug.</p>
+<p><strong>Framework notes.</strong>
+- <strong>Sparkle</strong>: appcast is XML/RSS; release notes may be inline HTML or a linked page. Check the rendering surface and CSP. Confirm behavior when <code>sparkle:edSignature</code>/<code>sparkle:dsaSignature</code> is absent.
+- <strong>electron-updater</strong>: YAML manifest; test YAML edge cases and how a missing/oversized <code>sha512</code> or <code>path</code> is handled.
+- <strong>Squirrel</strong>: line-oriented <code>RELEASES</code> text; test malformed lines, unexpected hashes, and path traversal in package filenames.</p>
+<p><strong>Impact.</strong> Ranges from UI spoofing and forged release notes (social-engineering a user into accepting a malicious update) to code execution if release notes render in a privileged webview or if fail-open signature logic accepts unsigned items.</p>
+<p><strong>Remediation.</strong> Treat the manifest as untrusted input: strict schema validation, reject-on-missing-signature (fail closed), render release notes in a sandboxed context with no script and no system bridge, and enforce a strict CSP. Cap field sizes.</p>
+<hr />
+<h3 id="update-delivery-path-local-tampering">Update Delivery Path &amp; Local Tampering<a class="headerlink" href="#update-delivery-path-local-tampering" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> Between download and execution the payload usually lands in a staging directory and is then launched or handed to an elevated helper. If that directory is writable by an unprivileged user, or the elevation helper trusts whatever is staged, a local attacker can swap the payload after verification (a TOCTOU) or plant one directly, turning the updater into a local privilege escalation.</p>
+<p><strong>How to test.</strong>
+- Identify the staging path (ProcMon on Windows, <code>fs_usage</code>/filesystem monitoring on macOS) and its ACLs. Is it under a user-writable temp location while the installer runs elevated?
+- Test the window between signature verification and execution: can you replace the verified file before it is launched? A privileged helper that re-reads the file without re-verifying is vulnerable.
+- On macOS, check how the updater relocates/replaces the app bundle and whether a helper tool (installed via the privileged-helper mechanism) validates the caller and the payload.
+- Check for DLL/dylib search-order hijacking against the updater or installer stub launched from a writable directory.</p>
+<p><strong>Framework notes.</strong>
+- <strong>Squirrel.Windows</strong> stages under a per-user <code>%LocalAppData%</code> app directory and runs <code>Update.exe</code>; per-user install paths and update stubs are a recurring hijack/tampering surface.
+- <strong>Sparkle</strong> uses a privileged installer helper for updates requiring elevation; older Sparkle versions had documented local-tampering / helper-trust issues, so confirm the version and that the helper validates its input.
+- <strong>NSIS</strong> stubs frequently run from <code>%TEMP%</code>, a prime spot for planted-DLL search-order hijacks.</p>
+<p><strong>Impact.</strong> Local privilege escalation, or persistence via a payload swap, even when the network-facing verification is sound.</p>
+<p><strong>Remediation.</strong> Stage in a location only the privileged process can write; re-verify the signature inside the elevated context immediately before execution; validate the calling process in any helper; avoid launching installer stubs from world-writable directories; use safe library-loading paths.</p>
+<hr />
+<h3 id="methodology-checklist">Methodology Checklist<a class="headerlink" href="#methodology-checklist" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Map every URL: check endpoint and payload endpoint, each with its own scheme and host.</li>
+<li>Confirm TLS validation independently on each (trusted-CA intercept, then hostname-mismatch / self-signed).</li>
+<li>Capture and replay the manifest; test version-bump, URL-redirect, downgrade, and missing-signature cases.</li>
+<li>Serve a benign marked package from your own server to your own instance; determine exactly what is verified (nothing / hash-from-manifest / vendor-key signature / Authenticode).</li>
+<li>Test monotonic-version enforcement and the shipped <code>allowDowngrade</code>-equivalent setting.</li>
+<li>Inspect the local staging path ACLs and the verify-to-execute window for TOCTOU / LPE.</li>
+<li>Record the framework and its version; map findings to that framework's known signature model (EdDSA/DSA for Sparkle, sha512+Authenticode for electron-updater, RELEASES-SHA1+Authenticode for Squirrel, whatever-the-stub-does for NSIS).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>

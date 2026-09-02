@@ -1,0 +1,1156 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/runtime-and-memory/">
+      
+      
+        <link rel="prev" href="../network-and-api/">
+      
+      
+        <link rel="next" href="../auth-licensing-authz/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Runtime, Memory & Instrumentation - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Runtime, Memory & Instrumentation">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/runtime-and-memory/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Runtime, Memory & Instrumentation">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#runtime-memory-instrumentation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Runtime, Memory & Instrumentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recon-and-unpacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secrets-at-rest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../embedded-web-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binary-and-tampering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-and-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#frida-attach-and-enumerate-the-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frida: attach and enumerate the target
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frida-hooking-functions-with-interceptor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frida: hooking functions with Interceptor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bypassing-client-side-checks-license-auth-jailbreakroot-integrity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bypassing client-side checks (license, auth, jailbreak/root, integrity)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#net-runtime-debugging-patching-with-dnspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .NET runtime debugging &amp; patching with dnSpy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-agent-instrumentation-jvmti" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Java agent instrumentation &amp; JVMTI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-debuggers-x64dbg-windbg-gdblldb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Native debuggers: x64dbg, WinDbg, gdb/lldb
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooking-auth-license-crypto-at-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooking auth / license / crypto at runtime
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#process-memory-dumps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process memory dumps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mining-a-dump-for-keys-tokens-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mining a dump for keys, tokens &amp; strings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anti-debugging-anti-instrumentation-and-bypassing-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anti-debugging &amp; anti-instrumentation, and bypassing it
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-licensing-authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#frida-attach-and-enumerate-the-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frida: attach and enumerate the target
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frida-hooking-functions-with-interceptor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frida: hooking functions with Interceptor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bypassing-client-side-checks-license-auth-jailbreakroot-integrity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bypassing client-side checks (license, auth, jailbreak/root, integrity)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#net-runtime-debugging-patching-with-dnspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .NET runtime debugging &amp; patching with dnSpy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java-agent-instrumentation-jvmti" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Java agent instrumentation &amp; JVMTI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-debuggers-x64dbg-windbg-gdblldb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Native debuggers: x64dbg, WinDbg, gdb/lldb
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hooking-auth-license-crypto-at-runtime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hooking auth / license / crypto at runtime
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#process-memory-dumps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process memory dumps
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mining-a-dump-for-keys-tokens-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mining a dump for keys, tokens &amp; strings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anti-debugging-anti-instrumentation-and-bypassing-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anti-debugging &amp; anti-instrumentation, and bypassing it
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="runtime-memory-instrumentation">Runtime, Memory &amp; Instrumentation<a class="headerlink" href="#runtime-memory-instrumentation" title="Permanent link">&para;</a></h1>
+<p>Static analysis tells you what a binary <em>could</em> do; runtime instrumentation tells you what it <em>actually does</em> with real keys, tokens, and decisions in flight. This chapter covers attaching to live desktop processes, hooking the functions that gate auth/license/crypto, and prying secrets out of process memory. All of it assumes you own the app or have written authorization to test it: attaching a debugger to someone else's process is the same primitive whether you call it research or malware.</p>
+<ul>
+<li>Frida: attach, enumerate modules/exports, hook, and bypass client-side checks</li>
+<li>Native debuggers: x64dbg, WinDbg, gdb/lldb attach and patch</li>
+<li>Managed runtimes: dnSpy for .NET, <code>-javaagent</code>/JVMTI for Java</li>
+<li>Hooking auth / license / crypto at runtime</li>
+<li>Memory secret extraction: dumping a process and mining the dump</li>
+<li>Anti-debugging: what it detects and how it's neutralized</li>
+</ul>
+<hr />
+<h3 id="frida-attach-and-enumerate-the-target">Frida: attach and enumerate the target<a class="headerlink" href="#frida-attach-and-enumerate-the-target" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Frida is a dynamic instrumentation toolkit that injects a JS engine into a live process, letting you enumerate loaded modules and exports, read/write memory, and replace function behavior without recompiling. It is the fastest way to map attack surface at runtime and works cross-platform against native code (and, via bridges, Java/.NET).</p>
+<p><strong>How to test</strong>
+Install (<code>pip install frida-tools</code>) and list processes, then get a first look at what's loaded:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>frida-ps<span class="w"> </span>-ua<span class="w">                 </span><span class="c1"># running apps (attachable)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>frida-trace<span class="w"> </span>-n<span class="w"> </span>App.exe<span class="w"> </span>-i<span class="w"> </span><span class="s2">"CryptEncrypt"</span><span class="w"> </span>-i<span class="w"> </span><span class="s2">"*ssl*"</span><span class="w">   </span><span class="c1"># auto-generate stubs for matching exports</span>
+</code></pre></div>
+Enumerate modules and exports interactively with a script attached by name or PID:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// enum.js  -&gt;  frida -n App.exe -l enum.js</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nx">Process</span><span class="p">.</span><span class="nx">enumerateModules</span><span class="p">().</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">m</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">m</span><span class="p">.</span><span class="nx">base</span><span class="p">,</span><span class="w"> </span><span class="nx">m</span><span class="p">.</span><span class="nx">size</span><span class="p">));</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nx">Module</span><span class="p">.</span><span class="nx">enumerateExports</span><span class="p">(</span><span class="s1">'libcrypto.dll'</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">type</span><span class="p">,</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">address</span><span class="p">));</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1">// find an interesting symbol without a static reference</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">Module</span><span class="p">.</span><span class="nx">getExportByName</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s1">'RtlDecryptMemory'</span><span class="p">));</span>
+</code></pre></div>
+Use <code>Module.enumerateImports</code>, <code>ApiResolver('module')</code>, and <code>DebugSymbol.fromAddress()</code> to correlate addresses back to names when symbols are stripped.</p>
+<p><strong>Framework notes</strong>
+Native (C/C++/Rust) and Electron's native layer hook directly. For managed runtimes Frida ships bridges: <code>Java.perform()</code> on Android/JVM and <code>Il2Cpp</code>/CLR interop for .NET (though dnSpy is usually easier for .NET on Windows). Electron's JS logic is better attacked at the V8/DevTools layer than through Frida.</p>
+<p><strong>Impact</strong>
+Full runtime visibility: every exported crypto/auth/network call and its arguments become observable and modifiable.</p>
+<p><strong>Remediation</strong>
+You cannot prevent instrumentation of code the user runs; assume the client is hostile territory. Move trust decisions server-side, detect injected agents as a speed bump only, and never treat client-side enforcement as a security boundary.</p>
+<hr />
+<h3 id="frida-hooking-functions-with-interceptor">Frida: hooking functions with Interceptor<a class="headerlink" href="#frida-hooking-functions-with-interceptor" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+<code>Interceptor.attach</code> runs your JS on entry/exit of any function, exposing arguments and return values; <code>Interceptor.replace</code> swaps the whole implementation. This is the core primitive for logging secrets, tampering with inputs, and forcing outcomes.</p>
+<p><strong>How to test</strong>
+Log arguments and tamper with a return value:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// hook a comparison-style license check that returns bool</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">var</span><span class="w"> </span><span class="nx">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Module</span><span class="p">.</span><span class="nx">getExportByName</span><span class="p">(</span><span class="s1">'license.dll'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ValidateKey'</span><span class="p">);</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">addr</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nx">onEnter</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">args</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">readUtf8String</span><span class="p">();</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nx">onLeave</span><span class="p">(</span><span class="nx">retval</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'ValidateKey("'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">key</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">'") -&gt;'</span><span class="p">,</span><span class="w"> </span><span class="nx">retval</span><span class="p">);</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nx">retval</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span><span class="w">          </span><span class="c1">// force success</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">});</span>
+</code></pre></div>
+Dump buffers passed to crypto to recover plaintext or keys:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">Module</span><span class="p">.</span><span class="nx">getExportByName</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="s1">'EVP_DecryptUpdate'</span><span class="p">),</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nx">onEnter</span><span class="p">(</span><span class="nx">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">args</span><span class="p">[</span><span class="mf">1</span><span class="p">];</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">args</span><span class="p">[</span><span class="mf">3</span><span class="p">];</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nx">onLeave</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hexdump</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="nx">readByteArray</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">len</span><span class="p">.</span><span class="nx">toInt32</span><span class="p">())));</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">});</span>
+</code></pre></div>
+For calling-convention-sensitive or inline targets, hook by resolved address with <code>ptr('0x...')</code> plus module base rebasing.</p>
+<p><strong>Framework notes</strong>
+Native calls need correct arg indexing per ABI (x64 Windows vs SysV). Java: <code>Java.use('com.app.Auth').check.implementation = function(){ return true; }</code>. .NET methods are hookable via the CLR bridge but dnSpy edit-and-continue is often cleaner.</p>
+<p><strong>Impact</strong>
+Client-side auth/license/feature gates fall in one line; sensitive buffers are exfiltrated pre-encryption or post-decryption.</p>
+<p><strong>Remediation</strong>
+Server-side authorization; sign and verify feature entitlements server-issued; don't branch security decisions on a client-side boolean.</p>
+<hr />
+<h3 id="bypassing-client-side-checks-license-auth-jailbreakroot-integrity">Bypassing client-side checks (license, auth, jailbreak/root, integrity)<a class="headerlink" href="#bypassing-client-side-checks-license-auth-jailbreakroot-integrity" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Thick clients routinely gate features on local checks: a returned boolean, a string compare against a computed key, a trial-expiry date, or a self-integrity/anti-tamper probe. Because the check and its data live in the same address space as your instrumentation, the branch is yours to flip.</p>
+<p><strong>How to test</strong>
+1. Locate the decision with <code>frida-trace</code> on likely names (<code>*valid*</code>, <code>*licen*</code>, <code>*auth*</code>, <code>*trial*</code>, <code>*integrity*</code>) or by tracing string references to error dialogs.
+2. Confirm it's the gate by logging arg/return under both pass and fail states.
+3. Neutralize: force the return, patch the comparison, or NOP the conditional jump (see debugger patching below).
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// short-circuit an expiry check that returns days-remaining</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nx">Interceptor</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">daysLeftAddr</span><span class="p">,</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">NativeCallback</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mf">9999</span><span class="p">,</span><span class="w"> </span><span class="s1">'int'</span><span class="p">,</span><span class="w"> </span><span class="p">[]));</span>
+</code></pre></div></p>
+<p><strong>Framework notes</strong>
+.NET: patch the <code>if</code> in dnSpy directly (<code>brtrue</code>/<code>ret true</code>). Java: override the method to return the happy path. Electron: the gate is usually JS; edit the asar or hook via DevTools. Native: prefer a debugger patch you can persist to disk.</p>
+<p><strong>Impact</strong>
+Unlocked premium/enterprise features, bypassed trials, defeated integrity self-checks that other controls depend on.</p>
+<p><strong>Remediation</strong>
+Entitlement checks must be server-validated with signed responses bound to a session; obfuscation and anti-tamper raise cost but never make a local check authoritative.</p>
+<hr />
+<h3 id="net-runtime-debugging-patching-with-dnspy">.NET runtime debugging &amp; patching with dnSpy<a class="headerlink" href="#net-runtime-debugging-patching-with-dnspy" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Managed .NET assemblies decompile to near-original C#/IL. dnSpy (and the maintained <code>dnSpyEx</code> fork) lets you set breakpoints, inspect locals, edit methods, and save a patched assembly, making it the most productive tool against Windows desktop .NET (WPF/WinForms) apps.</p>
+<p><strong>How to test</strong>
+- Open the assembly (or <strong>Debug &gt; Attach to Process</strong> for a running app), set breakpoints on suspected auth/crypto methods, and read decrypted values and keys from the Locals window at runtime.
+- Patch logic with <strong>Edit Method (C#)</strong> or <strong>Edit IL Instructions</strong>, e.g. replace a body with <code>return true;</code>, then <strong>File &gt; Save Module</strong>.
+- For obfuscated builds, run <code>de4dot</code> first to rename and clean, then load into dnSpy.
+- Config-based secrets: check <code>app.config</code>/<code>appsettings.json</code> and embedded resources via the Resources node.</p>
+<p><strong>Framework notes</strong>
+Single-file / self-contained .NET and AOT-compiled binaries resist decompilation; extract the bundled managed DLLs first or fall back to native techniques. .NET Framework vs .NET (Core) differ in host layout but dnSpyEx handles both.</p>
+<p><strong>Impact</strong>
+Complete recovery of logic, hardcoded keys/connection strings, and trivial in-place patching of any client-side control.</p>
+<p><strong>Remediation</strong>
+Don't ship secrets or authoritative logic in client assemblies; use strong-name + signing as tamper-evidence, keep server as source of truth, and treat obfuscation as delay, not defense.</p>
+<hr />
+<h3 id="java-agent-instrumentation-jvmti">Java agent instrumentation &amp; JVMTI<a class="headerlink" href="#java-agent-instrumentation-jvmti" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Java thick clients (Swing/JavaFX, or JAR-packaged tools) can be inspected and rewritten without source via a decompiler plus bytecode instrumentation. Agents attached with <code>-javaagent</code> or the Attach API can redefine classes at load or at runtime.</p>
+<p><strong>How to test</strong>
+- Decompile with a modern viewer (JD-GUI, Recaf, or CFR: <code>cfr app.jar --outputdir out</code>) to read logic and find hardcoded secrets.
+- Attach a Byte Buddy / Javassist agent to rewrite methods, or use Recaf to edit bytecode and re-save the JAR.
+- Launch with remote debug and attach any JDWP debugger:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>java<span class="w"> </span>-agentlib:jdwp<span class="o">=</span><span class="nv">transport</span><span class="o">=</span>dt_socket,server<span class="o">=</span>y,suspend<span class="o">=</span>n,address<span class="o">=</span>*:5005<span class="w"> </span>-jar<span class="w"> </span>app.jar
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>jdb<span class="w"> </span>-attach<span class="w"> </span><span class="m">5005</span>
+</code></pre></div>
+- Frida's Java bridge also works where the JVM is embedded.</p>
+<p><strong>Framework notes</strong>
+Obfuscators (ProGuard/commercial) rename symbols; the logic is still present. Signed/sealed JARs and JPMS modules add friction but bytecode remains editable after unpacking.</p>
+<p><strong>Impact</strong>
+Logic recovery, secret extraction, and runtime method replacement to bypass any local gate.</p>
+<p><strong>Remediation</strong>
+Keep secrets and trust off the client; sign JARs for integrity; rely on server-side enforcement rather than obfuscation.</p>
+<hr />
+<h3 id="native-debuggers-x64dbg-windbg-gdblldb">Native debuggers: x64dbg, WinDbg, gdb/lldb<a class="headerlink" href="#native-debuggers-x64dbg-windbg-gdblldb" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+For C/C++/Rust binaries a native debugger gives breakpoints, register/memory inspection, and the ability to patch instructions and persist the change. This is how you defeat gates that have no clean symbol to hook.</p>
+<p><strong>How to test</strong>
+- <strong>x64dbg (Windows, interactive):</strong> attach or open, break on <code>CryptDecrypt</code>/<code>WinHttpSendRequest</code>/string-referenced routines, then patch the conditional jump that guards success (toggle <code>jz</code>/<code>jnz</code> or NOP it) and <strong>Save patched file</strong> to disk.
+- <strong>WinDbg (deep/kernel/dumps):</strong> attach with <code>windbg -pn App.exe</code>; useful commands: <code>x app!*valid*</code> (symbol search), <code>bp</code> (breakpoint), <code>!address</code>, <code>s -a 0 L?0x7fffffff "password"</code> (search memory for a string), <code>.dump /ma out.dmp</code> (full dump).
+- <strong>gdb/lldb (Linux/macOS):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>gdb<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>pgrep<span class="w"> </span>app<span class="k">)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>info<span class="w"> </span>functions<span class="w"> </span>valid
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span><span class="k">break</span><span class="w"> </span>*0x555555556abc
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">$rax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="w">        </span><span class="c1"># force a return value</span>
+</code></pre></div></p>
+<p><strong>Framework notes</strong>
+Native only; managed runtimes show JIT stubs, not clean methods (use dnSpy/Java tooling instead). PIE/ASLR means rebase addresses against the module base each run.</p>
+<p><strong>Impact</strong>
+Persistent binary patches, live control of execution and return values, and a path to memory dumps.</p>
+<p><strong>Remediation</strong>
+Sign binaries and verify at launch (tamper-evidence), but assume any locally patchable check will be patched; enforce server-side.</p>
+<hr />
+<h3 id="hooking-auth-license-crypto-at-runtime">Hooking auth / license / crypto at runtime<a class="headerlink" href="#hooking-auth-license-crypto-at-runtime" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+The highest-value hook points are the standard crypto and auth APIs, because plaintext and keys must pass through them regardless of how the app is obfuscated. Instrumenting the boundary between app logic and the crypto provider yields secrets even when the surrounding code is unreadable.</p>
+<p><strong>How to test</strong>
+Trace the platform crypto surface and dump the interesting buffers:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Windows CNG/CryptoAPI</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>frida-trace<span class="w"> </span>-n<span class="w"> </span>App.exe<span class="w"> </span>-i<span class="w"> </span><span class="s2">"BCryptEncrypt"</span><span class="w"> </span>-i<span class="w"> </span><span class="s2">"BCryptDecrypt"</span><span class="w"> </span>-i<span class="w"> </span><span class="s2">"CryptProtectData"</span><span class="w"> </span>-i<span class="w"> </span><span class="s2">"CryptUnprotectData"</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># OpenSSL family (any platform)</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>frida-trace<span class="w"> </span>-n<span class="w"> </span>App.exe<span class="w"> </span>-i<span class="w"> </span><span class="s2">"EVP_*Init*"</span><span class="w"> </span>-i<span class="w"> </span><span class="s2">"EVP_*Update"</span><span class="w"> </span>-i<span class="w"> </span><span class="s2">"PEM_read*"</span><span class="w"> </span>-i<span class="w"> </span><span class="s2">"*_set_key"</span>
+</code></pre></div>
+Log keys handed to key-schedule functions, capture password-based KDF inputs (<code>PBKDF2</code>/<code>bcrypt</code>/<code>scrypt</code> wrappers), and record the pre-TLS plaintext to defeat certificate pinning at the app layer. Correlate captured material with the memory-dump techniques below.</p>
+<p><strong>Framework notes</strong>
+.NET wraps CNG under <code>System.Security.Cryptography</code> (hook the P/Invoke boundary or breakpoint in dnSpy); Java uses JCA/<code>Cipher</code> (override <code>doFinal</code>); Electron uses Node <code>crypto</code> (hook in-process JS). Native apps hit CNG/CryptoAPI/OpenSSL directly.</p>
+<p><strong>Impact</strong>
+Recovery of encryption keys, credentials, and plaintext of "encrypted" local data and traffic.</p>
+<p><strong>Remediation</strong>
+Client-side crypto protects data only from other users of the same machine, not from the user; anything the client can decrypt, the operator can too. Bind sensitive operations to server-side keys and sessions.</p>
+<hr />
+<h3 id="process-memory-dumps">Process memory dumps<a class="headerlink" href="#process-memory-dumps" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Secrets that are decrypted for use must exist in cleartext in RAM at some point. A full memory dump captures that moment, and unlike a live hook it's a single artifact you can mine offline and re-search.</p>
+<p><strong>How to test</strong>
+- <strong>Windows, procdump (Sysinternals):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>procdump<span class="w"> </span>-ma<span class="w"> </span>App.exe<span class="w"> </span>app.dmp<span class="w">          </span><span class="c1"># full dump by name</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>procdump<span class="w"> </span>-ma<span class="w"> </span>&lt;PID&gt;<span class="w"> </span>-s<span class="w"> </span><span class="m">5</span><span class="w"> </span>-n<span class="w"> </span><span class="m">3</span><span class="w"> </span>app<span class="w">      </span><span class="c1"># periodic, to catch transient secrets</span>
+</code></pre></div>
+- <strong>Windows alternatives:</strong> Task Manager &gt; right-click process &gt; <em>Create dump file</em>; WinDbg <code>.dump /ma</code>.
+- <strong>Linux:</strong> <code>gcore $(pgrep app)</code>, or read <code>/proc/&lt;pid&gt;/mem</code> guided by <code>/proc/&lt;pid&gt;/maps</code>.
+- <strong>macOS:</strong> <code>lldb -p &lt;pid&gt;</code> then <code>process save-core core.dmp</code> (SIP/entitlements permitting).
+Trigger the dump <em>after</em> the app has decrypted/loaded the target secret (post-login, after opening the vault) to maximize what's resident.</p>
+<p><strong>Framework notes</strong>
+Managed heaps (.NET/Java) hold strings as objects; string search still works, and for .NET you can load the dump in WinDbg with the SOS extension (<code>!dumpheap -type String</code>) for structured extraction. Electron/Chromium processes are large; dump the specific renderer/main PID that holds the data.</p>
+<p><strong>Impact</strong>
+Passwords, session tokens, API keys, and decrypted document contents recovered from a single snapshot, often long after they were "used."</p>
+<p><strong>Remediation</strong>
+Minimize secret lifetime in memory; zero buffers after use (<code>SecureZeroMemory</code>, <code>Arrays.fill</code>), prefer <code>SecureString</code>/protected memory where meaningful, and accept that a determined local attacker can still catch the window.</p>
+<hr />
+<h3 id="mining-a-dump-for-keys-tokens-strings">Mining a dump for keys, tokens &amp; strings<a class="headerlink" href="#mining-a-dump-for-keys-tokens-strings" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+A dump is just bytes; the skill is knowing what secrets look like. Format-anchored searching turns a multi-gigabyte file into a short list of candidates.</p>
+<p><strong>How to test</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>strings<span class="w"> </span>-n<span class="w"> </span><span class="m">8</span><span class="w"> </span>app.dmp<span class="w"> </span>&gt;<span class="w"> </span>s.txt
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>grep<span class="w"> </span>-Ei<span class="w"> </span><span class="s1">'password|passwd|secret|api[_-]?key|token|bearer|authorization'</span><span class="w"> </span>s.txt
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># JWTs</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>grep<span class="w"> </span>-Eo<span class="w"> </span><span class="s1">'eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+'</span><span class="w"> </span>app.dmp
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># common key/credential markers</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>grep<span class="w"> </span>-aE<span class="w"> </span><span class="s1">'BEGIN (RSA |EC |OPENSSH |)PRIVATE KEY|AKIA[0-9A-Z]{16}|xox[baprs]-'</span><span class="w"> </span>app.dmp
+</code></pre></div>
+For binary keys (AES) that won't show in <code>strings</code>, carve high-entropy 16/24/32-byte runs, or use the crypto hooks above to grab the key and then confirm its presence in the dump. On Windows, <code>strings -el</code> also recovers UTF-16LE, which most .NET/Win32 strings use.</p>
+<p><strong>Framework notes</strong>
+.NET/Java = UTF-16/UTF-8 objects (search both encodings; use SOS <code>!dumpheap</code>/<code>!do</code> for structure). Native = raw C strings and struct blobs. Electron = V8 heap strings, often JSON fragments of tokens.</p>
+<p><strong>Impact</strong>
+Turnkey credential and key recovery from an offline artifact, repeatable and grep-able.</p>
+<p><strong>Remediation</strong>
+Same as dumps: short secret lifetimes, zeroization, avoid long-lived plaintext tokens in memory, and rotate anything that could have been captured.</p>
+<hr />
+<h3 id="anti-debugging-anti-instrumentation-and-bypassing-it">Anti-debugging &amp; anti-instrumentation, and bypassing it<a class="headerlink" href="#anti-debugging-anti-instrumentation-and-bypassing-it" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Hardened clients try to detect and resist the above: debugger-presence checks, timing checks, Frida/agent detection, and self-integrity probes. These are speed bumps, not walls, because the detection code runs in the process you control.</p>
+<p><strong>How to test</strong>
+Recognize common techniques and neutralize each:
+- <strong>Windows debugger checks:</strong> <code>IsDebuggerPresent</code>, <code>CheckRemoteDebuggerPresent</code>, <code>NtQueryInformationProcess(ProcessDebugPort)</code>, PEB <code>BeingDebugged</code> flag. Hook the API to return 0/false, or patch the PEB byte. Tools: ScyllaHide / TitanHide plugins for x64dbg automate most of these.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nx">Interceptor</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">Module</span><span class="p">.</span><span class="nx">getExportByName</span><span class="p">(</span><span class="s1">'kernel32.dll'</span><span class="p">,</span><span class="s1">'IsDebuggerPresent'</span><span class="p">),</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="ow">new</span><span class="w"> </span><span class="nx">NativeCallback</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="s1">'int'</span><span class="p">,</span><span class="w"> </span><span class="p">[]));</span>
+</code></pre></div>
+- <strong>Timing checks</strong> (<code>rdtsc</code>/<code>GetTickCount</code> deltas): patch out the branch or single-step past.
+- <strong>Frida/agent detection</strong> (scanning maps for <code>frida</code>, checking named pipes/ports): use <code>frida --runtime</code> stealth options, rename the agent, or hook the detection routine to lie.
+- <strong><code>ptrace</code> self-attach (Linux/macOS):</strong> an app calls <code>ptrace(PTRACE_TRACEME)</code> so a debugger can't attach; hook/patch <code>ptrace</code> to return 0.</p>
+<p><strong>Framework notes</strong>
+Native uses OS APIs and CPU instructions (patch/hook). .NET checks <code>Debugger.IsAttached</code> (patch in dnSpy). Java may check the JDWP agent list. Electron can detect DevTools via timing on <code>debugger</code> statements. Managed checks are usually easier to defeat than native ones.</p>
+<p><strong>Impact</strong>
+Anti-debug slows analysis but does not prevent it; once bypassed, all prior techniques apply unchanged.</p>
+<p><strong>Remediation</strong>
+Layer anti-tamper for defense-in-depth and to raise attacker cost, but never rely on it as a control; the only durable protection for secrets and decisions is to keep them server-side where the client can't reach.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>

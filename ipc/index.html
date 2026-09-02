@@ -1,0 +1,1065 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/ipc/">
+      
+      
+        <link rel="prev" href="../secrets-at-rest/">
+      
+      
+        <link rel="next" href="../embedded-web-layer/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Inter-Process Communication - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Inter-Process Communication">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/ipc/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inter-Process Communication">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#inter-process-communication" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Inter-Process Communication
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recon-and-unpacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secrets-at-rest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#electron-ipc-handler-abuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Electron IPC handler abuse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#named-pipe-enumeration-and-acl-review-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Named pipe enumeration and ACL review (Windows)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#named-pipe-authentication-and-message-fuzzing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Named pipe authentication and message fuzzing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comdcom-interface-enumeration-and-privilege-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        COM/DCOM interface enumeration and privilege escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d-bus-introspection-and-low-privilege-method-invocation-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D-Bus introspection and low-privilege method invocation (Linux)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-unix-domain-and-loopback-tcp-sockets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Unix-domain and loopback TCP sockets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-channel-input-validation-and-fuzzing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-channel input validation and fuzzing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../embedded-web-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binary-and-tampering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-and-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-licensing-authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#electron-ipc-handler-abuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Electron IPC handler abuse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#named-pipe-enumeration-and-acl-review-windows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Named pipe enumeration and ACL review (Windows)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#named-pipe-authentication-and-message-fuzzing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Named pipe authentication and message fuzzing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comdcom-interface-enumeration-and-privilege-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        COM/DCOM interface enumeration and privilege escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#d-bus-introspection-and-low-privilege-method-invocation-linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        D-Bus introspection and low-privilege method invocation (Linux)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-unix-domain-and-loopback-tcp-sockets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Unix-domain and loopback TCP sockets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cross-channel-input-validation-and-fuzzing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-channel input validation and fuzzing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="inter-process-communication">Inter-Process Communication<a class="headerlink" href="#inter-process-communication" title="Permanent link">&para;</a></h1>
+<p>Thick clients rarely live alone. They split themselves across a privileged broker and an untrusted UI, talk to helper services, and expose local endpoints "just for the frontend" that turn out to be reachable by anything on the box. IPC is where trust boundaries are drawn on a whiteboard and then quietly erased in code, so it is where a lot of local privilege escalation and sandbox-escape lives. Everything below assumes you are testing software you are authorized to test.</p>
+<ul>
+<li>Electron <code>ipcMain</code> handlers and the <code>contextBridge</code> preload surface</li>
+<li>Windows named pipes: enumeration, ACLs, authentication, message fuzzing</li>
+<li>COM/DCOM: registered interfaces, access control, local privilege escalation</li>
+<li>D-Bus (Linux): introspection and low-privilege method invocation</li>
+<li>Local Unix-domain and loopback TCP sockets the app opens</li>
+<li>Input validation and fuzzing across every channel</li>
+</ul>
+<hr />
+<h3 id="electron-ipc-handler-abuse">Electron IPC handler abuse<a class="headerlink" href="#electron-ipc-handler-abuse" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Electron's security model relies on the renderer being untrusted and the main process being the broker. Every <code>ipcMain.handle</code>/<code>ipcMain.on</code> is a function the (potentially compromised, XSS-driven) renderer can call. If a handler shells out, reads/writes arbitrary paths, spawns processes, or reflects renderer input into <code>eval</code>/<code>Function</code>/<code>child_process</code>, then renderer JS execution becomes main-process (Node) code execution and full sandbox escape.</p>
+<p><strong>How to test</strong>
+Unpack the app and read the channel surface directly.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Extract the app bundle (asar archive)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npx<span class="w"> </span>@electron/asar<span class="w"> </span>extract<span class="w"> </span>app.asar<span class="w"> </span>out/<span class="w">     </span><span class="c1"># modern</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># or: npx asar extract app.asar out/</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Map the IPC attack surface</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>grep<span class="w"> </span>-rnE<span class="w"> </span><span class="s2">"ipcMain\.(handle|on|handleOnce)"</span><span class="w"> </span>out/
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>grep<span class="w"> </span>-rnE<span class="w"> </span><span class="s2">"contextBridge\.exposeInMainWorld"</span><span class="w"> </span>out/
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>grep<span class="w"> </span>-rnE<span class="w"> </span><span class="s2">"child_process|execSync|exec\(|spawn|shell\.openExternal|require\("</span><span class="w"> </span>out/
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Static analysis for known Electron misconfig + IPC issues</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>npx<span class="w"> </span>@doyensec/electronegativity<span class="w"> </span>-i<span class="w"> </span>out/<span class="w"> </span>-o<span class="w"> </span>findings.csv
+</code></pre></div>
+<p>Then exercise handlers from the renderer DevTools console (or an injected XSS payload) and watch what the main process does:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// In the renderer (or via a bridged API exposed on window)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">await</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">electron</span><span class="p">.</span><span class="nx">invoke</span><span class="p">(</span><span class="s1">'open-file'</span><span class="p">,</span><span class="w"> </span><span class="s1">'/etc/passwd'</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">await</span><span class="w"> </span><span class="nb">window</span><span class="p">.</span><span class="nx">api</span><span class="p">.</span><span class="nx">someBridgedMethod</span><span class="p">(</span><span class="s1">'../../../../etc/hostname'</span><span class="p">)</span>
+</code></pre></div>
+<p>Focus on: path parameters (traversal), command/argument parameters (injection), URL parameters passed to <code>shell.openExternal</code> (e.g. <code>file:</code>, <code>smb:</code>, custom protocols), and any handler that returns secrets or writes to disk.</p>
+<p><strong>Framework notes</strong>
+Check <code>webPreferences</code>: <code>contextIsolation: false</code> or <code>nodeIntegration: true</code> collapses the boundary entirely (Node in the renderer, no IPC needed). With <code>contextIsolation</code> on, the real surface is exactly what the preload exposes via <code>contextBridge</code> — audit that allowlist. <code>sandbox: true</code> limits the preload's own Node access. <code>shell.openExternal</code> on renderer-controlled input is a recurring finding.</p>
+<p><strong>Impact</strong> Renderer/XSS to main-process RCE; arbitrary file read/write; local command execution.</p>
+<p><strong>Remediation</strong> Never pass renderer input straight to filesystem/process/<code>openExternal</code> APIs. Validate and canonicalize paths, allowlist commands and protocols, expose the narrowest possible bridge API, keep <code>contextIsolation: true</code>/<code>nodeIntegration: false</code>/<code>sandbox: true</code>, and validate the <code>event.senderFrame</code> origin inside handlers.</p>
+<hr />
+<h3 id="named-pipe-enumeration-and-acl-review-windows">Named pipe enumeration and ACL review (Windows)<a class="headerlink" href="#named-pipe-enumeration-and-acl-review-windows" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Windows services and privileged brokers frequently expose <code>\\.\pipe\&lt;name&gt;</code> endpoints. The risk is a pipe with a weak DACL or a NULL DACL that a low-privileged or cross-user process can open, letting an attacker reach privileged functionality. First map the pipes, then read their security descriptors.</p>
+<p><strong>How to test</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c"># Enumerate pipes (built-in)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">Get-ChildItem</span> <span class="p">\\.\</span><span class="n">pipe</span><span class="p">\</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c"># Sysinternals: list pipes and instance counts</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">pipelist</span><span class="p">.</span><span class="n">exe</span> <span class="p">/</span><span class="n">accepteula</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c"># James Forshaw's NtObjectManager (PowerShell Gallery) - rich inspection</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nb">Install-Module</span> <span class="n">NtObjectManager</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nb">Import-Module</span> <span class="n">NtObjectManager</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="nb">ls </span><span class="n">NtObject</span><span class="p">:\</span><span class="n">Device</span><span class="p">\</span><span class="n">NamedPipe</span><span class="p">\</span> <span class="p">|</span> <span class="nb">Select </span><span class="n">Name</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="c"># Read the security descriptor / DACL of a specific pipe</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="nb">Get-NtNamedPipeFile</span> <span class="s2">"\\.\pipe\TargetPipe"</span> <span class="p">|</span> <span class="nb">Get-NtSecurityDescriptor</span> <span class="p">|</span> <span class="nb">Format-NtSecurityDescriptor</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>:: accesschk: who can access the pipe object (look for low-priv principals)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>accesschk.exe -accepteula -w \pipe\TargetPipe
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>accesschk.exe -accepteula -L \pipe\TargetPipe
+</code></pre></div>
+<p>Map which process owns a pipe with Process Explorer / Process Hacker (System Informer) by searching handles for the pipe name, and watch live traffic/setup with Sysinternals <strong>Process Monitor</strong> (filter Operation = CreatePipe / path contains <code>\Device\NamedPipe</code>).</p>
+<p><strong>Framework notes</strong>
+Look for <code>Everyone</code>, <code>Authenticated Users</code>, or <code>NULL</code> DACL granting <code>FILE_WRITE_DATA</code>/<code>GENERIC_WRITE</code>. Note whether the server calls <code>ImpersonateNamedPipeClient</code> — if it does and it is reachable, a client can potentially trigger token impersonation flows; if it does not, the server runs actions with its own (often SYSTEM) token on client-controlled input.</p>
+<p><strong>Impact</strong> Cross-user/cross-session access to privileged functionality; local privilege escalation.</p>
+<p><strong>Remediation</strong> Set explicit least-privilege DACLs on <code>CreateNamedPipe</code>, set <code>PIPE_REJECT_REMOTE_CLIENTS</code>, cap <code>nMaxInstances</code>, validate/authorize the client, and treat every message as untrusted input.</p>
+<hr />
+<h3 id="named-pipe-authentication-and-message-fuzzing">Named pipe authentication and message fuzzing<a class="headerlink" href="#named-pipe-authentication-and-message-fuzzing" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Once a pipe is reachable, the questions are: does it authenticate the caller at all, and does it safely parse messages? Many local IPC protocols are hand-rolled length-prefixed or JSON blobs with no auth and optimistic parsing.</p>
+<p><strong>How to test</strong>
+Connect as a normal client and speak the protocol. <code>pywin32</code> gives direct pipe I/O:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">win32file</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">h</span> <span class="o">=</span> <span class="n">win32file</span><span class="o">.</span><span class="n">CreateFile</span><span class="p">(</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="sa">r</span><span class="s2">"</span><span class="se">\\</span><span class="s2">.\pipe\TargetPipe"</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">win32file</span><span class="o">.</span><span class="n">GENERIC_READ</span> <span class="o">|</span> <span class="n">win32file</span><span class="o">.</span><span class="n">GENERIC_WRITE</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">win32file</span><span class="o">.</span><span class="n">OPEN_EXISTING</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">win32file</span><span class="o">.</span><span class="n">WriteFile</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="sa">b</span><span class="s1">'{"cmd":"ping"}'</span><span class="p">)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nb">print</span><span class="p">(</span><span class="n">win32file</span><span class="o">.</span><span class="n">ReadFile</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mi">65536</span><span class="p">))</span>
+</code></pre></div>
+<p>Cross-language quick test with <code>ncat</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>ncat<span class="w"> </span>--recv-only<span class="w"> </span>//./pipe/TargetPipe<span class="w">        </span><span class="c1"># read banner/behavior</span>
+</code></pre></div>
+<p>For structured fuzzing, drive the pipe with <strong>boofuzz</strong> (define a session whose transport writes to the pipe handle) or mutate captured messages with <strong>radamsa</strong> and replay them, watching the service process under <strong>WinDbg</strong> / Time Travel Debugging for crashes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Mutate a captured message corpus and replay each variant</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">5000</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>radamsa<span class="w"> </span>seed.bin<span class="w"> </span>&gt;<span class="w"> </span>case_<span class="nv">$i</span>.bin<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</code></pre></div>
+<p>Test authentication by connecting from a <strong>different, lower-privileged user context</strong> (e.g. via <code>runas</code> / a low-IL process) and confirming whether privileged commands still execute.</p>
+<p><strong>Framework notes</strong>
+.NET apps commonly use <code>NamedPipeServerStream</code> — check the <code>PipeSecurity</code> passed and whether <code>impersonationLevel</code>/token checks exist. Node/Electron on Windows exposes pipes through <code>net</code>/libuv; look for a shared secret in the pipe name or first message and whether it is actually verified.</p>
+<p><strong>Impact</strong> Unauthenticated command execution, memory-corruption crashes/RCE in the server, auth bypass.</p>
+<p><strong>Remediation</strong> Authenticate and authorize every client (verify SID/token, not just pipe name secrecy), use message-mode with strict length/schema validation, and fail closed on malformed input.</p>
+<hr />
+<h3 id="comdcom-interface-enumeration-and-privilege-escalation">COM/DCOM interface enumeration and privilege escalation<a class="headerlink" href="#comdcom-interface-enumeration-and-privilege-escalation" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+COM servers register CLSIDs and interfaces that other processes activate. Weak launch/access permissions, servers running as a privileged identity, or missing argument validation let a low-privileged caller drive privileged actions — a classic local privilege escalation path.</p>
+<p><strong>How to test</strong>
+Use <strong>OleViewDotNet</strong> (James Forshaw) — GUI and PowerShell module — to enumerate classes, interfaces, and their access/launch permissions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">Install-Module</span> <span class="n">OleViewDotNet</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">Import-Module</span> <span class="n">OleViewDotNet</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nv">$db</span> <span class="p">=</span> <span class="nb">Get-ComDatabase</span>                       <span class="c"># build the COM registration DB</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c"># Find classes runnable/launchable by low-priv users, or with weak permissions</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nb">Get-ComClass</span> <span class="n">-Database</span> <span class="nv">$db</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">LaunchPermission</span> <span class="o">-match</span> <span class="s1">'Everyone|Users'</span> <span class="p">}</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nb">Select-ComAccess</span> <span class="n">-Database</span> <span class="nv">$db</span> <span class="n">-Principal</span> <span class="s2">"S-1-5-32-545"</span>   <span class="c"># what 'Users' can reach</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c"># Instantiate and probe an interface</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nv">$obj</span> <span class="p">=</span> <span class="no">[Activator]</span><span class="p">::</span><span class="n">CreateInstance</span><span class="p">(</span><span class="no">[Type]</span><span class="p">::</span><span class="n">GetTypeFromCLSID</span><span class="p">(</span><span class="s1">'{CLSID-HERE}'</span><span class="p">))</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nv">$obj</span> <span class="p">|</span> <span class="nb">Get-Member</span>
+</code></pre></div>
+<p>Registry ground truth lives under <code>HKCR\CLSID\{...}</code> (<code>LocalServer32</code>/<code>InprocServer32</code>, <code>AppID</code>) and <code>HKCR\AppID\{...}</code> (<code>LaunchPermission</code>, <code>AccessPermission</code>). Inspect DCOM-wide settings with <code>dcomcnfg</code>. Observe live activation and the security identity with <strong>Process Monitor</strong> and <strong>Process Explorer</strong>. For deeper RPC/DCOM interface mapping use <strong>RPCView</strong> or Forshaw's <code>NtObjectManager</code> RPC tooling.</p>
+<p><strong>Framework notes</strong>
+High-value targets: <code>LocalServer32</code> COM servers whose <code>RunAs</code> is <code>Interactive User</code> or a service account (privileged execution), servers accepting file paths/commands, and known auto-elevating/CMSTP-style patterns. Distinguish in-proc (<code>InprocServer32</code>, runs in caller) from out-of-proc/local server (crosses a trust boundary — the interesting case).</p>
+<p><strong>Impact</strong> Local privilege escalation, code execution as the server's identity, DACL/permission bypass.</p>
+<p><strong>Remediation</strong> Set explicit least-privilege launch/access permissions per AppID, avoid <code>Interactive User</code>/SYSTEM where not required, validate all method arguments, and require authentication level <code>RPC_C_AUTHN_LEVEL_PKT_INTEGRITY</code> or higher.</p>
+<hr />
+<h3 id="d-bus-introspection-and-low-privilege-method-invocation-linux">D-Bus introspection and low-privilege method invocation (Linux)<a class="headerlink" href="#d-bus-introspection-and-low-privilege-method-invocation-linux" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Desktop Linux apps and their helper daemons expose methods on the session or system bus. System-bus services run privileged and gate callers with <strong>polkit</strong> policies. Missing or permissive policy rules, or trusting caller-supplied data, let an unprivileged user invoke privileged methods.</p>
+<p><strong>How to test</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># List bus names, then introspect a service's objects/interfaces/methods</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>busctl<span class="w"> </span>list
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>busctl<span class="w"> </span>tree<span class="w">   </span>org.example.Service
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>busctl<span class="w"> </span>introspect<span class="w"> </span>org.example.Service<span class="w"> </span>/org/example/Object
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Call a method (system bus example)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>busctl<span class="w"> </span>call<span class="w"> </span>org.example.Service<span class="w"> </span>/org/example/Object<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">       </span>org.example.Interface<span class="w"> </span>MethodName<span class="w"> </span><span class="s2">"s"</span><span class="w"> </span><span class="s2">"argument"</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># gdbus equivalents</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>gdbus<span class="w"> </span>introspect<span class="w"> </span>--system<span class="w"> </span>--dest<span class="w"> </span>org.example.Service<span class="w"> </span>--object-path<span class="w"> </span>/org/example/Object
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>gdbus<span class="w"> </span>call<span class="w"> </span>--system<span class="w"> </span>--dest<span class="w"> </span>org.example.Service<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">      </span>--object-path<span class="w"> </span>/org/example/Object<span class="w"> </span>--method<span class="w"> </span>org.example.Interface.MethodName<span class="w"> </span><span class="s2">"arg"</span>
+</code></pre></div></p>
+<p>GUI/introspection: <strong>D-Feet</strong>. Monitor live traffic to learn the protocol and find called methods:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>dbus-monitor<span class="w"> </span>--system<span class="w">            </span><span class="c1"># or --session</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>busctl<span class="w"> </span>monitor<span class="w"> </span>org.example.Service
+</code></pre></div>
+<p>Check the service's polkit policy and try methods as an unprivileged user:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ls<span class="w"> </span>/usr/share/dbus-1/system-services/<span class="w">     </span><span class="c1"># activatable services</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>ls<span class="w"> </span>/usr/share/polkit-1/actions/<span class="w">           </span><span class="c1"># action policies (look for allow_active/allow_any)</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>pkcheck<span class="w"> </span>--action-id<span class="w"> </span>org.example.action<span class="w"> </span>--process<span class="w"> </span><span class="nv">$$</span>
+</code></pre></div>
+<p><strong>Framework notes</strong>
+Service definitions in <code>/etc/dbus-1/system.d/</code> and <code>/usr/share/dbus-1/system.d/</code> control who may talk to a name. Absence of a polkit check inside a privileged method (or <code>&lt;allow send_destination&gt;</code> open to all) is the finding. For fuzzing, script <code>busctl call</code> over mutated argument sets, respecting the introspected type signatures.</p>
+<p><strong>Impact</strong> Local privilege escalation, unauthorized privileged operations, information disclosure.</p>
+<p><strong>Remediation</strong> Enforce polkit authorization inside every privileged method, restrict bus policy to required principals, and validate all argument types/values server-side.</p>
+<hr />
+<h3 id="local-unix-domain-and-loopback-tcp-sockets">Local Unix-domain and loopback TCP sockets<a class="headerlink" href="#local-unix-domain-and-loopback-tcp-sockets" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Apps expose "internal" control or API sockets — a Unix socket in <code>/tmp</code>, an abstract socket, or an HTTP/JSON-RPC server on <code>127.0.0.1:&lt;port&gt;</code>. Loopback is not an authentication boundary: any local user (and, via CSRF/DNS-rebinding, any web page the user visits) can reach an unauthenticated localhost service.</p>
+<p><strong>How to test</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Linux: list listening sockets + owning process</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>ss<span class="w"> </span>-xlp<span class="w">                      </span><span class="c1"># unix-domain listeners</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>ss<span class="w"> </span>-tlnp<span class="w">                     </span><span class="c1"># loopback TCP listeners</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>lsof<span class="w"> </span>-U<span class="w"> </span><span class="p">;</span><span class="w"> </span>lsof<span class="w"> </span>-i<span class="w"> </span>@127.0.0.1
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># Talk to a unix socket / loopback port</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>socat<span class="w"> </span>-<span class="w"> </span>UNIX-CONNECT:/tmp/app.sock
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>ncat<span class="w"> </span>-U<span class="w"> </span>/tmp/app.sock
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://127.0.0.1:PORT/<span class="w"> </span><span class="p">;</span><span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>http://127.0.0.1:PORT/rpc<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{"method":"..."}'</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c"># Windows loopback listeners + owning PID</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">netstat</span> <span class="n">-ano</span> <span class="p">|</span> <span class="n">findstr</span> <span class="n">LISTENING</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="nb">Get-NetTCPConnection</span> <span class="n">-State</span> <span class="n">Listen</span> <span class="p">|</span> <span class="p">?</span> <span class="n">LocalAddress</span> <span class="o">-match</span> <span class="s1">'127.0.0.1|::1'</span>
+</code></pre></div>
+<p>Check filesystem permissions on Unix sockets (<code>ls -l /tmp/app.sock</code>), whether the server uses <code>SO_PEERCRED</code>/<code>getpeereid</code> to authenticate the peer, and whether a loopback HTTP service validates <code>Origin</code>/<code>Host</code> (DNS-rebinding and CSRF exposure). Fuzz the wire protocol with <strong>boofuzz</strong> for binary framing, or standard web tooling (Burp/ZAP, <code>ffuf</code>) for localhost HTTP/RPC.</p>
+<p><strong>Framework notes</strong>
+Electron/Chromium apps sometimes open a debug port — an exposed <code>--inspect</code>/<code>--remote-debugging-port</code> on loopback is remote-ish code execution via the DevTools protocol; confirm it is disabled in production. Language runtimes (Node, Java, .NET) each have their own local RPC servers worth checking.</p>
+<p><strong>Impact</strong> Unauthenticated local (and web-reachable) access to privileged app functions; RCE via exposed debug protocols.</p>
+<p><strong>Remediation</strong> Authenticate peers (<code>SO_PEERCRED</code>/token), lock socket file permissions, bind debug/inspect ports off by default, and enforce <code>Origin</code>/<code>Host</code> checks plus per-request tokens on loopback HTTP services.</p>
+<hr />
+<h3 id="cross-channel-input-validation-and-fuzzing">Cross-channel input validation and fuzzing<a class="headerlink" href="#cross-channel-input-validation-and-fuzzing" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Every IPC endpoint is an attacker-controlled parser boundary. The recurring bugs are the same across transports: path traversal, command/argument injection, deserialization of untrusted data, integer/length mishandling in binary framing, and "the client said so" authorization.</p>
+<p><strong>How to test</strong>
+- Capture a legitimate message corpus per channel (ProcMon/dbus-monitor/socat tees), then mutate with <strong>radamsa</strong> or drive a grammar-aware campaign with <strong>boofuzz</strong>.
+- For memory-unsafe servers (native/C++), attach <strong>WinDbg</strong>/<strong>Time Travel Debugging</strong> (Windows) or run the daemon under <strong>AddressSanitizer</strong> + coverage-guided <strong>AFL++</strong> where you can build/harness it.
+- Systematically test each string parameter for traversal (<code>../</code>, absolute paths, UNC/<code>\\?\</code>), each command param for shell metacharacters, and every deserializer for type-confusion/gadget input.
+- Re-run the highest-value calls from a genuinely lower-privileged context to prove the authorization gap, not just the reachability.</p>
+<p><strong>Framework notes</strong>
+JSON/<code>JSON.parse</code> is comparatively safe; native deserializers (Java <code>ObjectInputStream</code>, .NET <code>BinaryFormatter</code>, Python <code>pickle</code>, <code>Marshal</code>) reachable over IPC are critical findings. Length-prefixed binary protocols are where integer-overflow crashes hide.</p>
+<p><strong>Impact</strong> Memory corruption/RCE, injection, deserialization RCE, authorization bypass.</p>
+<p><strong>Remediation</strong> Schema-validate every message, canonicalize and allowlist paths/commands, never deserialize untrusted data with unsafe formats, enforce length bounds, and authorize on the server-verified caller identity rather than message content.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>

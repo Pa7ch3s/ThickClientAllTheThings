@@ -1,0 +1,982 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/network-and-api/">
+      
+      
+        <link rel="prev" href="../binary-and-tampering/">
+      
+      
+        <link rel="next" href="../runtime-and-memory/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Network & API - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Network & API">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/network-and-api/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Network & API">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#network-api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Network & API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recon-and-unpacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secrets-at-rest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../embedded-web-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binary-and-tampering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#intercepting-thick-client-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intercepting Thick-Client Traffic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-the-app-ignores-the-system-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the App Ignores the System Proxy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detecting-and-bypassing-certificate-pinning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detecting and Bypassing Certificate Pinning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#certificate-validation-flaws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Certificate Validation Flaws
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-side-only-trust-tampering-with-server-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client-Side-Only Trust (Tampering With Server Responses)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-http-websocket-servers-the-app-stands-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local HTTP / WebSocket Servers the App Stands Up
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-licensing-authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#intercepting-thick-client-traffic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intercepting Thick-Client Traffic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-the-app-ignores-the-system-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the App Ignores the System Proxy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detecting-and-bypassing-certificate-pinning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detecting and Bypassing Certificate Pinning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#certificate-validation-flaws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Certificate Validation Flaws
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-side-only-trust-tampering-with-server-responses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client-Side-Only Trust (Tampering With Server Responses)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-http-websocket-servers-the-app-stands-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local HTTP / WebSocket Servers the App Stands Up
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="network-api">Network &amp; API<a class="headerlink" href="#network-api" title="Permanent link">&para;</a></h1>
+<p>Thick clients talk to servers, and unlike a browser they do it on their own terms: their own HTTP stack, their own idea of what a valid certificate is, and sometimes their own little web server bound to <code>127.0.0.1</code>. This chapter is about getting between the app and the wire, defeating the transport protections it puts in your way (on a target you are authorized to test), and then abusing everything the client wrongly assumes it can trust. The recurring lesson: the client is not a security boundary, no matter how badly it wants to be.</p>
+<p><strong>Techniques</strong></p>
+<ul>
+<li>Intercepting thick-client traffic (system proxy, mitmproxy, Burp)</li>
+<li>When the app ignores the system proxy (proxifiers, forced routing, hooking)</li>
+<li>Detecting and bypassing TLS certificate pinning</li>
+<li>Certificate validation flaws (disabled / self-signed / any-cert)</li>
+<li>Client-side-only trust (tampering with server responses)</li>
+<li>Local HTTP / WebSocket servers the app stands up</li>
+</ul>
+<hr />
+<h3 id="intercepting-thick-client-traffic">Intercepting Thick-Client Traffic<a class="headerlink" href="#intercepting-thick-client-traffic" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Before you can test an API you have to see it. Web apps hand you their traffic through the browser's proxy settings; thick clients are inconsistent, and step one of every engagement is establishing a clean man-in-the-middle on a host you control. Everything downstream (auth flaws, IDOR, mass assignment, business-logic abuse) depends on this working.</p>
+<p><strong>How to test</strong>
+- Set a system-wide proxy and point it at your interceptor. On Windows: Settings &gt; Network &gt; Proxy, or <code>netsh winhttp set proxy 127.0.0.1:8080</code> (WinHTTP-based apps honor this even when the WinINET/IE proxy does not). Install the interceptor CA into the correct store (below).
+- <strong>Burp Suite</strong>: Proxy &gt; Options, add an all-interfaces or loopback listener, then drive the app. Use the "Non-proxy-aware clients" invisible-proxy listener plus host redirection when the client speaks TLS straight to a hostname without a <code>CONNECT</code>.
+- <strong>mitmproxy</strong> for CLI/scriptable work: <code>mitmproxy -p 8080</code>, or <code>mitmweb</code> for a browser UI. Transparent mode (<code>mitmproxy --mode transparent</code>) with OS-level redirection catches apps that never read a proxy setting. <code>mitmdump -s addon.py</code> lets you rewrite flows programmatically.
+- Confirm capture on plain HTTP first, then HTTPS after the CA is trusted. No traffic at all usually means the app is not proxy-aware (next technique).</p>
+<p><strong>Framework notes</strong>
+- <strong>Electron/Chromium</strong>: uses Chromium's network stack; honors system proxy and the <code>--proxy-server=</code> switch. Chromium maintains its own root policy but generally consults the OS trust store for user-added CAs on Windows/macOS.
+- <strong>.NET (<code>HttpClient</code>/<code>WebClient</code>)</strong>: <code>HttpClient</code> via <code>SocketsHttpHandler</code> reads <code>HttpClient.DefaultProxy</code>, which on Windows is seeded from WinINET/system settings and from the <code>HTTP(S)_PROXY</code> environment variables on modern .NET. Some apps set <code>Proxy = null</code> explicitly.
+- <strong>Java</strong>: obeys <code>-Dhttp.proxyHost</code>/<code>-Dhttps.proxyHost</code> and, if the app opts in, <code>-Djava.net.useSystemProxies=true</code>. It uses its own <code>cacerts</code> truststore, not the OS store.
+- <strong>Native (WinHTTP/libcurl/custom)</strong>: WinHTTP honors <code>netsh winhttp</code>. Statically linked libcurl or raw sockets may honor nothing.</p>
+<p><strong>Impact</strong>
+Full visibility and modification of the client/server conversation; the foundation for testing every server-side and trust flaw.</p>
+<p><strong>Remediation</strong>
+Not a client bug per se, but assume traffic is observable and modifiable and enforce all security decisions server-side.</p>
+<hr />
+<h3 id="when-the-app-ignores-the-system-proxy">When the App Ignores the System Proxy<a class="headerlink" href="#when-the-app-ignores-the-system-proxy" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Many thick clients read no proxy setting, hardcode a direct connection, or deliberately bypass proxies. You need to force their traffic through your interceptor without their cooperation.</p>
+<p><strong>How to test</strong>
+- <strong>Confirm the behavior</strong>: watch connections live. <code>netstat -bano</code> (Windows, elevated, shows owning PID/image) or <code>ss -tnp</code> / <code>netstat -tnp</code> (Linux) while the app runs shows where it is actually connecting. On Windows, Sysinternals <strong>TCPView</strong> or <strong>Process Monitor</strong> give a live per-process view.
+- <strong>Proxifiers</strong> force a chosen process through a proxy at the socket layer regardless of app settings: <strong>Proxifier</strong> (commercial) with a rule targeting the app's executable and forwarding to your interceptor; on Linux, <strong>proxychains-ng</strong> (<code>proxychains4 ./app</code>) via a SOCKS proxy (mitmproxy exposes one with <code>--mode socks5</code>).
+- <strong>OS-level redirection / transparent proxy</strong>: redirect outbound 443 to your transparent listener. Linux: <code>iptables -t nat -A OUTPUT -p tcp --dport 443 -j REDIRECT --to-port 8080</code>. This catches apps that ignore proxies entirely.
+- <strong>DNS redirection</strong>: point the API hostname at your box via the <code>hosts</code> file, terminate TLS locally, and forward upstream. Useful when the app connects by name and pins nothing.
+- <strong>Hooking</strong>: when routing alone is not enough, hook the networking functions. <strong>Frida</strong> to intercept <code>connect</code>/<code>send</code>/TLS calls, or hook the specific HTTP library. For .NET, <strong>Fiddler</strong> with the app forced through it, or hooking <code>HttpClientHandler</code>. This overlaps heavily with pinning bypass below.</p>
+<p><strong>Framework notes</strong>
+- Env-var-driven stacks (modern .NET, Java with the right flags, libcurl) are easiest: set <code>HTTPS_PROXY</code> in the app's environment.
+- Chromium/Electron apps almost always route through the system proxy or accept <code>--proxy-server</code>, so proxifiers are rarely needed.
+- Statically compiled Go binaries honor <code>HTTPS_PROXY</code>/<code>HTTP_PROXY</code> env vars by default via <code>net/http</code>, but ignore OS proxy config; env var first, transparent redirect second.</p>
+<p><strong>Impact</strong>
+Restores interception against apps engineered (accidentally or intentionally) to avoid it.</p>
+<p><strong>Remediation</strong>
+Bypassing a proxy is not a defense; it only slows an authorized tester and does nothing against a determined attacker on the same host.</p>
+<hr />
+<h3 id="detecting-and-bypassing-certificate-pinning">Detecting and Bypassing Certificate Pinning<a class="headerlink" href="#detecting-and-bypassing-certificate-pinning" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Pinning makes the client reject any certificate except an expected one (a specific cert, public key, or CA), so even with your CA trusted the TLS handshake fails. On your own authorized target you bypass it to continue testing; the exercise also documents how strong (or weak) the pinning actually is.</p>
+<p><strong>How to test — detect</strong>
+- Trust your interceptor CA, then connect. If plain-CA MITM works for other apps but this one drops the connection or throws a TLS/handshake error immediately after ClientHello, suspect pinning.
+- Inspect the binary/resources for embedded certs or public-key hashes: <code>strings</code> on the executable, search app resources for <code>.cer</code>/<code>.pem</code>/base64 SPKI blobs, and look for pinning library references.</p>
+<p><strong>How to test — bypass</strong>
+- <strong>Custom CA install (try first)</strong>: some "pinning" is just normal validation. Install your CA in the right store and retest before assuming real pinning.
+- <strong>Frida-based unpinning</strong>: the general-purpose approach. Attach with <code>frida -f ./app.exe -l unpin.js</code> (or via <code>frida-trace</code>) and hook the validation routine to force success. Target the framework's verify function: schannel/<code>CertVerifyCertificateChainPolicy</code> on Windows native, OpenSSL <code>SSL_CTX_set_verify</code>/<code>X509_verify_cert</code>, .NET <code>ServerCertificateValidationCallback</code>, or Java <code>X509TrustManager.checkServerTrusted</code>. <code>frida-trace -i "*verify*"</code> helps locate the call.
+- <strong>Patching</strong>: statically patch the check when hooking is impractical, editing the binary so the validation branch always returns success. Durable but invasive; keep an unmodified copy.
+- <strong>Swap the pinned material</strong>: if the pin is a bundled CA/cert file on disk and the app loads it at runtime, replacing that file with your CA can be the least-effort bypass.</p>
+<p><strong>Framework notes</strong>
+- <strong>.NET</strong>: pinning is usually in <code>ServicePointManager.ServerCertificateValidationCallback</code> or <code>HttpClientHandler.ServerCertificateCustomValidationCallback</code> comparing a thumbprint/public key. Hook or patch the callback.
+- <strong>Java</strong>: custom <code>TrustManager</code>/<code>HostnameVerifier</code>, or OkHttp's <code>CertificatePinner</code>. Hook <code>checkServerTrusted</code> or clear the pinner.
+- <strong>Electron/Chromium</strong>: rarely pins in JS; may use Chromium's own mechanisms or a native module. App-layer pins in JS are trivial to patch in the (often unpacked) <code>app.asar</code>.
+- <strong>Native/OpenSSL/schannel</strong>: hook the C verification functions directly with Frida.</p>
+<p><strong>Impact</strong>
+Interception of otherwise-protected traffic; enables full API testing on the authorized target.</p>
+<p><strong>Remediation</strong>
+Pin correctly (SPKI pins with backup pins and a rotation plan), but treat pinning as anti-tampering friction, not a trust boundary; still authorize and authenticate server-side.</p>
+<hr />
+<h3 id="certificate-validation-flaws">Certificate Validation Flaws<a class="headerlink" href="#certificate-validation-flaws" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+The opposite failure: the client accepts certificates it should reject. Disabled validation, accepting any/self-signed cert, or ignoring hostname mismatch means a real network attacker (not just an authorized tester with a trusted CA) can MITM the app. This is a genuine vulnerability, not just a test hurdle.</p>
+<p><strong>How to test</strong>
+- MITM with a certificate you did <strong>not</strong> add to any trust store: a self-signed cert, a cert for the wrong hostname, and an expired cert. If the app connects anyway, validation is broken.
+- mitmproxy/Burp will present their leaf cert; observe whether the client complains. Test each failure mode separately (untrusted issuer vs. hostname mismatch vs. expiry) because apps often check one and not the others.
+- Static confirmation: search for tell-tale disabled-validation code (below).</p>
+<p><strong>Framework notes</strong>
+- <strong>.NET</strong>: <code>ServerCertificateValidationCallback = (s, c, ch, e) =&gt; true</code> (or <code>ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator</code>) accepts everything. Very common in the wild.
+- <strong>Java</strong>: an all-trusting <code>X509TrustManager</code> whose <code>checkServerTrusted</code> is empty, or <code>HostnameVerifier</code> returning <code>true</code> unconditionally.
+- <strong>Node/Electron</strong>: <code>rejectUnauthorized: false</code> on TLS/HTTPS options, or <code>NODE_TLS_REJECT_UNAUTHORIZED=0</code> in the environment.
+- <strong>Python-based clients</strong>: <code>verify=False</code> in <code>requests</code>, or an unverified <code>ssl</code> context.
+- <strong>Native/libcurl</strong>: <code>CURLOPT_SSL_VERIFYPEER</code>/<code>CURLOPT_SSL_VERIFYHOST</code> set to 0.</p>
+<p><strong>Impact</strong>
+Network-position attacker can intercept and modify all traffic, harvest credentials and tokens, and impersonate the server. Especially severe on untrusted networks.</p>
+<p><strong>Remediation</strong>
+Use the platform default validation; never disable it. Remove any accept-all callbacks and unverified contexts before shipping. If self-signed certs are genuinely required for an internal deployment, trust the specific CA explicitly rather than disabling checks.</p>
+<hr />
+<h3 id="client-side-only-trust-tampering-with-server-responses">Client-Side-Only Trust (Tampering With Server Responses)<a class="headerlink" href="#client-side-only-trust-tampering-with-server-responses" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Thick clients frequently enforce restrictions locally based on server responses: a JSON flag like <code>"isAdmin": false</code>, <code>"licensed": true</code>, a feature list, a price, or an "account locked" state. If the server trusts the client to honor these, rewriting the response in transit unlocks functionality or bypasses controls the server never re-checks.</p>
+<p><strong>How to test</strong>
+- With interception established, intercept responses (Burp: Proxy &gt; Options &gt; Intercept Server Responses, or match/replace rules; mitmproxy: a response-editing addon or interactive edit).
+- Flip boolean flags (<code>false</code>→<code>true</code>), change roles/tiers, unhide menu items, alter quantities/prices/limits, and change error/status codes (e.g., turn a <code>403</code> auth failure into a <code>200</code> success body the client accepts).
+- Then perform the privileged action and watch the <strong>next request</strong>. The real question is whether the server re-authorizes it. If the follow-up request succeeds server-side, it is a genuine authorization flaw; if the server rejects it, the client-side unlock is cosmetic (still worth reporting as defense-in-depth, but lower severity).
+- Automate with match-and-replace so the unlock persists across the session.</p>
+<p><strong>Framework notes</strong>
+- Framework-independent; it is a design flaw in trust placement, not a stack bug. Electron apps make it easiest because UI gating lives in inspectable JS, but the tampering happens on the wire and applies to .NET, Java, and native clients equally.
+- Watch for client-side signature/HMAC checks on responses; if present, you may need the signing logic (often recoverable from the binary) or a Frida hook on the verification function.</p>
+<p><strong>Impact</strong>
+Privilege escalation, license/paywall bypass, and access to hidden or disabled features whenever the server relies on the client to enforce a restriction it does not re-check.</p>
+<p><strong>Remediation</strong>
+Enforce every authorization, entitlement, and business rule on the server for every request. Treat the client purely as presentation. Client-side gating is UX, never security.</p>
+<hr />
+<h3 id="local-http-websocket-servers-the-app-stands-up">Local HTTP / WebSocket Servers the App Stands Up<a class="headerlink" href="#local-http-websocket-servers-the-app-stands-up" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+Many desktop apps run a local server (helper daemon, IPC bridge, auth-callback listener, dev/debug endpoint, updater) bound to <code>localhost</code>. If it is unauthenticated, accepts requests from arbitrary origins, or can be reached via DNS rebinding, a malicious web page the user merely visits, or another local process, can drive privileged functionality.</p>
+<p><strong>How to test</strong>
+- <strong>Find the listener</strong>: <code>netstat -bano</code> (Windows, shows owning process) or <code>ss -ltnp</code> / <code>lsof -iTCP -sTCP:LISTEN -P</code> (Linux/macOS). Note whether it binds <code>127.0.0.1</code>/<code>::1</code> (local only) or <code>0.0.0.0</code> (exposed to the network, worse). Correlate the PID to the app.
+- <strong>Enumerate the API</strong>: browse to <code>http://127.0.0.1:&lt;port&gt;/</code>, fuzz paths, and inspect the app's own traffic to learn the routes. For WebSockets, connect with <code>websocat ws://127.0.0.1:&lt;port&gt;</code> or a browser console and probe the message protocol.
+- <strong>Authentication</strong>: does it require a token/nonce, or will any request work? Replay the app's requests without whatever header/cookie the app sends.
+- <strong>CSRF from a browser</strong>: build a page that issues <code>fetch</code>/<code>XMLHttpRequest</code>/form posts or a <code>WebSocket</code> connection to <code>http://127.0.0.1:&lt;port&gt;</code> and see whether the browser is allowed through. Check the CORS headers and whether the server validates <code>Origin</code>. WebSocket servers frequently do <strong>not</strong> check <code>Origin</code>, so any site can open a socket. A <code>GET</code> image/script/form can hit endpoints even without CORS if the action is state-changing and unauthenticated.
+- <strong>DNS rebinding</strong>: if the server accepts requests based on a <code>Host</code>/hostname rather than validating it, an attacker-controlled domain that rebinds to <code>127.0.0.1</code> can bypass same-origin protections. Test whether the server rejects unexpected <code>Host</code> headers; tools like a rebinding service or a manual short-TTL DNS setup demonstrate it. Servers that only check the source IP is loopback do not stop rebinding.</p>
+<p><strong>Framework notes</strong>
+- <strong>Electron/Node</strong>: often an <code>express</code>/<code>ws</code>/<code>http</code> server for OAuth callbacks or IPC. Check for missing <code>Origin</code> validation on the <code>ws</code> upgrade and permissive CORS (<code>Access-Control-Allow-Origin: *</code> with credentials).
+- <strong>.NET</strong>: <code>HttpListener</code>, Kestrel, or a self-hosted Web API on a loopback port; look for <code>[EnableCors]</code> set wide open and absent auth filters.
+- <strong>Java</strong>: an embedded Jetty/Netty/gRPC or similar listener; check the bind address and auth interceptors.
+- <strong>Native</strong>: a custom socket server; more likely to lack any HTTP niceties and any auth, and to speak a bespoke protocol worth reversing.</p>
+<p><strong>Impact</strong>
+Remote-ish attack surface from the local machine: a visited web page or a low-privilege local process invoking privileged app functionality (config changes, file operations, command execution, token theft), often with no user interaction beyond browsing.</p>
+<p><strong>Remediation</strong>
+Bind to loopback only; require a per-session secret/token the browser cannot guess or read cross-origin; validate the <code>Origin</code> header on both HTTP (CORS) and WebSocket upgrades against an allowlist; validate the <code>Host</code> header to defeat DNS rebinding; and authenticate every local endpoint as if it were internet-facing. Do not assume "localhost" means "trusted."</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>

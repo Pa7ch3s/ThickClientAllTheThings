@@ -1,0 +1,1089 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/recon-and-unpacking/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../secrets-at-rest/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Reconnaissance & Unpacking - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Reconnaissance & Unpacking">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/recon-and-unpacking/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reconnaissance & Unpacking">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reconnaissance-unpacking" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reconnaissance & Unpacking
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#framework-fingerprinting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Framework Fingerprinting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unpacking-electron-asar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unpacking Electron (asar)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decompiling-net-assemblies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decompiling .NET Assemblies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decompiling-java-bytecode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decompiling Java Bytecode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reversing-native-binaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reversing Native Binaries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extracting-embedded-resources-config-and-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extracting Embedded Resources, Config, and Secrets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installer-inspection-msi-nsis-squirrel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installer Inspection (MSI / NSIS / Squirrel)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secrets-at-rest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../embedded-web-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binary-and-tampering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-and-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-licensing-authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#framework-fingerprinting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Framework Fingerprinting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unpacking-electron-asar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unpacking Electron (asar)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decompiling-net-assemblies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decompiling .NET Assemblies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#decompiling-java-bytecode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decompiling Java Bytecode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reversing-native-binaries" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reversing Native Binaries
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extracting-embedded-resources-config-and-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extracting Embedded Resources, Config, and Secrets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installer-inspection-msi-nsis-squirrel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installer Inspection (MSI / NSIS / Squirrel)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="reconnaissance-unpacking">Reconnaissance &amp; Unpacking<a class="headerlink" href="#reconnaissance-unpacking" title="Permanent link">&para;</a></h1>
+<p>Before you can attack a desktop application you have to know what it is, how it is built, and where its logic actually lives. Thick clients ship their business logic to the endpoint, which means the bundle on disk is a decompiler's buffet: framework runtimes, packed source, embedded configuration, hardcoded endpoints, and secrets that a web app would have kept server-side. This chapter is about that first pass over an installed application: identifying the framework, prying the container open, and recovering readable code and config from whatever archive, bytecode, or native binary the vendor shipped.</p>
+<p>Techniques covered:</p>
+<ul>
+<li>Framework fingerprinting (Electron / Tauri / CEF / WebView2 / .NET / Java / native)</li>
+<li>Unpacking Electron (<code>asar</code>, <code>app.asar</code> vs <code>app.asar.unpacked</code>, main/renderer/preload)</li>
+<li>Decompiling .NET assemblies</li>
+<li>Decompiling Java bytecode</li>
+<li>Reversing native binaries (Ghidra / IDA / radare2 / DIE)</li>
+<li>Extracting embedded resources, config, and secrets</li>
+<li>Installer inspection (MSI / NSIS / Squirrel)</li>
+</ul>
+<hr />
+<h3 id="framework-fingerprinting">Framework Fingerprinting<a class="headerlink" href="#framework-fingerprinting" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> Every subsequent tool choice depends on identifying the runtime. A <code>.NET</code> app wants ILSpy; an Electron app wants <code>asar</code>; a Qt binary wants Ghidra. Vendors rarely advertise the framework, but the install tree, imported libraries, and embedded strings do. Fingerprint first so you are not running a Java decompiler against a Go binary.</li>
+<li><strong>How to test:</strong></li>
+<li>Start with the install directory layout and file inventory. On Windows the default roots are <code>%LOCALAPPDATA%\Programs\</code>, <code>%ProgramFiles%</code>, <code>%ProgramFiles(x86)%</code>, and per-user <code>%LOCALAPPDATA%</code>. On macOS inspect <code>*.app/Contents/</code>; on Linux check <code>/opt</code>, <code>/usr/lib</code>, and AppImage mounts.</li>
+<li>Enumerate the tree and look for signature files:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Linux/macOS</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>find<span class="w"> </span><span class="s2">"/path/to/App"</span><span class="w"> </span>-maxdepth<span class="w"> </span><span class="m">3</span><span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ls<span class="w"> </span>-la<span class="w"> </span><span class="s2">"/path/to/App.app/Contents/"</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c"># Windows</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">Get-ChildItem</span> <span class="n">-Recurse</span> <span class="n">-Depth</span> <span class="n">3</span> <span class="s2">"C:\Path\To\App"</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">FullName</span><span class="p">,</span><span class="n">Length</span>
+</code></pre></div></li>
+<li>Inspect the main executable's imports and strings:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># imported libraries reveal the runtime</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>objdump<span class="w"> </span>-p<span class="w"> </span>app.exe<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">'DLL Name'</span><span class="w">        </span><span class="c1"># PE imports</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>strings<span class="w"> </span>-n<span class="w"> </span><span class="m">8</span><span class="w"> </span>app.exe<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Ei<span class="w"> </span><span class="s1">'electron|chrome|node|qt|wxwidgets|dotnet|mono|jvm'</span>
+</code></pre></div></li>
+<li>Use Detect It Easy (DIE) for a one-shot classification of packer, compiler, and framework:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>diec<span class="w"> </span>app.exe<span class="w">          </span><span class="c1"># CLI form of Detect It Easy</span>
+</code></pre></div></li>
+<li><strong>Framework notes</strong> (the tells):</li>
+<li><strong>Electron:</strong> <code>resources/app.asar</code> (or <code>resources/app/</code>), a bundled <code>chrome_100_percent.pak</code>, <code>icudtl.dat</code>, <code>v8_context_snapshot.bin</code>, <code>ffmpeg.dll</code>/<code>libffmpeg</code>, <code>LICENSES.chromium.html</code>, and an executable that is really a renamed Electron stub. <code>strings</code> shows <code>node_modules</code>, <code>Electron Framework</code>, Node/Chromium version banners.</li>
+<li><strong>Tauri:</strong> a single relatively small native binary (Rust) with <strong>no</strong> bundled Chromium. On Windows it depends on <code>WebView2Loader.dll</code> and the Edge WebView2 runtime; on Linux it links <code>libwebkit2gtk</code>. <code>strings</code> show Rust panic messages, <code>cargo</code>, <code>tao</code>/<code>wry</code> symbols, and no <code>app.asar</code>.</li>
+<li><strong>CEF (Chromium Embedded Framework):</strong> <code>libcef.dll</code>/<code>libcef.so</code>/<code>Chromium Embedded Framework.framework</code>, <code>cef.pak</code>, <code>cef_100_percent.pak</code>, <code>devtools_resources.pak</code>. Distinct from Electron: no Node runtime and no <code>app.asar</code>.</li>
+<li><strong>WebView2:</strong> dependence on <code>Microsoft.Web.WebView2.Core.dll</code> and the Evergreen runtime (<code>msedgewebview2.exe</code> child process). Often a .NET or C++ host, check the host binary separately.</li>
+<li><strong>.NET:</strong> presence of <code>*.dll</code> managed assemblies, <code>*.deps.json</code>, <code>*.runtimeconfig.json</code> (.NET Core/5+), or a <code>mscoree.dll</code> import (.NET Framework). Self-contained apps ship <code>coreclr.dll</code>, <code>clrjit.dll</code>, <code>hostfxr.dll</code>, <code>hostpolicy.dll</code>. Single-file publishes are a native <code>apphost</code> with the assemblies embedded.</li>
+<li><strong>Java:</strong> <code>*.jar</code>/<code>*.war</code>, a bundled <code>jre</code>/<code>jdk</code>/<code>runtime</code> directory, <code>.jnlp</code>, or a native launcher plus <code>app/*.cfg</code> (jpackage/<code>javafx</code>). <code>strings</code> show <code>META-INF/MANIFEST.MF</code>, class names, <code>JavaVM</code>.</li>
+<li><strong>Native (C/C++/Qt/Delphi):</strong> no managed runtime files. Qt shows <code>Qt5Core.dll</code>/<code>Qt6Core</code>, <code>qt.conf</code>, <code>platforms/qwindows.dll</code>. Delphi/C++Builder binaries carry <code>Borland</code>/<code>Embarcadero</code>/<code>Delphi</code> RTTI strings and DFM form resources. Go binaries carry the <code>go:buildid</code> string and <code>runtime.</code> symbols.</li>
+<li><strong>Impact:</strong> None directly; this is orientation. But misidentifying the framework wastes the whole engagement.</li>
+<li><strong>Remediation:</strong> Fingerprinting cannot be prevented and is not a vulnerability. Vendors should assume the framework is known and not rely on obscurity of the runtime.</li>
+</ul>
+<hr />
+<h3 id="unpacking-electron-asar">Unpacking Electron (asar)<a class="headerlink" href="#unpacking-electron-asar" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> Electron apps package the entire application (main process, renderer, preload scripts, <code>node_modules</code>) into an <code>asar</code> archive: a simple, unencrypted, concatenated file format with a JSON header. This is source code, not compiled bytecode. Extracting it typically yields the complete JavaScript logic, IPC channel names, <code>nodeIntegration</code>/<code>contextIsolation</code> settings, and any secrets left in the bundle.</li>
+<li><strong>How to test:</strong></li>
+<li>Locate the archive (usually <code>resources/app.asar</code>; sometimes an unpacked <code>resources/app/</code> directory instead).</li>
+<li>Extract with the official <code>@electron/asar</code> tool (formerly <code>asar</code>):
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@electron/asar
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>npx<span class="w"> </span>@electron/asar<span class="w"> </span>list<span class="w"> </span>resources/app.asar
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>npx<span class="w"> </span>@electron/asar<span class="w"> </span>extract<span class="w"> </span>resources/app.asar<span class="w"> </span>./app_extracted
+</code></pre></div></li>
+<li>No Node available? The format is trivial: the header is a JSON pickle at the start of the file. <code>strings resources/app.asar | less</code> will already surface file paths, URLs, and inline secrets even without a full extract.</li>
+<li>After extraction, read <code>package.json</code> for <code>main</code> (the main-process entrypoint), then trace <code>BrowserWindow</code> creation to find <code>webPreferences</code> and <code>preload</code> paths.</li>
+<li>Grep the tree for the security-relevant flags and IPC surface:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>grep<span class="w"> </span>-rniE<span class="w"> </span><span class="s1">'nodeIntegration|contextIsolation|webSecurity|allowRunningInsecureContent|sandbox'</span><span class="w"> </span>app_extracted/
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>grep<span class="w"> </span>-rniE<span class="w"> </span><span class="s2">"ipcMain\.(on|handle)|ipcRenderer\.(send|invoke)"</span><span class="w"> </span>app_extracted/
+</code></pre></div></li>
+<li><strong>Framework notes:</strong></li>
+<li><strong><code>app.asar</code> vs <code>app.asar.unpacked</code>:</strong> files that must exist on the real filesystem (native <code>.node</code> addons, binaries spawned by the app) are excluded from the archive and shipped in <code>resources/app.asar.unpacked/</code>. Always inspect both; native modules there may themselves be reverse-engineering targets.</li>
+<li><strong>Fuses / integrity:</strong> newer Electron builds may enable ASAR integrity checking and the <code>RunAsNode</code>/<code>EnableNodeCliInspectArguments</code> fuses. Integrity is a hash check on the archive; you can still read it, you just cannot trivially repack-and-run without matching the header hash. Check <code>strings</code> on the main binary for the fuse wire to read fuse state.</li>
+<li><strong>Minified/bundled renderers:</strong> many apps ship webpack/vite output. Use <code>js-beautify</code> and any shipped <code>.map</code> sourcemaps (<code>grep -rl sourceMappingURL</code>) to recover readable source.</li>
+<li>This technique is Electron-specific. Tauri does <strong>not</strong> use asar; its web assets are compiled into the Rust binary (see native reversing) or served from an embedded store.</li>
+<li><strong>Impact:</strong> Full recovery of client-side logic; discovery of hardcoded API keys, backend endpoints, unsafe IPC handlers, and misconfigured <code>webPreferences</code> that enable RCE from renderer content.</li>
+<li><strong>Remediation:</strong> Do not treat asar as a security boundary; it is not encrypted. Keep secrets server-side, enable <code>contextIsolation</code> and <code>sandbox</code>, disable <code>nodeIntegration</code>, enable ASAR integrity and relevant Electron fuses, and strip sourcemaps from production builds.</li>
+</ul>
+<hr />
+<h3 id="decompiling-net-assemblies">Decompiling .NET Assemblies<a class="headerlink" href="#decompiling-net-assemblies" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> .NET compiles to CIL (MSIL) bytecode carrying rich metadata, so decompilation reconstructs near-original C#/VB source including method bodies, resource names, and string literals. This is one of the highest-yield thick-client targets: config, connection strings, license logic, and crypto keys are frequently recoverable in full.</li>
+<li><strong>How to test:</strong></li>
+<li>Confirm it is managed and read the metadata:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># ILSpy CLI</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>ilspycmd<span class="w"> </span>-il<span class="w"> </span>App.dll<span class="w">                 </span><span class="c1"># dump IL</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>ilspycmd<span class="w"> </span>-p<span class="w"> </span>-o<span class="w"> </span>./src<span class="w"> </span>App.dll<span class="w">         </span><span class="c1"># decompile whole assembly to a C# project</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>monodis<span class="w"> </span>App.dll<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w">               </span><span class="c1"># Mono disassembler, if available</span>
+</code></pre></div></li>
+<li>GUI decompilers give the best code recovery: <strong>ILSpy</strong> (open source, cross-platform, plus the AvaloniaILSpy build), <strong>dnSpy / dnSpyEx</strong> (decompile <strong>and</strong> live-debug/edit-and-continue on Windows), and JetBrains <strong>dotPeek</strong>.</li>
+<li>For obfuscated assemblies, identify the obfuscator with DIE or de4dot's detection, and attempt cleanup with <strong>de4dot</strong> before decompiling:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>de4dot<span class="w"> </span>App.dll<span class="w"> </span>-o<span class="w"> </span>App-clean.dll
+</code></pre></div></li>
+<li>Hunt strings and resources across all assemblies:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>grep<span class="w"> </span>-rniE<span class="w"> </span><span class="s1">'password|secret|apikey|connectionstring|https?://'</span><span class="w"> </span>./src/
+</code></pre></div></li>
+<li><strong>Framework notes:</strong></li>
+<li><strong>.NET Framework vs Core/5+:</strong> Framework assemblies import <code>mscoree.dll</code>; Core apps ship <code>*.deps.json</code>/<code>*.runtimeconfig.json</code>. Both decompile identically.</li>
+<li><strong>Single-file publish:</strong> the assemblies are bundled into the native <code>apphost</code>. Extract them first with a bundle extractor or dump from memory once running, then decompile the recovered DLLs.</li>
+<li><strong>ReadyToRun / AOT:</strong> R2R images still contain the IL; Native AOT compiles straight to native code and must be treated as a native binary (Ghidra/IDA), not decompiled to C#.</li>
+<li><strong>Embedded resources:</strong> managed resources live in <code>.resources</code> streams; ILSpy/dnSpy expose them, or use <code>resourcer</code>/manual <code>ResourceReader</code> parsing.</li>
+<li><strong>Impact:</strong> Recovery of full application logic, hardcoded credentials and connection strings, license/auth bypass insight, and editable assemblies (dnSpy) for runtime tampering during dynamic testing.</li>
+<li><strong>Remediation:</strong> Never store secrets in managed strings or resources; use a real secret store and server-side validation. Commercial obfuscation (control-flow flattening, string encryption) raises cost but does not stop a determined analyst; treat it as speed-bump, not defense.</li>
+</ul>
+<hr />
+<h3 id="decompiling-java-bytecode">Decompiling Java Bytecode<a class="headerlink" href="#decompiling-java-bytecode" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> Like .NET, Java compiles to metadata-rich bytecode that decompiles cleanly back to source. Thick-client Java (Swing/JavaFX/SWT) ships as JARs, often inside a bundled JRE, and commonly contains embedded config, endpoints, and keystores.</li>
+<li><strong>How to test:</strong></li>
+<li>A JAR is a ZIP; list and extract it:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>unzip<span class="w"> </span>-l<span class="w"> </span>app.jar
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>unzip<span class="w"> </span>app.jar<span class="w"> </span>-d<span class="w"> </span>app_extracted/
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>cat<span class="w"> </span>app_extracted/META-INF/MANIFEST.MF<span class="w">     </span><span class="c1"># Main-Class, classpath</span>
+</code></pre></div></li>
+<li>Decompile with a real decompiler. <strong>CFR</strong> and <strong>Procyon</strong> are strong command-line choices; <strong>JD-GUI</strong> and the <strong>Fernflower</strong>-based tools give a GUI:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>java<span class="w"> </span>-jar<span class="w"> </span>cfr.jar<span class="w"> </span>app.jar<span class="w"> </span>--outputdir<span class="w"> </span>./cfr_out
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>java<span class="w"> </span>-jar<span class="w"> </span>procyon-decompiler.jar<span class="w"> </span>app.jar<span class="w"> </span>-o<span class="w"> </span>./procyon_out
+</code></pre></div></li>
+<li>Bulk workflows: <strong>jadx</strong> handles JARs (and DEX for Android-style bundles) with <code>jadx app.jar -d out/</code> and <code>jadx-gui</code>.</li>
+<li>Inspect a single class or the constant pool without full decompilation:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>javap<span class="w"> </span>-c<span class="w"> </span>-p<span class="w"> </span>-constants<span class="w"> </span>com/vendor/App.class
+</code></pre></div></li>
+<li><strong>Framework notes:</strong></li>
+<li><strong>jpackage / Java-native launchers:</strong> apps built with <code>jpackage</code> ship a native launcher plus <code>app/*.jar</code> and an <code>app/*.cfg</code> pointing at the main module. Reverse the launcher only to find the JARs; the JARs are the real target.</li>
+<li><strong>Fat/shaded JARs and Spring Boot:</strong> dependencies are nested; extract fully and decompile the vendor packages, not the framework libraries.</li>
+<li><strong>Obfuscation (ProGuard):</strong> identifiers are stripped/renamed; decompilation still succeeds but naming is lost. Focus on string constants and control flow.</li>
+<li><strong>Keystores:</strong> look for <code>.jks</code>/<code>.p12</code>/<code>.keystore</code> in the bundle and inspect with <code>keytool -list -v -keystore file.jks</code>.</li>
+<li><strong>Impact:</strong> Full source recovery, exposed endpoints and credentials, insight into client-side auth/licensing, and extractable signing/TLS keys.</li>
+<li><strong>Remediation:</strong> Keep secrets out of the bundle, use server-side authorization, and apply obfuscation as a cost-raiser only. Do not ship production keystores with recoverable passwords.</li>
+</ul>
+<hr />
+<h3 id="reversing-native-binaries">Reversing Native Binaries<a class="headerlink" href="#reversing-native-binaries" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> C/C++/Rust/Go/Delphi/Qt binaries have no metadata-rich bytecode, so you get assembly and a decompiler's best-effort pseudocode rather than source. Tauri's web assets, native Electron addons (<code>.node</code>), and traditional desktop apps all land here. Yield is lower and slower than managed decompilation but still exposes strings, endpoints, embedded resources, and logic.</li>
+<li><strong>How to test:</strong></li>
+<li>Triage before deep reversing:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>file<span class="w"> </span>app.bin
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>diec<span class="w"> </span>app.bin<span class="w">                 </span><span class="c1"># Detect It Easy: compiler, packer, protector</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>strings<span class="w"> </span>-n<span class="w"> </span><span class="m">8</span><span class="w"> </span>-t<span class="w"> </span>x<span class="w"> </span>app.bin<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-Ei<span class="w"> </span><span class="s1">'https?://|api|token|password'</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>nm<span class="w"> </span>-C<span class="w"> </span>app.bin<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w">    </span><span class="c1"># symbols if not stripped</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>objdump<span class="w"> </span>-d<span class="w"> </span>app.bin<span class="w"> </span><span class="p">|</span><span class="w"> </span>less<span class="w">    </span><span class="c1"># disassembly</span>
+</code></pre></div></li>
+<li>Full analysis in a decompiler: <strong>Ghidra</strong> (free, excellent decompiler, batch via <code>analyzeHeadless</code>), <strong>IDA Pro/Free</strong>, <strong>Binary Ninja</strong>, or <strong>radare2/rizin + Cutter</strong>:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Ghidra headless: auto-analyze into a project</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>analyzeHeadless<span class="w"> </span>./proj<span class="w"> </span>ProjName<span class="w"> </span>-import<span class="w"> </span>app.bin
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># radare2 quick pass</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>r2<span class="w"> </span>-A<span class="w"> </span>app.bin
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1"># then: afl (list functions), iz (strings in data), ii (imports)</span>
+</code></pre></div></li>
+<li>Check for packing (UPX and others) and unpack before analysis:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>upx<span class="w"> </span>-t<span class="w"> </span>app.bin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>upx<span class="w"> </span>-d<span class="w"> </span>app.bin
+</code></pre></div></li>
+<li><strong>Framework notes:</strong></li>
+<li><strong>Tauri:</strong> the Rust binary embeds the frontend web assets and command handlers. <code>strings</code> and the decompiler reveal registered <code>tauri::command</code> names (the IPC attack surface) and any embedded HTML/JS. Rust symbols are verbose but present unless stripped.</li>
+<li><strong>Go:</strong> stripped Go binaries still recover function names via the <code>pclntab</code>; use Ghidra scripts or <code>GoReSym</code> to restore symbols.</li>
+<li><strong>Qt:</strong> signals/slots and translation strings help map UI to logic; embedded <code>.qml</code>/resources sit in the Qt Resource System (see next section).</li>
+<li><strong>Delphi/C++Builder:</strong> use RTTI-aware helpers (e.g. IDR / Ghidra Delphi scripts) to recover class/form structure and DFM resources.</li>
+<li><strong>Native Electron addons:</strong> <code>.node</code> files in <code>app.asar.unpacked</code> are standard shared objects; reverse them as native binaries.</li>
+<li><strong>Impact:</strong> Recovery of endpoints, embedded assets, algorithm/crypto logic, and IPC command surfaces; identification of memory-safety bugs for deeper exploitation.</li>
+<li><strong>Remediation:</strong> Strip symbols, but understand reversing is not preventable. Move trust decisions server-side, validate all IPC/command inputs, and do not embed secrets. Anti-tamper/packing raises cost only.</li>
+</ul>
+<hr />
+<h3 id="extracting-embedded-resources-config-and-secrets">Extracting Embedded Resources, Config, and Secrets<a class="headerlink" href="#extracting-embedded-resources-config-and-secrets" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> Independent of the language, desktop apps carry configuration and assets in the bundle: <code>.env</code>-style files, JSON/YAML/XML config, license files, TLS keys, certificate pins, feature flags, and hardcoded backend URLs. This is often the fastest path to impact and should be run in parallel with decompilation.</li>
+<li><strong>How to test:</strong></li>
+<li>Broad content sweep across the extracted/installed tree:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>grep<span class="w"> </span>-rniE<span class="w"> </span><span class="s1">'https?://|wss?://|api[_-]?key|secret|password|token|bearer|BEGIN (RSA|EC|PRIVATE)'</span><span class="w"> </span>./target/
+</code></pre></div></li>
+<li>Catalog config and credential-bearing file types:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>find<span class="w"> </span>./target<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span><span class="se">\(</span><span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.json'</span><span class="w"> </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.yml'</span><span class="w"> </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.yaml'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.xml'</span><span class="w"> </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.config'</span><span class="w"> </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.ini'</span><span class="w"> </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.env'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.pem'</span><span class="w"> </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.p12'</span><span class="w"> </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.pfx'</span><span class="w"> </span>-o<span class="w"> </span>-iname<span class="w"> </span><span class="s1">'*.jks'</span><span class="w"> </span><span class="se">\)</span><span class="w"> </span>-print
+</code></pre></div></li>
+<li><strong>.NET:</strong> read <code>App.config</code>/<code>*.dll.config</code>, <code>appsettings.json</code>, and embedded <code>.resources</code>; check <code>settings</code> classes in the decompiled source for defaults.</li>
+<li><strong>Qt Resource System:</strong> resources compiled into the binary can be carved; look for the <code>qres</code>/<code>.rcc</code> markers, or extract <code>.rcc</code> files with Qt's <code>rcc</code>-aware tooling.</li>
+<li><strong>Windows PE resources:</strong> dump icons, manifests, version info, and embedded blobs with <strong>Resource Hacker</strong> or <code>wrestool -x app.exe</code>.</li>
+<li>Run a dedicated secret scanner over the whole tree for coverage and entropy detection:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>trufflehog<span class="w"> </span>filesystem<span class="w"> </span>./target
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>gitleaks<span class="w"> </span>detect<span class="w"> </span>--no-git<span class="w"> </span>--source<span class="w"> </span>./target
+</code></pre></div></li>
+<li><strong>Framework notes:</strong> Electron/Java configs are usually plaintext files in the archive; native/Qt configs may be compiled into the binary and must be carved; .NET keeps them in <code>.config</code>/<code>appsettings</code>/managed resources. Some apps "encrypt" config with a key that is itself in the binary, recover the key via decompilation, then decrypt.</li>
+<li><strong>Impact:</strong> Exposure of backend endpoints (expands the network attack surface), live API keys and credentials, private keys, and pinning/feature-flag logic that can be bypassed.</li>
+<li><strong>Remediation:</strong> No secret should live in a distributed binary. Use server-side auth, short-lived tokens fetched at runtime, and OS keystores (DPAPI, Keychain, libsecret) rather than files. Assume anything in the bundle is public.</li>
+</ul>
+<hr />
+<h3 id="installer-inspection-msi-nsis-squirrel">Installer Inspection (MSI / NSIS / Squirrel)<a class="headerlink" href="#installer-inspection-msi-nsis-squirrel" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> Installers ship the same payload you will unpack, and they also encode install-time behavior: custom actions, elevated services, registry keys, scheduled tasks, and update URLs. Inspecting the installer both recovers the payload without running it and surfaces privilege-escalation and supply-chain issues (writable install paths, unsigned updates).</li>
+<li><strong>How to test:</strong></li>
+<li><strong>MSI (Windows Installer):</strong> MSI is a structured-storage database of tables. Read it without installing:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Linux/macOS</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>msiinfo<span class="w"> </span>tables<span class="w"> </span>installer.msi
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>msiinfo<span class="w"> </span><span class="nb">export</span><span class="w"> </span>installer.msi<span class="w"> </span>CustomAction<span class="w">   </span><span class="c1"># inspect custom actions</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>msiextract<span class="w"> </span>installer.msi<span class="w">                     </span><span class="c1"># extract payload files</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>7z<span class="w"> </span>l<span class="w"> </span>installer.msi<span class="w">                           </span><span class="c1"># 7-Zip also lists/extracts CABs</span>
+</code></pre></div>
+    On Windows use <strong>Orca</strong> (MS Windows SDK) or <strong>lessmsi</strong> (<code>lessmsi x installer.msi</code>) to browse tables and dump files. Scrutinize the <code>CustomAction</code>, <code>InstallExecuteSequence</code>, <code>ServiceInstall</code>, and <code>Registry</code> tables for deferred actions running as SYSTEM.</li>
+<li><strong>NSIS:</strong> self-extracting; 7-Zip can list and extract the packaged files, and the script logic is recoverable:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>7z<span class="w"> </span>x<span class="w"> </span>setup.exe<span class="w"> </span>-o./nsis_out
+</code></pre></div>
+    For the install script itself, use a maintained NSIS extractor where available; otherwise inspect <code>strings</code> for install paths and download URLs.</li>
+<li><strong>Squirrel (used by many Electron apps):</strong> the release is a set of NuGet-format <code>.nupkg</code> files plus a <code>RELEASES</code> manifest, delivered from an update feed. <code>.nupkg</code> is a ZIP:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>unzip<span class="w"> </span>-l<span class="w"> </span>MyApp-1.2.3-full.nupkg
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>unzip<span class="w"> </span>MyApp-1.2.3-full.nupkg<span class="w"> </span>-d<span class="w"> </span>squirrel_out/
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>cat<span class="w"> </span>RELEASES<span class="w">        </span><span class="c1"># SHA1 + filename + size of each package</span>
+</code></pre></div>
+    The <code>lib/net45/</code> (or app) folder holds the actual Electron/<code>app.asar</code> payload. Note the update URL from the app config; unauthenticated/HTTP feeds are a supply-chain finding.</li>
+<li><strong>macOS <code>.pkg</code>/<code>.dmg</code>:</strong> expand flat packages with <code>pkgutil --expand-full app.pkg out/</code> and read <code>Scripts/preinstall</code>/<code>postinstall</code>; mount DMGs and inspect the <code>.app</code> bundle.</li>
+<li><strong>Framework notes:</strong> Squirrel is the Electron-world default and directly exposes the asar payload and update channel. MSI is common for .NET and native enterprise apps and is where SYSTEM-level custom actions live. NSIS wraps everything from games to native apps. Tauri uses its own bundler producing MSI/NSIS on Windows and <code>.dmg</code>/<code>.app</code> on macOS, so the same tooling applies.</li>
+<li><strong>Impact:</strong> Payload recovery without execution; discovery of privilege-escalation vectors (weak install-dir ACLs, SYSTEM custom actions, unquoted service paths) and insecure/unsigned update channels enabling supply-chain compromise.</li>
+<li><strong>Remediation:</strong> Sign installers and every update package, serve update feeds over HTTPS with signature verification, install to protected directories with correct ACLs, minimize and audit elevated custom actions, and never place secrets or writable service binaries in user-writable locations.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1162 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/secrets-at-rest/">
+      
+      
+        <link rel="prev" href="../recon-and-unpacking/">
+      
+      
+        <link rel="next" href="../ipc/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Secrets & Data at Rest - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Secrets & Data at Rest">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/secrets-at-rest/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Secrets & Data at Rest">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#secrets-data-at-rest" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Secrets & Data at Rest
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recon-and-unpacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hardcoded-credentials-in-unpacked-source-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardcoded credentials in unpacked source &amp; strings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entropy-scanning-for-keys-jwts-and-base64-blobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entropy scanning for keys, JWTs, and base64 blobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#locating-token-session-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locating token &amp; session stores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-electronchromium-leveldb-indexeddb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading Electron/Chromium LevelDB &amp; IndexedDB
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sqlite-flat-file-stores-plaintext-vs-encrypted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQLite &amp; flat-file stores (plaintext vs. encrypted)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#os-secure-storage-used-correctly-vs-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OS secure storage: used correctly vs. not
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-registry-storage-of-sensitive-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config &amp; registry storage of sensitive values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secrets-in-logs-crash-dumps-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets in logs, crash dumps &amp; telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-registry-acls-on-stored-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File &amp; registry ACLs on stored data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-triage-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick triage checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../embedded-web-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binary-and-tampering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-and-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-licensing-authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hardcoded-credentials-in-unpacked-source-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardcoded credentials in unpacked source &amp; strings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#entropy-scanning-for-keys-jwts-and-base64-blobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entropy scanning for keys, JWTs, and base64 blobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#locating-token-session-stores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Locating token &amp; session stores
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-electronchromium-leveldb-indexeddb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading Electron/Chromium LevelDB &amp; IndexedDB
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sqlite-flat-file-stores-plaintext-vs-encrypted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQLite &amp; flat-file stores (plaintext vs. encrypted)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#os-secure-storage-used-correctly-vs-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OS secure storage: used correctly vs. not
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config-registry-storage-of-sensitive-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config &amp; registry storage of sensitive values
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secrets-in-logs-crash-dumps-telemetry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets in logs, crash dumps &amp; telemetry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-registry-acls-on-stored-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File &amp; registry ACLs on stored data
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-triage-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick triage checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="secrets-data-at-rest">Secrets &amp; Data at Rest<a class="headerlink" href="#secrets-data-at-rest" title="Permanent link">&para;</a></h1>
+<p>Desktop apps have to keep something on the box: session tokens, refresh tokens, API keys, license blobs, cached PII. The interesting question is never "does it store secrets" (it does) but "where, in what state, and who else on the machine can read it." This chapter is about turning an installed app inside-out, on disk and in the registry, to find the material that lets you skip authentication entirely.</p>
+<p>Assume local, authenticated access to the machine (your own test box or the client's build) unless the finding is about <em>cross-user</em> exposure, which is where the real severity usually lives.</p>
+<ul>
+<li>Hunting hardcoded credentials in unpacked source and binary strings</li>
+<li>Locating token/session stores (%APPDATA%, <code>~/Library</code>, <code>~/.config</code>, LevelDB, SQLite)</li>
+<li>Judging plaintext vs. "encrypted" storage, and OS keystore use vs. misuse</li>
+<li>Config files and the Windows registry as secret sinks</li>
+<li>Secrets bleeding into logs, crash dumps, and telemetry</li>
+<li>File and registry ACLs that make any of the above readable by other users</li>
+</ul>
+<hr />
+<h3 id="hardcoded-credentials-in-unpacked-source-strings">Hardcoded credentials in unpacked source &amp; strings<a class="headerlink" href="#hardcoded-credentials-in-unpacked-source-strings" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> Keys baked into the shipped artifact are recoverable by anyone with the installer. Electron/CEF apps ship readable-ish JS; .NET and Java ship near-source IL/bytecode; native binaries still leak string literals. A hardcoded backend key or symmetric "encryption" key defeats every downstream protection.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Electron: unpack the app archive, then grep the source tree</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>npx<span class="w"> </span>@electron/asar<span class="w"> </span>extract<span class="w"> </span>resources/app.asar<span class="w"> </span>app_src/
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>rg<span class="w"> </span>-n<span class="w"> </span>-i<span class="w"> </span><span class="s1">'(api[_-]?key|secret|token|passw|bearer|private[_-]?key|BEGIN [A-Z ]*PRIVATE KEY)'</span><span class="w"> </span>app_src/
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># .NET: decompile to source before grepping (ILSpy CLI / dnSpyEx / dotPeek)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>ilspycmd<span class="w"> </span>-o<span class="w"> </span>decomp/<span class="w"> </span>TheApp.exe<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rg<span class="w"> </span>-n<span class="w"> </span>-i<span class="w"> </span><span class="s1">'password|apikey|connectionstring'</span><span class="w"> </span>decomp/
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Java: unzip the jar, decompile classes (CFR / procyon)</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>unzip<span class="w"> </span>app.jar<span class="w"> </span>-d<span class="w"> </span>jar_src/<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>java<span class="w"> </span>-jar<span class="w"> </span>cfr.jar<span class="w"> </span>jar_src/<span class="w"> </span>--outputdir<span class="w"> </span>cfr_out/
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># Native: pull literals from the binary (both encodings)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>strings<span class="w"> </span>-n<span class="w"> </span><span class="m">8</span><span class="w"> </span>app.exe<span class="w"> </span>&gt;<span class="w"> </span>s_ascii.txt
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>strings<span class="w"> </span>-n<span class="w"> </span><span class="m">8</span><span class="w"> </span>-e<span class="w"> </span>l<span class="w"> </span>app.exe<span class="w"> </span>&gt;<span class="w"> </span>s_utf16le.txt<span class="w">   </span><span class="c1"># Windows wide strings</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># High-recall secret scanners over the extracted tree / the installer itself</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>trufflehog<span class="w"> </span>filesystem<span class="w"> </span>app_src/<span class="w"> </span>--results<span class="o">=</span>verified,unknown
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>gitleaks<span class="w"> </span>detect<span class="w"> </span>--no-git<span class="w"> </span>--source<span class="w"> </span>app_src/
+</code></pre></div>
+Also check embedded resources: .NET <code>.resources</code>/<code>resx</code>, Qt <code>.qrc</code>, Electron <code>app.asar.unpacked</code>, and any bundled <code>.env</code>, <code>config.json</code>, or <code>appsettings*.json</code>.</p>
+<p><strong>Framework notes:</strong> Electron ASAR is <em>not</em> encryption, just a tar-like container. .NET IL and Java bytecode round-trip to readable source; obfuscation slows reading but string constants survive. Native apps often store keys as static byte arrays, so pivot to entropy scans (below) when <code>strings</code> misses.</p>
+<p><strong>Impact:</strong> Full compromise of whatever the key protects, cloned for every user of the app. Symmetric keys used to "encrypt" local data are equivalent to plaintext once extracted.</p>
+<p><strong>Remediation:</strong> No long-lived secrets in the client. Broker sensitive calls server-side; use per-user OAuth/refresh tokens minted at runtime; if a local key is unavoidable, derive it per-user from an OS keystore-protected seed, never a shipped constant.</p>
+<hr />
+<h3 id="entropy-scanning-for-keys-jwts-and-base64-blobs">Entropy scanning for keys, JWTs, and base64 blobs<a class="headerlink" href="#entropy-scanning-for-keys-jwts-and-base64-blobs" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> Renamed variables and obfuscation hide the <em>word</em> "key" but not the <em>shape</em> of a secret. High-entropy strings, JWT segments, and long base64/hex blobs stand out statistically even when identifiers are meaningless.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Scanners that flag on entropy, not just keywords</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>trufflehog<span class="w"> </span>filesystem<span class="w"> </span>app_src/<span class="w"> </span>--results<span class="o">=</span>verified,unknown<span class="w">   </span><span class="c1"># entropy + detectors</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>detect-secrets<span class="w"> </span>scan<span class="w"> </span>app_src/<span class="w"> </span>&gt;<span class="w"> </span>.secrets.baseline<span class="w">            </span><span class="c1"># Yelp detect-secrets</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># JWTs: three base64url segments split by dots</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>rg<span class="w"> </span>-no<span class="w"> </span><span class="s1">'\beyJ[A-Za-z0-9_-]{6,}\.[A-Za-z0-9_-]{6,}\.[A-Za-z0-9_-]*'</span><span class="w"> </span>app_src/
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># decode/inspect a found token (alg, exp, aud) without a network call</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>jwt_tool<span class="w"> </span>eyJ...<span class="w">           </span><span class="c1"># or: cut -d. -f2 | base64 -d 2&gt;/dev/null</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Long base64 / hex candidates for manual triage</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>rg<span class="w"> </span>-no<span class="w"> </span><span class="s1">'[A-Za-z0-9+/]{40,}={0,2}'</span><span class="w"> </span>app_src/<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>rg<span class="w"> </span>-no<span class="w"> </span><span class="s1">'\b[0-9a-fA-F]{32,}\b'</span><span class="w">     </span>app_src/<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-u
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># Measure entropy of a suspect file/blob</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>ent<span class="w"> </span>suspect.bin
+</code></pre></div>
+Decode base64 candidates and re-scan the output: keys are frequently base64-of-base64 or base64-of-JSON.</p>
+<p><strong>Framework notes:</strong> JWTs found at rest are usually access/refresh tokens; check <code>exp</code> and whether the app persists the <em>refresh</em> token (long-lived, high value). <code>alg:none</code> or symmetric <code>HS*</code> with a guessable secret is a separate finding worth flagging.</p>
+<p><strong>Impact:</strong> Recovery of session/refresh tokens enables account takeover without credentials; recovered symmetric keys unlock any locally "encrypted" store.</p>
+<p><strong>Remediation:</strong> Persist only short-lived tokens; store refresh tokens in an OS keystore, not a flat file; rotate on logout.</p>
+<hr />
+<h3 id="locating-token-session-stores">Locating token &amp; session stores<a class="headerlink" href="#locating-token-session-stores" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> Before judging protection you have to find every place the app writes. Enumerate the per-user profile, temp dirs, and any custom location from config. Compare a clean install to a logged-in state to see exactly which files hold the session.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c"># Windows: common roots, sorted by recent writes (catch the file that changed on login)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">Get-ChildItem</span> <span class="s2">"$env:APPDATA"</span><span class="p">,</span><span class="s2">"$env:LOCALAPPDATA"</span><span class="p">,</span><span class="s2">"$env:PROGRAMDATA"</span> <span class="n">-Recurse</span> <span class="o">-File</span> <span class="n">-EA</span> <span class="n">SilentlyContinue</span> <span class="p">|</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  <span class="nb">Sort-Object</span> <span class="n">LastWriteTime</span> <span class="n">-Desc</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">-First</span> <span class="n">40</span> <span class="n">FullName</span><span class="p">,</span><span class="n">Length</span><span class="p">,</span><span class="n">LastWriteTime</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># macOS</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ls<span class="w"> </span>-la<span class="w"> </span>~/Library/<span class="s2">"Application Support"</span>/&lt;App&gt;/<span class="w"> </span>~/Library/Preferences/&lt;bundleid&gt;.plist<span class="w"> </span>~/Library/Caches/&lt;App&gt;/
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Linux</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>ls<span class="w"> </span>-la<span class="w"> </span>~/.config/&lt;App&gt;/<span class="w"> </span>~/.local/share/&lt;App&gt;/<span class="w"> </span>~/.cache/&lt;App&gt;/
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Diff approach (any OS): snapshot before login, log in, snapshot after</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># Windows live: Sysinternals Procmon, filter Operation=WriteFile, Process Name=app.exe</span>
+</code></pre></div>
+Then classify each hit: Electron LevelDB (<code>Local Storage/leveldb/</code>, <code>IndexedDB/</code>), SQLite (<code>*.db</code>, <code>*.sqlite</code>, Chromium <code>Cookies</code>, <code>Login Data</code>, <code>Web Data</code>), JSON/INI/plist, or opaque blobs.</p>
+<p><strong>Framework notes:</strong> Chromium-based (Electron/CEF/WebView2) apps inherit the Chromium profile layout, so token storage often lives in Local Storage LevelDB, IndexedDB, or a <code>Cookies</code> SQLite DB. Qt apps default to <code>QSettings</code> (INI on Linux, registry on Windows). Java apps often use <code>java.util.prefs</code> (registry on Windows, XML under <code>~/.java/.userPrefs</code> on *nix).</p>
+<p><strong>Impact:</strong> Foundational; scopes the rest of the assessment.</p>
+<p><strong>Remediation:</strong> N/A (enumeration step), but a tidy, documented storage footprint is itself a hardening win.</p>
+<hr />
+<h3 id="reading-electronchromium-leveldb-indexeddb">Reading Electron/Chromium LevelDB &amp; IndexedDB<a class="headerlink" href="#reading-electronchromium-leveldb-indexeddb" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> Electron apps routinely stash auth state in <code>localStorage</code>/<code>IndexedDB</code>, which on disk is a Chromium LevelDB. It reads as binary garbage to <code>strings</code> but trivially with the right parser, and it's frequently plaintext.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Purpose-built forensic readers for Chromium LevelDB / IndexedDB</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>python<span class="w"> </span>-m<span class="w"> </span>ccl_chromium_reader<span class="w"> </span><span class="s2">"…/Local Storage/leveldb"</span><span class="w">       </span><span class="c1"># ccl_chromium_reader</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>python<span class="w"> </span>ccl_leveldb.py<span class="w"> </span><span class="s2">"…/Local Storage/leveldb"</span><span class="w"> </span>&gt;<span class="w"> </span>ldb_dump.txt<span class="w"> </span><span class="c1"># ccl_leveldb</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># Quick-and-dirty triage</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>strings<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span><span class="w"> </span><span class="s2">"…/Local Storage/leveldb"</span>/*.ldb<span class="w"> </span><span class="p">|</span><span class="w"> </span>rg<span class="w"> </span>-i<span class="w"> </span><span class="s1">'token|auth|session|bearer|refresh'</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// If you can run in-app context (DevTools console on a debug build, or ELECTRON dev):</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">Object</span><span class="p">.</span><span class="nx">entries</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">)</span><span class="w">   </span><span class="c1">// dump the whole store</span>
+</code></pre></div>
+For <code>IndexedDB</code>, the same LevelDB tooling applies; values are often JSON with tokens inline.</p>
+<p><strong>Framework notes:</strong> Chromium may wrap Local Storage/cookie <em>values</em> with OS crypto (DPAPI-backed <code>os_crypt</code> on Windows, Keychain on macOS) in browser builds, but many Electron apps disable or never wire up that layer, leaving values plaintext. Verify per-value rather than assuming.</p>
+<p><strong>Impact:</strong> Direct session/refresh token theft from a local file; on shared machines, cross-user theft if ACLs are loose.</p>
+<p><strong>Remediation:</strong> Don't put long-lived secrets in renderer-accessible storage; if you must, encrypt with <code>safeStorage</code> (Electron) which is keystore-backed, and confirm it's actually enabled on the target OS.</p>
+<hr />
+<h3 id="sqlite-flat-file-stores-plaintext-vs-encrypted">SQLite &amp; flat-file stores (plaintext vs. encrypted)<a class="headerlink" href="#sqlite-flat-file-stores-plaintext-vs-encrypted" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> SQLite is the default local DB for countless thick clients. The failure mode is a token/PII table sitting in the clear, or "encryption" that's really a hardcoded key you already pulled from the binary.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sqlite3<span class="w"> </span>app.db<span class="w"> </span><span class="s1">'.tables'</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>sqlite3<span class="w"> </span>app.db<span class="w"> </span><span class="s1">'.schema'</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sqlite3<span class="w"> </span>app.db<span class="w"> </span><span class="s2">"SELECT * FROM tokens;"</span><span class="w">          </span><span class="c1"># or sessions/users/accounts</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>strings<span class="w"> </span>-n<span class="w"> </span><span class="m">6</span><span class="w"> </span>app.db<span class="w"> </span><span class="p">|</span><span class="w"> </span>rg<span class="w"> </span>-i<span class="w"> </span><span class="s1">'token|secret|passw'</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># Is it plaintext SQLite or an encrypted DB (SQLCipher/other)?</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>xxd<span class="w"> </span>-l<span class="w"> </span><span class="m">16</span><span class="w"> </span>app.db<span class="w">      </span><span class="c1"># plaintext SQLite starts with "SQLite format 3\0"</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>file<span class="w"> </span>app.db
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1"># If SQLCipher-encrypted and you recovered the key from the binary:</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>sqlcipher<span class="w"> </span>app.db<span class="w"> </span><span class="s2">"PRAGMA key='&lt;recovered-key&gt;'; SELECT * FROM tokens;"</span>
+</code></pre></div>
+For INI/JSON/plist/XML: read directly and check whether "encrypted" values decrypt with a key found earlier or with OS DPAPI (next section).</p>
+<p><strong>Framework notes:</strong> A missing <code>SQLite format 3</code> header means an encrypted or non-SQLite DB, commonly SQLCipher. SQLCipher is only as strong as its key management; if the key is a static constant in the app, the DB is effectively plaintext.</p>
+<p><strong>Impact:</strong> Bulk read of tokens, credentials, and PII; if the "encryption" key is shipped, applies to every user.</p>
+<p><strong>Remediation:</strong> Encrypt with a key sealed by the OS keystore and derived per-user; never ship the DB key; scope files to the user (below).</p>
+<hr />
+<h3 id="os-secure-storage-used-correctly-vs-not">OS secure storage: used correctly vs. not<a class="headerlink" href="#os-secure-storage-used-correctly-vs-not" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> DPAPI (Windows), Keychain (macOS), and Secret Service/libsecret (Linux) exist precisely so apps don't roll their own crypto. The common findings are (a) not using them at all, (b) using DPAPI at <em>machine</em> scope so any local user can decrypt, or (c) storing the keystore item but <em>also</em> caching the plaintext elsewhere.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c"># Windows DPAPI: which scope was used? CurrentUser blobs need the user's key; LocalMachine</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c"># blobs decrypt for ANY user on the box. Test decryptability from a second local account.</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c"># SharpDPAPI enumerates masterkeys, credentials, vaults, and app blobs:</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">SharpDPAPI</span><span class="p">.</span><span class="n">exe</span> <span class="n">blob</span> <span class="p">/</span><span class="n">target</span><span class="p">:</span><span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">blob</span><span class="p">.</span><span class="n">bin</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">SharpDPAPI</span><span class="p">.</span><span class="n">exe</span> <span class="n">credentials</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c"># Impacket equivalent for offline masterkey+blob decryption:</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">dpapi</span><span class="p">.</span><span class="n">py</span> <span class="n">masterkey</span> <span class="o">-file</span> <span class="p">&lt;</span><span class="n">masterkey</span><span class="p">&gt;</span> <span class="n">-password</span> <span class="p">&lt;</span><span class="n">pw</span><span class="p">&gt;</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="n">dpapi</span><span class="p">.</span><span class="n">py</span> <span class="n">unprotect</span> <span class="o">-file</span> <span class="n">blob</span><span class="p">.</span><span class="n">bin</span> <span class="n">-key</span> <span class="p">&lt;</span><span class="n">decrypted-masterkey</span><span class="p">&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># macOS Keychain: list and (with authorization) read items</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>security<span class="w"> </span>dump-keychain<span class="w"> </span>~/Library/Keychains/login.keychain-db
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>security<span class="w"> </span>find-generic-password<span class="w"> </span>-s<span class="w"> </span><span class="s2">"&lt;service&gt;"</span><span class="w"> </span>-g<span class="w">          </span><span class="c1"># prints the secret with a prompt</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>security<span class="w"> </span>find-internet-password<span class="w"> </span>-s<span class="w"> </span><span class="s2">"&lt;host&gt;"</span><span class="w"> </span>-g
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># Linux Secret Service / libsecret</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>secret-tool<span class="w"> </span>search<span class="w"> </span>--all<span class="w"> </span>service<span class="w"> </span>&lt;app&gt;<span class="w">                    </span><span class="c1"># query stored items</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>busctl<span class="w"> </span>--user<span class="w"> </span>tree<span class="w"> </span>org.freedesktop.secrets<span class="w">                </span><span class="c1"># inspect the Secret Service backend</span>
+</code></pre></div>
+Key checks: is the DPAPI blob <code>CurrentUser</code> or <code>LocalMachine</code> scope? Is <code>optionalEntropy</code> used? Does the Keychain item have a sensible ACL, or is it accessible to any app? On Linux, is libsecret actually backed by an encrypted keyring, or a plaintext fallback when no keyring daemon runs?</p>
+<p><strong>Framework notes:</strong> Electron <code>safeStorage</code>, .NET <code>ProtectedData</code>, and <code>CredentialManager</code>/<code>Windows.Security.Credentials.PasswordVault</code> are the sanctioned front-ends. <code>ProtectedData.Protect(..., DataProtectionScope.LocalMachine)</code> is the classic cross-user misuse. On Linux, GNOME Keyring/KWallet via libsecret is only protective when a keyring is unlocked; some apps silently fall back to plaintext.</p>
+<p><strong>Impact:</strong> Machine-scope DPAPI or a plaintext libsecret fallback lets <em>any</em> local user (or malware in another user's context) decrypt the "protected" secret, negating the control.</p>
+<p><strong>Remediation:</strong> Use CurrentUser/user-scoped protection with per-item entropy; store the secret <em>only</em> in the keystore, not also in a cache; on Linux, fail closed if no secure keyring is available rather than writing plaintext.</p>
+<hr />
+<h3 id="config-registry-storage-of-sensitive-values">Config &amp; registry storage of sensitive values<a class="headerlink" href="#config-registry-storage-of-sensitive-values" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> Connection strings, API keys, and "remember me" tokens routinely land in config files or the Windows registry, sometimes base64'd and mistaken for encryption.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c"># Registry: the app's hive under HKCU/HKLM, recursive value dump</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">reg</span> <span class="n">query</span> <span class="s2">"HKCU\Software\&lt;Vendor&gt;\&lt;App&gt;"</span> <span class="p">/</span><span class="n">s</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nb">Get-ChildItem</span> <span class="s2">"HKCU:\Software\&lt;Vendor&gt;"</span> <span class="n">-Recurse</span> <span class="p">|</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  <span class="k">ForEach</span><span class="n">-Object</span> <span class="p">{</span> <span class="nb">Get-ItemProperty</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PSPath</span> <span class="p">}</span> <span class="p">|</span> <span class="nb">Format-List</span> <span class="p">*</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c"># Hunt secrets across a hive</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="n">reg</span> <span class="n">query</span> <span class="n">HKCU</span> <span class="p">/</span><span class="n">f</span> <span class="s2">"password"</span> <span class="p">/</span><span class="n">t</span> <span class="n">REG_SZ</span> <span class="p">/</span><span class="n">s</span> <span class="p">/</span><span class="n">d</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Config files: read and decode candidates</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>rg<span class="w"> </span>-n<span class="w"> </span>-i<span class="w"> </span><span class="s1">'password|apikey|secret|token|connectionstring'</span><span class="w"> </span>&lt;config-dir&gt;/
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>grep<span class="w"> </span>-rhoE<span class="w"> </span><span class="s1">'[A-Za-z0-9+/]{20,}={0,2}'</span><span class="w"> </span>&lt;config-dir&gt;/<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>b<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$b</span><span class="s2">"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="p">;</span><span class="w"> </span>echo<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</code></pre></div>
+Treat base64/hex/ROT as encoding, not encryption. Verify whether "encrypted" registry/config values are DPAPI blobs (decode and test decryption) versus a reversible scheme.</p>
+<p><strong>Framework notes:</strong> .NET <code>app.config</code>/<code>appsettings.json</code>, Qt <code>QSettings</code>, Java <code>Preferences</code>, and Electron <code>electron-store</code> all serialize to plaintext by default. <code>electron-store</code> supports an <code>encryptionKey</code>, but that key ships in the app, so it's obfuscation, not confidentiality.</p>
+<p><strong>Impact:</strong> Static recovery of credentials/keys from files or registry, often world- or user-readable.</p>
+<p><strong>Remediation:</strong> Keep secrets out of config/registry; reference a keystore item by handle instead; if a value must persist, seal it with user-scoped OS protection.</p>
+<hr />
+<h3 id="secrets-in-logs-crash-dumps-telemetry">Secrets in logs, crash dumps &amp; telemetry<a class="headerlink" href="#secrets-in-logs-crash-dumps-telemetry" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> Even when storage is clean, secrets leak through the side channels: verbose logs, unhandled-exception traces, memory dumps, and telemetry/analytics payloads that serialize whole request objects including <code>Authorization</code> headers.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Log/crash directories</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>rg<span class="w"> </span>-n<span class="w"> </span>-i<span class="w"> </span><span class="s1">'authorization: bearer|password=|token=|set-cookie|api[_-]?key'</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">   </span>~/.config/&lt;App&gt;/logs/<span class="w"> </span>%LOCALAPPDATA%/&lt;App&gt;/logs/<span class="w"> </span>~/Library/Logs/&lt;App&gt;/
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c"># Windows crash dumps (WER) and on-demand process dumps</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nb">Get-ChildItem</span> <span class="s2">"$env:LOCALAPPDATA\CrashDumps"</span><span class="p">,</span><span class="s2">"C:\ProgramData\&lt;App&gt;\dumps"</span> <span class="n">-EA</span> <span class="n">SilentlyContinue</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="n">procdump</span> <span class="n">-ma</span> <span class="p">&lt;</span><span class="n">pid</span><span class="p">&gt;</span> <span class="n">app</span><span class="p">.</span><span class="n">dmp</span>        <span class="c"># Sysinternals; then string-scan the dump</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="n">strings</span> <span class="n">-n</span> <span class="n">8</span> <span class="n">app</span><span class="p">.</span><span class="n">dmp</span> <span class="p">|</span> <span class="n">rg</span> <span class="n">-i</span> <span class="s1">'bearer |password|refresh_token'</span>
+</code></pre></div>
+For telemetry, watch what the app <em>sends</em>: proxy it (mitmproxy/Burp) and inspect analytics/crash-report POST bodies for tokens, emails, file paths, or full request captures.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>mitmproxy<span class="w"> </span>--set<span class="w"> </span><span class="nv">listen_port</span><span class="o">=</span><span class="m">8080</span><span class="w">   </span><span class="c1"># then filter analytics/crash-report hosts for secret material</span>
+</code></pre></div></p>
+<p><strong>Framework notes:</strong> Electron <code>crashReporter</code> and native breakpad/crashpad minidumps can carry heap fragments with tokens. .NET/Java stack traces often log the failing SQL or HTTP call with credentials inline. Third-party crash SDKs may upload dumps off-box, turning a local leak into a vendor-side exposure.</p>
+<p><strong>Impact:</strong> Token/credential disclosure to anyone who can read the logs or dumps, or to a third-party telemetry backend; a local leak can become a supply-chain/data-processor exposure.</p>
+<p><strong>Remediation:</strong> Redact secrets at the logging boundary; scrub minidumps and disable full-memory dumps for sensitive processes; strip auth headers and PII from telemetry; document what crash/analytics SDKs transmit.</p>
+<hr />
+<h3 id="file-registry-acls-on-stored-data">File &amp; registry ACLs on stored data<a class="headerlink" href="#file-registry-acls-on-stored-data" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why:</strong> A secret that's "only" in the user profile is fine until the ACL is wrong: world-readable files on a multi-user host, a store under <code>ProgramData</code>/<code>/opt</code> writable by all, or a registry key with <code>Everyone:Read</code>. This is what turns a local finding into cross-user compromise.</p>
+<p><strong>How to test:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c"># Windows: effective permissions on files and keys</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">icacls</span> <span class="s2">"C:\ProgramData\&lt;App&gt;\tokens.db"</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c"># AccessChk (Sysinternals) shows who really has R/W, including registry</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="n">accesschk</span><span class="p">.</span><span class="n">exe</span> <span class="n">-q</span> <span class="n">-u</span> <span class="s2">"Users"</span> <span class="s2">"C:\ProgramData\&lt;App&gt;"</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="n">accesschk</span><span class="p">.</span><span class="n">exe</span> <span class="n">-q</span> <span class="n">-k</span> <span class="n">-u</span> <span class="s2">"Users"</span> <span class="s2">"HKLM\Software\&lt;Vendor&gt;\&lt;App&gt;"</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="nb">Get-Acl</span> <span class="s2">"C:\ProgramData\&lt;App&gt;\tokens.db"</span> <span class="p">|</span> <span class="nb">Format-List</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># macOS/Linux: look for group/other read or write, and inherited ACLs</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>ls<span class="w"> </span>-la<span class="w"> </span>~/.config/&lt;App&gt;/<span class="w"> </span><span class="p">;</span><span class="w"> </span>stat<span class="w"> </span>-c<span class="w"> </span><span class="s1">'%A %U:%G %n'</span><span class="w"> </span>~/.config/&lt;App&gt;/*
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>getfacl<span class="w"> </span>~/.config/&lt;App&gt;/tokens.db<span class="w">          </span><span class="c1"># extended ACLs</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>find<span class="w"> </span>/opt/&lt;App&gt;<span class="w"> </span>/var/lib/&lt;App&gt;<span class="w"> </span>-perm<span class="w"> </span>-o+r<span class="w"> </span>-o<span class="w"> </span>-perm<span class="w"> </span>-o+w<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w">   </span><span class="c1"># world r/w</span>
+</code></pre></div>
+Red flags: secrets under a shared root (<code>C:\ProgramData</code>, <code>/tmp</code>, <code>/opt</code>, <code>/var</code>) with <code>Users</code>/<code>Everyone</code>/<code>other</code> read; any secret file group- or world-<em>writable</em> (integrity + theft); registry keys granting <code>NT AUTHORITY\Authenticated Users</code> read on secret values.</p>
+<p><strong>Framework notes:</strong> Installers frequently create <code>ProgramData</code>/<code>/opt</code> trees with inherited-permissive ACLs, then drop per-user secrets there. DPAPI CurrentUser scope still protects contents, but plaintext stores in those locations are exposed to every local account.</p>
+<p><strong>Impact:</strong> Cross-user secret theft and, when writable, tampering with the store (e.g., swapping in an attacker token). This is usually the highest-severity variant of an at-rest finding.</p>
+<p><strong>Remediation:</strong> Store per-user secrets under the user profile with owner-only ACLs (<code>icacls /inheritance:r</code> then grant only the user; <code>chmod 600</code>); never place secrets under world-accessible shared roots; verify installer-set permissions in the test.</p>
+<hr />
+<h2 id="quick-triage-checklist">Quick triage checklist<a class="headerlink" href="#quick-triage-checklist" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[ ] Unpack/decompile the app; <code>rg</code> + <code>trufflehog</code>/<code>gitleaks</code> over the source tree and installer</li>
+<li>[ ] <code>strings</code> (ASCII + UTF-16LE) the binaries; entropy/JWT/base64 sweep</li>
+<li>[ ] Diff the profile before/after login; classify every store (LevelDB/SQLite/config/registry)</li>
+<li>[ ] Read LevelDB/IndexedDB and SQLite directly; confirm plaintext vs. real encryption</li>
+<li>[ ] For each keystore use: check DPAPI scope, Keychain ACL, libsecret plaintext fallback</li>
+<li>[ ] Grep logs and crash dumps; proxy telemetry for secret material</li>
+<li>[ ] Check file/registry ACLs on every store for cross-user read/write</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>

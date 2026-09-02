@@ -1,0 +1,954 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/binary-and-tampering/">
+      
+      
+        <link rel="prev" href="../update-mechanism/">
+      
+      
+        <link rel="next" href="../network-and-api/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Binary Protections & Tampering - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Binary Protections & Tampering">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/binary-and-tampering/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Binary Protections & Tampering">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#binary-protections-tampering" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Binary Protections & Tampering
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recon-and-unpacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secrets-at-rest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../embedded-web-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-signing-and-runtime-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Signing and Runtime Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dll-search-order-hijacking-and-sideloading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLL Search-Order Hijacking and Sideloading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anti-tamper-and-integrity-check-bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anti-Tamper and Integrity-Check Bypass
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writable-install-and-execution-paths-local-privilege-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writable Install and Execution Paths (Local Privilege Escalation)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-hardening-flags-aslr-dep-cfg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Binary Hardening Flags (ASLR / DEP / CFG)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-and-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-licensing-authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#code-signing-and-runtime-enforcement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Signing and Runtime Enforcement
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dll-search-order-hijacking-and-sideloading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLL Search-Order Hijacking and Sideloading
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#anti-tamper-and-integrity-check-bypass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anti-Tamper and Integrity-Check Bypass
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writable-install-and-execution-paths-local-privilege-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writable Install and Execution Paths (Local Privilege Escalation)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#binary-hardening-flags-aslr-dep-cfg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Binary Hardening Flags (ASLR / DEP / CFG)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="binary-protections-tampering">Binary Protections &amp; Tampering<a class="headerlink" href="#binary-protections-tampering" title="Permanent link">&para;</a></h1>
+<p>A thick client runs on hardware the attacker owns. Every integrity assumption the vendor makes, that the binary on disk is the one they shipped, that a DLL loaded by name is theirs, that a signature means anything at runtime, is a claim to be tested, not trusted. This chapter is about the binary itself: whether it is signed and whether that signature is enforced, whether it can be swapped or side-loaded, and whether its install footprint hands you the machine.</p>
+<p>Techniques covered:</p>
+<ul>
+<li>Code signing and runtime enforcement</li>
+<li>DLL search-order hijacking and sideloading</li>
+<li>Anti-tamper and integrity-check bypass</li>
+<li>Writable install and execution paths (local privilege escalation)</li>
+<li>Binary hardening flags (ASLR / DEP / CFG)</li>
+</ul>
+<hr />
+<h3 id="code-signing-and-runtime-enforcement">Code Signing and Runtime Enforcement<a class="headerlink" href="#code-signing-and-runtime-enforcement" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> A signature only matters if something checks it. Many apps are signed at build time but never verify their own or their components' signatures at runtime, so a modified binary or an unsigned dropped module runs unnoticed. Test both halves: is it signed, and is the signature actually enforced.</li>
+<li><strong>How to test:</strong></li>
+<li>Verify the shipped signature and read the chain:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c"># Windows Authenticode</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">Get-AuthenticodeSignature</span> <span class="s2">"C:\Path\To\App.exe"</span> <span class="p">|</span> <span class="nb">Format-List</span> <span class="p">*</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">signtool</span> <span class="n">verify</span> <span class="p">/</span><span class="n">pa</span> <span class="p">/</span><span class="n">v</span> <span class="s2">"C:\Path\To\App.exe"</span>
+</code></pre></div>
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># macOS</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>codesign<span class="w"> </span>-dv<span class="w"> </span>--verbose<span class="o">=</span><span class="m">4</span><span class="w"> </span>/Applications/App.app
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>spctl<span class="w"> </span>-a<span class="w"> </span>-vvv<span class="w"> </span>/Applications/App.app<span class="w">       </span><span class="c1"># Gatekeeper assessment</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>codesign<span class="w"> </span>--verify<span class="w"> </span>--deep<span class="w"> </span>--strict<span class="w"> </span>/Applications/App.app
+</code></pre></div></li>
+<li>Test enforcement: modify a byte in a non-critical section (or replace a bundled resource/DLL with an unsigned one) on a copy, run it, and see whether the app refuses to start or carries on. If it runs, runtime signature enforcement is absent.</li>
+<li>Check whether child processes, plugins, and update payloads are signature-checked, not just the main EXE.</li>
+<li><strong>Framework notes:</strong></li>
+<li><strong>Electron:</strong> the EXE is signed, but the <code>app.asar</code> payload is separate; unless ASAR integrity fuses are enabled, swapping asar contents changes behavior with no signature complaint.</li>
+<li><strong>.NET:</strong> Authenticode on the host does not cover every managed DLL; strong-naming is not a security boundary (it can be stripped/re-signed). Verify each assembly.</li>
+<li><strong>macOS:</strong> notarization plus a hardened runtime is the strong posture; <code>--deep --strict</code> reveals unsigned nested code.</li>
+<li><strong>Impact:</strong> A tampered client runs as the trusted app, enabling backdoors, control bypass, and supply-chain style persistence on the endpoint.</li>
+<li><strong>Remediation:</strong> Enforce signature validation at runtime for the app and every component it loads or downloads; enable Electron ASAR integrity and fuses; adopt hardened runtime + notarization on macOS. Treat strong-naming as identity, not integrity.</li>
+</ul>
+<hr />
+<h3 id="dll-search-order-hijacking-and-sideloading">DLL Search-Order Hijacking and Sideloading<a class="headerlink" href="#dll-search-order-hijacking-and-sideloading" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> When a program loads a library by name rather than a fully qualified, validated path, Windows walks a search order that often includes the application directory and other writable locations. If you can place a malicious DLL earlier in that order, or supply a DLL the app expects but does not ship (a phantom DLL), your code runs inside the trusted process, frequently with its privileges.</li>
+<li><strong>How to test:</strong></li>
+<li>Watch what the app tries to load and where it fails, with Process Monitor:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a># ProcMon filters
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Process Name is App.exe
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Operation is CreateFile
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Result is NAME NOT FOUND        # phantom DLLs the app wanted but didn't find
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Path ends with .dll
+</code></pre></div></li>
+<li>Identify writable directories in the search path:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">icacls</span> <span class="s2">"C:\Program Files\App"</span>           <span class="c"># look for (M)/(W)/(F) for Users/Authenticated Users</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">Get-Acl</span> <span class="s2">"C:\Program Files\App"</span> <span class="p">|</span> <span class="nb">Format-List</span>
+</code></pre></div></li>
+<li>Confirm imports and delay-loads statically:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>dumpbin<span class="w"> </span>/dependents<span class="w"> </span>App.exe<span class="w">        </span><span class="c1"># or: objdump -p, or the Dependencies GUI tool</span>
+</code></pre></div></li>
+<li>Drop a benign proof DLL (one that writes a marker file or pops calc in a lab) matching a missing/hijackable name into a writable search location and confirm it loads. Keep the proof benign and marked.</li>
+<li><strong>Framework notes:</strong></li>
+<li><strong>Native / .NET:</strong> classic KnownDLLs protections do not cover application-specific DLLs; app-dir planting is the common vector.</li>
+<li><strong>Electron:</strong> native <code>.node</code> addons and bundled DLLs in <code>app.asar.unpacked</code> and the app dir are candidates; the Electron/Chromium runtime loads several platform DLLs.</li>
+<li><strong>Installers/updaters</strong> frequently run from <code>%TEMP%</code> or <code>Downloads</code> and side-load from there, a high-privilege variant if the installer runs elevated.</li>
+<li><strong>Impact:</strong> Arbitrary code execution in the app's process and privilege context; if the app or its installer/service runs elevated, this is local privilege escalation and a persistence mechanism.</li>
+<li><strong>Remediation:</strong> Load libraries by full validated path, call <code>SetDefaultDllDirectories</code>/<code>SetDllDirectory</code> to constrain the search path, ship all dependencies, install to non-user-writable directories with correct ACLs, and verify the signature of every DLL before loading.</li>
+</ul>
+<hr />
+<h3 id="anti-tamper-and-integrity-check-bypass">Anti-Tamper and Integrity-Check Bypass<a class="headerlink" href="#anti-tamper-and-integrity-check-bypass" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> Some clients self-check (hashing their own code, detecting patches or debuggers) to protect license logic or client-side decisions. Because the check runs on the attacker's machine, it can be found and neutralized. Testing it establishes whether integrity is a real control or a speed bump.</li>
+<li><strong>How to test:</strong></li>
+<li>Locate the check by reversing (look for self-reads of the module, hashing routines, calls that abort on mismatch) or dynamically by watching where execution diverges after a patch.</li>
+<li>Patch statically (edit the binary so the check's branch always passes) or dynamically (hook the check function to return success, see the Runtime &amp; Memory chapter for Frida usage).</li>
+<li>Re-run the prior tampering tests after the bypass to confirm the integrity gate was the only thing standing between you and a modified client.</li>
+<li><strong>Framework notes:</strong></li>
+<li><strong>.NET:</strong> dnSpy edits and re-saves assemblies directly; integrity checks that hash a managed DLL are defeated by patching the checker itself.</li>
+<li><strong>Native:</strong> packers/protectors (commercial anti-tamper) raise cost and may combine anti-debug; unpack (see recon) before analysis.</li>
+<li><strong>Electron:</strong> ASAR integrity is the built-in mechanism; without it there is usually nothing to bypass.</li>
+<li><strong>Impact:</strong> Removal of the last client-side barrier protecting license checks, feature gates, or tamper detection; enables a fully modified client.</li>
+<li><strong>Remediation:</strong> Do not rely on client-side integrity to protect security decisions; enforce them server-side. Use anti-tamper only to raise attacker cost and to detect (report server-side), never as the sole control.</li>
+</ul>
+<hr />
+<h3 id="writable-install-and-execution-paths-local-privilege-escalation">Writable Install and Execution Paths (Local Privilege Escalation)<a class="headerlink" href="#writable-install-and-execution-paths-local-privilege-escalation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> If an app, its service, or its updater executes binaries from a location a low-privileged user can write to, and runs with higher privilege, a standard user can replace that binary and escalate. Weak install-directory ACLs, unquoted service paths, and writable <code>%ProgramData%</code> staging are the usual culprits.</li>
+<li><strong>How to test:</strong></li>
+<li>Audit ACLs on the install dir, any service binaries, and update-staging dirs:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">icacls</span> <span class="s2">"C:\Program Files\App"</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">icacls</span> <span class="s2">"C:\ProgramData\App"</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">Get-CimInstance</span> <span class="n">Win32_Service</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">PathName</span> <span class="o">-like</span> <span class="s2">"*App*"</span><span class="p">}</span> <span class="p">|</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span><span class="n">StartName</span><span class="p">,</span><span class="n">PathName</span>        <span class="c"># StartName = LocalSystem is the prize</span>
+</code></pre></div></li>
+<li>Check for unquoted service paths with spaces (<code>C:\Program Files\App\svc.exe</code> unquoted lets <code>C:\Program.exe</code> win) and for services whose binary or folder is user-writable.</li>
+<li>Use PowerUp / winPEAS to enumerate these automatically:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">powershell</span> <span class="n">-ep</span> <span class="n">bypass</span> <span class="n">-c</span> <span class="s2">"Import-Module .\PowerUp.ps1; Invoke-AllChecks"</span>
+</code></pre></div></li>
+<li>Where a writable path feeding an elevated exec is found, drop a benign proof payload (marker file as the elevated user) to demonstrate, never a real backdoor.</li>
+<li><strong>Framework notes:</strong> Applies to any framework; the risk lives in the installer/service/updater, not the UI runtime. MSI custom actions and updater helper services running as SYSTEM are common high-value targets (see the recon installer section and the Update Mechanism chapter).</li>
+<li><strong>Impact:</strong> Local privilege escalation from standard user to SYSTEM/admin; persistent, reliable, and often trivial once a writable elevated path is found.</li>
+<li><strong>Remediation:</strong> Install to protected directories, set least-privilege ACLs (no write for standard users on anything executed with elevation), quote all service paths, and have elevated helpers validate the signature of anything they execute.</li>
+</ul>
+<hr />
+<h3 id="binary-hardening-flags-aslr-dep-cfg">Binary Hardening Flags (ASLR / DEP / CFG)<a class="headerlink" href="#binary-hardening-flags-aslr-dep-cfg" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What &amp; why:</strong> Exploit-mitigation flags (ASLR, DEP/NX, Control Flow Guard, stack canaries, safe SEH, CET) do not stop logic bugs but raise the cost of memory-corruption exploitation. Their absence in a native thick client is a real finding and a force-multiplier for any memory bug you find.</li>
+<li><strong>How to test:</strong></li>
+<li>Check Windows PE mitigations:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>winchecksec App.exe
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a># or PowerShell PESecurity: Get-PESecurity -file App.exe
+</code></pre></div>
+    Look for <code>Dynamic Base</code> (ASLR), <code>NX</code> (DEP), <code>Control Flow Guard</code>, <code>SafeSEH</code>, <code>GS</code> (stack cookies), <code>High Entropy VA</code>.</li>
+<li>Check macOS/Linux binaries:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>checksec<span class="w"> </span>--file<span class="o">=</span>./app<span class="w">          </span><span class="c1"># RELRO, canary, NX, PIE, fortify</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>otool<span class="w"> </span>-hv<span class="w"> </span>app<span class="w">                  </span><span class="c1"># macOS: PIE flag in the Mach-O header</span>
+</code></pre></div></li>
+<li>Note DLLs too; one non-ASLR module can undermine process-wide ASLR.</li>
+<li><strong>Framework notes:</strong> Most relevant to native/C++/Qt/Delphi and native <code>.node</code> addons. Managed (.NET/Java) code is less exposed to classic memory corruption but the native host and any unmanaged dependencies still matter.</li>
+<li><strong>Impact:</strong> Missing mitigations turn a memory-safety bug from hard-to-exploit into practical code execution; on their own they are a hardening finding.</li>
+<li><strong>Remediation:</strong> Compile with ASLR/high-entropy, DEP/NX, CFG (or CET where available), stack cookies, and RELRO/PIE on Unix; ensure every shipped module is built with the same flags.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>

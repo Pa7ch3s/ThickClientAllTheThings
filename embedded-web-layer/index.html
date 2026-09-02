@@ -1,0 +1,982 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/embedded-web-layer/">
+      
+      
+        <link rel="prev" href="../ipc/">
+      
+      
+        <link rel="next" href="../update-mechanism/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Embedded Web Layer - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Embedded Web Layer">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/embedded-web-layer/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Embedded Web Layer">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-embedded-web-layer" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Embedded Web Layer
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recon-and-unpacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secrets-at-rest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#auditing-electron-webpreferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing Electron webPreferences
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preload-contextbridge-over-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preload / contextBridge over-exposure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#navigation-and-window-open-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation and window-open handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#content-security-policy-in-a-desktop-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content-Security-Policy in a desktop context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-xss-to-rce-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The XSS-to-RCE chain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cef-and-webview2-host-object-equivalents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CEF and WebView2 host-object equivalents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binary-and-tampering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-and-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../auth-licensing-authz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#auditing-electron-webpreferences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auditing Electron webPreferences
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preload-contextbridge-over-exposure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preload / contextBridge over-exposure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#navigation-and-window-open-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation and window-open handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#content-security-policy-in-a-desktop-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content-Security-Policy in a desktop context
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-xss-to-rce-chain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The XSS-to-RCE chain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cef-and-webview2-host-object-equivalents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CEF and WebView2 host-object equivalents
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="the-embedded-web-layer">The Embedded Web Layer<a class="headerlink" href="#the-embedded-web-layer" title="Permanent link">&para;</a></h1>
+<p>Many "desktop" applications are a browser wearing a native coat: Electron, Chromium Embedded Framework (CEF), or Microsoft Edge WebView2 rendering HTML/JS inside a process that also holds OS-level privilege. The security of these apps lives or dies at the seam where web content meets native code, so the tester's job is to find every place that seam is thinner than it should be. This chapter is methodology for authorized assessments: read the configuration, map the trust boundary, then prove what crosses it.</p>
+<p>Techniques covered:</p>
+<ul>
+<li>Auditing Electron <code>webPreferences</code></li>
+<li>Preload / <code>contextBridge</code> over-exposure</li>
+<li>Navigation and window-open handling</li>
+<li>Content-Security-Policy in a desktop context</li>
+<li>The XSS-to-RCE chain</li>
+<li>CEF and WebView2 host-object equivalents</li>
+</ul>
+<hr />
+<h3 id="auditing-electron-webpreferences">Auditing Electron webPreferences<a class="headerlink" href="#auditing-electron-webpreferences" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+<code>webPreferences</code> on a <code>BrowserWindow</code>/<code>BrowserView</code> (and <code>&lt;webview&gt;</code> tag attributes) decides how much of Node.js and the OS the renderer can touch. Insecure combinations turn an ordinary DOM injection into direct host access. The dangerous flags:</p>
+<ul>
+<li><code>nodeIntegration: true</code> — renderer gets <code>require</code>, <code>process</code>, and Node built-ins in page context.</li>
+<li><code>contextIsolation: false</code> — preload and page share one JS context, so page script can reach preload internals and prototypes.</li>
+<li><code>sandbox: false</code> — renderer is not confined to the Chromium sandbox; a compromised renderer has far more reach.</li>
+<li><code>webSecurity: false</code> — disables same-origin policy and related protections in that renderer.</li>
+<li><code>allowRunningInsecureContent: true</code> — permits mixed HTTP content on an HTTPS page.</li>
+<li><code>nodeIntegrationInSubFrames</code>, <code>nodeIntegrationInWorker</code>, <code>enableRemoteModule</code> (legacy <code>@electron/remote</code>) — additional exposure surfaces.</li>
+</ul>
+<p><strong>How to test</strong>
+1. Get the app source. Unpack <code>resources/app.asar</code> with <code>npx @electron/asar extract app.asar out/</code> (or <code>asar extract</code>). If it is a plain <code>app/</code> folder, read it directly.
+2. Grep for every window construction and its options: <code>webPreferences</code>, <code>new BrowserWindow</code>, <code>new BrowserView</code>, <code>&lt;webview</code>, <code>nodeIntegration</code>, <code>contextIsolation</code>, <code>sandbox</code>, <code>webSecurity</code>.
+3. Record the resolved value per window, remembering the modern secure defaults (<code>contextIsolation: true</code>, <code>nodeIntegration: false</code>, <code>sandbox: true</code> when the app opts into sandboxing). Flag any window that overrides them, and note the Electron version from <code>package.json</code> — old majors shipped weaker defaults.
+4. Confirm at runtime. Launch with an inspector where allowed (e.g. <code>--inspect</code> / <code>--remote-debugging-port</code>) or via the app's own devtools if exposed, and in a controllable renderer evaluate <code>typeof require</code>, <code>typeof process</code>, <code>process?.type</code>. A defined <code>require</code> in page context is a finding on its own.</p>
+<p><strong>Framework notes</strong>
+This section is Electron-specific. CEF and WebView2 have no Node bridge; their equivalent risk is host-object exposure (below).</p>
+<p><strong>Impact</strong>
+<code>nodeIntegration: true</code> with any script injection is effectively host code execution. <code>contextIsolation: false</code> breaks the guarantee that a wide bridge relies on. <code>webSecurity: false</code> re-opens cross-origin data theft and SSRF-like fetches from the app origin.</p>
+<p><strong>Remediation</strong>
+Keep the secure defaults: <code>contextIsolation: true</code>, <code>nodeIntegration: false</code>, <code>sandbox: true</code>. Never disable <code>webSecurity</code>. Do not re-enable <code>@electron/remote</code>. Set these per window and treat any exception as a reviewed, documented risk.</p>
+<hr />
+<h3 id="preload-contextbridge-over-exposure">Preload / contextBridge over-exposure<a class="headerlink" href="#preload-contextbridge-over-exposure" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+With isolation on, the preload script is the sanctioned bridge between page and native. <code>contextBridge.exposeInMainWorld</code> publishes an API object to the page. The vulnerability is a <em>wide</em> bridge: exposing generic capability instead of narrow, named operations effectively re-opens the boundary that isolation just closed.</p>
+<p>Red flags:
+- Exposing <code>ipcRenderer</code> directly, or an <code>invoke</code>/<code>send</code> that forwards an arbitrary channel plus arbitrary args to main.
+- Exposing methods that take a caller-controlled path, command, URL, or module name (<code>readFile</code>, <code>exec</code>, <code>openExternal</code>, <code>loadModule</code>).
+- Passing functions or live objects across the bridge in a way the page can weaponize as callbacks.</p>
+<p><strong>How to test</strong>
+1. Read every preload file (<code>webPreferences.preload</code> paths). Enumerate each <code>exposeInMainWorld</code> key and every method it hangs off.
+2. For each method, trace the corresponding <code>ipcMain.handle</code> / <code>ipcMain.on</code> in the main process. Ask: what does the page control, and does main validate it? A handler that does <code>fs</code>, <code>child_process</code>, shell, or dynamic <code>require</code> on page-supplied input is the prize.
+3. Check whether the exposed surface is generic (<code>api.invoke(channel, ...args)</code>) versus intent-named (<code>api.getUserProfile()</code>). Generic forwarding is the classic over-exposure.
+4. From a renderer you can drive, enumerate <code>Object.keys(window.&lt;exposedName&gt;)</code> and probe each method against a benign, in-scope target to map real reach.</p>
+<p><strong>Framework notes</strong>
+CEF: the analogue is registered JS bindings / <code>CefV8Handler</code> native functions and the async message-router — audit the router handler for the same "does it act on untrusted args" question. WebView2: <code>AddHostObjectToScript</code> and <code>postMessage</code> handlers (below).</p>
+<p><strong>Impact</strong>
+A single over-broad bridge method can hand the page arbitrary IPC, file, or process access even with <code>contextIsolation</code> and <code>sandbox</code> fully on. This is the most common real-world thick-client web finding.</p>
+<p><strong>Remediation</strong>
+Expose the minimum: specific, named, intent-revealing functions. Validate and allowlist channels and arguments on the main side, never trust the renderer. Do not expose <code>ipcRenderer</code> or any raw forwarder. Return plain serializable data.</p>
+<hr />
+<h3 id="navigation-and-window-open-handling">Navigation and window-open handling<a class="headerlink" href="#navigation-and-window-open-handling" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+A privileged renderer that navigates to attacker-influenced content inherits that window's privileges. If the app follows links, opens popups, or loads remote URLs into a window with weak <code>webPreferences</code>, external content runs with internal trust. The controls are the main-process <code>webContents</code> events.</p>
+<p><strong>How to test</strong>
+1. Find handlers for <code>will-navigate</code>, <code>will-redirect</code>, <code>setWindowOpenHandler</code> (current API), and the legacy <code>new-window</code> event. Confirm each exists and what it allows.
+2. Verify <code>will-navigate</code> cancels (<code>event.preventDefault()</code>) navigations whose origin is not an internal allowlist. Absence of any handler means the window will follow arbitrary links.
+3. Verify <code>setWindowOpenHandler</code> returns <code>{ action: 'deny' }</code> for untrusted URLs and routes legitimate external links to the OS browser via <code>shell.openExternal</code> (after its own URL validation, not blindly).
+4. Map what content each window loads: local <code>file://</code>/<code>app://</code> only, or remote HTTPS, or user-supplied HTML. A window that both loads remote content and carries elevated <code>webPreferences</code> is a direct finding.
+5. Check <code>webContents.on('did-attach-webview')</code> for any code that mutates child <code>webPreferences</code>.</p>
+<p><strong>Framework notes</strong>
+CEF: <code>CefRequestHandler::OnBeforeBrowse</code> and life-span/popup handling play the navigation-gating role. WebView2: <code>NavigationStarting</code>, <code>NewWindowRequested</code>, and <code>FrameNavigationStarting</code> events, plus the <code>Source</code>/host mapping that determines what "internal" means.</p>
+<p><strong>Impact</strong>
+Loading untrusted content into a privileged window collapses the whole model — it is remote content with local capability, the shortest path from a phishing link or a compromised web dependency to host access.</p>
+<p><strong>Remediation</strong>
+Deny window-open by default and allowlist. Cancel off-origin navigation. Open external links only in the system browser. Keep any window that touches remote content stripped to browser-only privileges (isolation on, node off, sandbox on).</p>
+<hr />
+<h3 id="content-security-policy-in-a-desktop-context">Content-Security-Policy in a desktop context<a class="headerlink" href="#content-security-policy-in-a-desktop-context" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+CSP is the last line that stops an injected string from becoming executing script, and it matters <em>more</em> in a privileged renderer because the blast radius is host access, not cookie theft. Desktop apps frequently ship no CSP, a meta-tag CSP that is trivially bypassed, or one loosened with <code>unsafe-inline</code>/<code>unsafe-eval</code> to accommodate a framework.</p>
+<p><strong>How to test</strong>
+1. Look for CSP set two ways: a <code>&lt;meta http-equiv="Content-Security-Policy"&gt;</code> in the HTML, and/or a header injected via <code>session.webRequest.onHeadersReceived</code>. Note that a <code>meta</code> CSP does not cover things a real header does (e.g. it cannot govern the initial document the way a header can) — prefer the header form.
+2. Inspect the directives. Flag <code>script-src</code> containing <code>unsafe-inline</code>, <code>unsafe-eval</code>, <code>*</code>, remote CDNs, or <code>data:</code>. Flag missing <code>default-src</code>/<code>object-src</code>. <code>unsafe-eval</code> is common because bundlers/<code>eval</code>-using libs need it — call it out.
+3. Confirm the policy actually applies to every window and to child frames/<code>webview</code>s, not just the main index.
+4. Where authorized, test a benign injection (e.g. an element whose handler writes a sentinel to the DOM) to observe whether inline execution is blocked in practice.</p>
+<p><strong>Framework notes</strong>
+CEF and WebView2 render Chromium too, so CSP semantics are identical; deliver it via the host app's response handling (<code>OnResourceResponse</code>/interception in CEF, <code>WebResourceResponseReceived</code>/host mapping in WebView2) or the served document headers.</p>
+<p><strong>Impact</strong>
+A strong CSP can neutralize an XSS bug before it reaches the RCE chain; a missing or <code>unsafe-*</code> CSP removes that safety net entirely.</p>
+<p><strong>Remediation</strong>
+Ship a strict header-based CSP: no <code>unsafe-inline</code>, avoid <code>unsafe-eval</code> (refactor the code that needs it), lock <code>script-src</code>/<code>object-src</code>/<code>default-src</code> to <code>'self'</code> and known local schemes, apply it to every renderer including child frames.</p>
+<hr />
+<h3 id="the-xss-to-rce-chain">The XSS-to-RCE chain<a class="headerlink" href="#the-xss-to-rce-chain" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+In a browser, XSS steals sessions; in a thick client it can reach the host. The chain is: (1) a rendering/injection sink executes attacker-controlled script, (2) that script reaches a native capability — Node globals from <code>nodeIntegration</code>, a preload bridge method, or <code>@electron/remote</code> — (3) the capability performs a host action (spawn process, write file, load native module). Your assessment demonstrates the whole path, not just step one.</p>
+<p><strong>How to test</strong>
+1. Find injection sinks: <code>innerHTML</code>/<code>outerHTML</code>, <code>document.write</code>, <code>dangerouslySetInnerHTML</code>, jQuery <code>.html()</code>, template rendering without escaping, and any place untrusted data (file contents, chat messages, filenames, URLs, update notes, deep-link params) lands in the DOM.
+2. Trace whether attacker data actually reaches a sink unescaped, and whether a framework's default escaping is being bypassed.
+3. Establish what the renderer can reach from step one: is <code>require</code>/<code>process</code> present, or is there a reachable bridge/remote method? Combine the two findings.
+4. Prove impact conservatively and in scope: a controlled marker (spawn a benign process that writes a timestamped sentinel file, or read a non-sensitive known path) is sufficient evidence. Do not deploy real payloads.
+5. Consider the delivery vector that makes it externally reachable: rendered remote content, protocol/deep-link handlers, opened documents, or a poisoned dependency.</p>
+<p><strong>Framework notes</strong>
+Electron is the sharpest because of Node reachability. CEF/WebView2 reach the host only through the app's registered bindings/host objects, so the chain's step two is "reach an exposed host object method" rather than "reach <code>require</code>".</p>
+<p><strong>Impact</strong>
+Full host code execution in the user's context — the most severe outcome for a desktop app, often wormable through shared/rendered content.</p>
+<p><strong>Remediation</strong>
+Fix both ends: eliminate the injection sink (escape/sanitize, prefer safe rendering APIs, use a vetted sanitizer for any HTML that must render), and starve the second stage (isolation on, node off, minimal bridge, strict CSP) so a residual injection has nothing privileged to call.</p>
+<hr />
+<h3 id="cef-and-webview2-host-object-equivalents">CEF and WebView2 host-object equivalents<a class="headerlink" href="#cef-and-webview2-host-object-equivalents" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why</strong>
+CEF and WebView2 lack a Node bridge, but they offer their own paths from JavaScript to native code, and the same "wide, unvalidated surface" mistakes apply. The assessment questions are identical: what is exposed, and does native trust page-supplied input.</p>
+<p><strong>How to test — WebView2</strong>
+1. Search host (C#/C++) code for <code>AddHostObjectToScript</code>: every object exposed there is callable from JS as <code>chrome.webview.hostObjects.&lt;name&gt;</code>. Audit each method for path/command/URL parameters acted on without validation.
+2. Review the <code>WebMessageReceived</code> handler (<code>postMessage</code> channel) for a generic command dispatcher over page-controlled strings.
+3. Check <code>SetVirtualHostNameToFolderMapping</code> — a virtual host that maps a folder into the WebView origin. Verify the mapped folder holds only intended assets and the access kind is appropriately restrictive, since content served there is treated as that origin. Confirm <code>AreHostObjectsAllowed</code>, and how untrusted navigations are gated (<code>NavigationStarting</code>/<code>NewWindowRequested</code>).
+4. Note whether the app loads remote content into a WebView that also exposes host objects — the WebView2 analogue of a privileged remote window.</p>
+<p><strong>How to test — CEF</strong>
+1. Find registered JS bindings via <code>CefV8Handler</code>/<code>CefV8Value::CreateFunction</code> and window bindings created in <code>OnContextCreated</code>; and inspect the async message router (<code>CefMessageRouterBrowserSide</code>) handler.
+2. Audit each native function/handler for acting on untrusted arguments, exactly as with an Electron IPC handler.
+3. Review <code>OnBeforeBrowse</code>, resource/scheme handlers, and popup life-span handling for navigation gating and for how untrusted or remote content is confined.</p>
+<p><strong>Framework notes</strong>
+Both are Chromium, so CSP and DOM-sink analysis carry over unchanged; only the native-reach mechanism differs (host objects / V8 bindings / message routers instead of Node).</p>
+<p><strong>Impact</strong>
+An over-broad host object or message handler yields the same XSS-to-RCE outcome as an over-broad Electron bridge: page script driving native operations.</p>
+<p><strong>Remediation</strong>
+Expose only narrow, validated, intent-named host methods; validate every argument native-side. Keep host objects off any WebView/browser that renders untrusted or remote content, restrict virtual host mappings to the minimum folder and access level, and gate navigation to an allowlist.</p>
+<hr />
+<p><em>Scope note: perform this work only against applications you are authorized to assess. Prove impact with benign, controlled indicators; capture the configuration and the reachable path as evidence, and stop short of any action beyond the agreed rules of engagement.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>

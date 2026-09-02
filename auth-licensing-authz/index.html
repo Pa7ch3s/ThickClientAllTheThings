@@ -1,0 +1,1030 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+      
+      
+      
+        <link rel="canonical" href="https://pa7ch3s.github.io/exploitnation/auth-licensing-authz/">
+      
+      
+        <link rel="prev" href="../runtime-and-memory/">
+      
+      
+        <link rel="next" href="../deep-links-and-protocol-handlers/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Auth, Licensing & Authorization - Exploit Nation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"IBM Plex Sans";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/exploit-nation.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Exploit Nation">
+<meta property="og:title" content="Auth, Licensing & Authorization">
+<meta property="og:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta property="og:url" content="https://pa7ch3s.github.io/exploitnation/auth-licensing-authz/">
+<meta property="og:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<meta property="og:image:width" content="805">
+<meta property="og:image:height" content="891">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Auth, Licensing & Authorization">
+<meta name="twitter:description" content="The modern Hack The Planet reference. Book 01, ThickClientGalore.">
+<meta name="twitter:image" content="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+<link rel="apple-touch-icon" href="https://pa7ch3s.github.io/exploitnation/assets/logo.png">
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#authentication-licensing-authorization" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Exploit Nation" class="md-header__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Exploit Nation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Auth, Licensing & Authorization
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Exploit Nation" class="md-nav__button md-logo" aria-label="Exploit Nation" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Exploit Nation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Pa7ch3s/exploitnation" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Pa7ch3s/exploitnation
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ThickClientGalore
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recon-and-unpacking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance & Unpacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../secrets-at-rest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Secrets & Data at Rest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ipc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter-Process Communication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../embedded-web-layer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Embedded Web Layer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../update-mechanism/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Mechanism
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../binary-and-tampering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Binary Protections & Tampering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../network-and-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network & API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runtime-and-memory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Runtime, Memory & Instrumentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auth, Licensing & Authorization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-the-enforcement-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping the Enforcement Boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license-check-patching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        License Check Patching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-function-hooking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation-Function Hooking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offline-replay-license-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Offline / Replay License Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exposed-key-generation-crypto-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exposed Key-Generation &amp; Crypto Logic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trial-reset-local-state-manipulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trial Reset &amp; Local State Manipulation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-user-separation-on-a-shared-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-User Separation on a Shared Host
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-app-privilege-boundaries-tokensession-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In-App Privilege Boundaries &amp; Token/Session Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-links-and-protocol-handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Deep Links & Protocol Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHECKLIST/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-the-enforcement-boundary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mapping the Enforcement Boundary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#license-check-patching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        License Check Patching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-function-hooking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation-Function Hooking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#offline-replay-license-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Offline / Replay License Validation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exposed-key-generation-crypto-logic" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exposed Key-Generation &amp; Crypto Logic
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trial-reset-local-state-manipulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trial Reset &amp; Local State Manipulation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-user-separation-on-a-shared-host" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-User Separation on a Shared Host
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-app-privilege-boundaries-tokensession-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In-App Privilege Boundaries &amp; Token/Session Handling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="authentication-licensing-authorization">Authentication, Licensing &amp; Authorization<a class="headerlink" href="#authentication-licensing-authorization" title="Permanent link">&para;</a></h1>
+<p>Thick clients love to make decisions they have no business making. When the binary on the user's desk decides whether the user is authenticated, licensed, or authorized, the user owns that decision, because the user owns the binary. This chapter is about proving that in an authorized assessment: finding the client-side gates, walking through them, and writing up why the fix is always "move the check server-side."</p>
+<p>The through-line: <strong>any control enforced only on the client is bypassable by definition.</strong> The attacker controls the CPU, the memory, the disk, the network, and the clock. Your job is to demonstrate that concretely, not to lecture about it.</p>
+<p><strong>Techniques covered:</strong></p>
+<ul>
+<li>Client-side vs server-side enforcement (the core distinction)</li>
+<li>License check patching and validation-function hooking</li>
+<li>Offline / replay license validation</li>
+<li>Exposed key-generation and crypto logic</li>
+<li>Trial reset and local state manipulation</li>
+<li>Multi-user separation on a shared host</li>
+<li>In-app privilege boundaries and token/session handling</li>
+</ul>
+<hr />
+<h3 id="mapping-the-enforcement-boundary">Mapping the Enforcement Boundary<a class="headerlink" href="#mapping-the-enforcement-boundary" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> Before bypassing anything, determine <em>where</em> each decision is made. Every auth/license/authz control sits somewhere on a spectrum from "fully local" (a boolean in the binary) to "fully server-authoritative" (client displays a state the server enforces). Client-side-only controls are the vulnerable class; the entire chapter reduces to finding them and proving the point. This mapping step is what turns "I patched a jump" into a finding an engineer can act on.</p>
+<p><strong>How to test.</strong>
+- Run the app both online and fully offline (pull the NIC / block it at the host firewall with Windows Defender Firewall or <code>netsh</code>). Anything that still "works" while offline is enforced locally.
+- Watch the network while exercising login, license activation, and privileged features. Use Wireshark for raw traffic, and an intercepting proxy (Burp Suite, mitmproxy, Fiddler) for HTTP/S. For non-HTTP TLS, consider a transparent proxy or SNI inspection to at least characterize the endpoint.
+- Correlate UI state changes with (a) network calls, (b) file/registry writes (Process Monitor / ProcMon), and (c) nothing at all. The third case is a client-only gate.
+- For .NET, decompile with dnSpy / ILSpy / dotPeek and read the actual logic. For Java, use JD-GUI / Procyon / CFR. For native, load into Ghidra, IDA, or Binary Ninja and locate the decision points.</p>
+<p><strong>Framework notes.</strong>
+- <strong>.NET / Electron / Java</strong> apps frequently ship the <em>entire</em> license and auth logic on the client because it is trivially readable, making them the highest-yield targets for this mapping.
+- <strong>Native (C/C++)</strong> apps still often reduce a server response to a single local branch; find the branch, and you've found the boundary.</p>
+<p><strong>Impact.</strong> Establishes which findings are "client trusts itself" (high impact, systemic) versus "server checks, client only displays" (usually informational). Drives the severity of everything downstream.</p>
+<p><strong>Remediation.</strong> The client must treat every security decision as advisory UI only. Authentication, entitlement, and authorization must be re-derived on a server the user does not control, on every request, from a session the server issued.</p>
+<hr />
+<h3 id="license-check-patching">License Check Patching<a class="headerlink" href="#license-check-patching" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> The classic client-only gate: a function returns "licensed / not licensed," and a conditional branch acts on it. Because the code executes in memory the tester controls, the branch can be inverted, NOP'd, or forced to a constant. This is a demonstration technique, not a deliverable, its purpose is to prove the check is not authoritative.</p>
+<p><strong>How to test.</strong>
+- Locate the decision: search the decompiled/disassembled code for license, activation, <code>IsLicensed</code>, <code>IsTrial</code>, <code>Validate</code>, expiry, and strings shown in the "unlicensed" UI.
+- In a disassembler (Ghidra/IDA/Binary Ninja), trace the returned boolean to its consuming <code>test</code>/<code>cmp</code>/<code>jz</code>/<code>jnz</code> and confirm it is the sole gate.
+- Demonstrate in-memory first (non-destructive): set a breakpoint at the return in x64dbg / WinDbg (native) or dnSpy's debugger (.NET) and flip the return value. This proves bypassability without shipping a patched binary.
+- Only if the engagement requires a persistent PoC, produce a patched copy in a lab, and document the byte(s) changed. Keep the write-up about <em>methodology and location</em>, never a redistributable crack of a specific product.</p>
+<p><strong>Framework notes.</strong>
+- <strong>.NET:</strong> dnSpy can edit IL and save the assembly directly; the "modify method body" workflow makes the single-branch fragility obvious. Watch for strong-name / signature checks that re-validate the assembly.
+- <strong>Native:</strong> expect anti-tamper (checksums, packers like a UPX-style wrapper, or commercial protectors). Note their presence, unpacking a hardened protector may be out of scope, the <em>finding</em> (logic is client-side) usually stands regardless.</p>
+<p><strong>Impact.</strong> Full feature unlock / license bypass with no server interaction. Demonstrates the entitlement model has no server-side authority.</p>
+<p><strong>Remediation.</strong> Entitlements must be enforced server-side per feature invocation. If a feature's data or compute lives server-side and is gated by a server-checked entitlement, a patched client gets an unlocked UI and nothing behind it.</p>
+<hr />
+<h3 id="validation-function-hooking">Validation-Function Hooking<a class="headerlink" href="#validation-function-hooking" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> Rather than patching bytes on disk, intercept the validation function at runtime and control its inputs/outputs. This is often faster than static patching, survives some integrity checks (the disk file is unchanged), and cleanly demonstrates that the function's result is attacker-controlled.</p>
+<p><strong>How to test.</strong>
+- Use Frida to hook the validation routine, log its arguments (activation payloads, server responses, keys), and override its return value. <code>Interceptor.attach</code> / <code>Interceptor.replace</code> for native; the Java and .NET bridges cover managed targets.
+- For Windows API-level license logic (registry, time, hardware IDs), API Monitor or Frida hooks on <code>RegQueryValueEx</code>, <code>GetSystemTime</code>, <code>GetVolumeInformation</code>, etc. reveal what the check reads.
+- For .NET, dnSpy's debugger or a Harmony-based instrumentation harness can wrap the target method.
+- Capture the real server response (if any) once, then replay/forge it through the hook to see whether the client re-verifies or blindly trusts it.</p>
+<p><strong>Framework notes.</strong>
+- <strong>Java:</strong> hook via Frida's Java bridge or a <code>-javaagent</code> instrumentation agent; JVM reflection makes even "private" validators reachable.
+- <strong>Native with anti-hooking:</strong> some protectors detect Frida (named pipes, memory scans). Note detection; a debugger-based approach (x64dbg) may substitute.</p>
+<p><strong>Impact.</strong> Demonstrates the client cannot protect its own decision logic even without modifying files, and exposes exactly what data the "validation" actually inspects.</p>
+<p><strong>Remediation.</strong> Never let a client-resident function be the arbiter. Bind entitlement to a server session; have the server sign short-lived, feature-scoped grants that the server itself re-checks, so a forged client-side return unlocks nothing real.</p>
+<hr />
+<h3 id="offline-replay-license-validation">Offline / Replay License Validation<a class="headerlink" href="#offline-replay-license-validation" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> Many apps validate a license against a server only once (activation) or accept a cached "last known good" response indefinitely. If the client caches an approval and later trusts it without re-verifying, an attacker can replay the approval or run permanently offline. Weak or absent binding (no nonce, no expiry, no device binding) turns one legitimate approval into unlimited use.</p>
+<p><strong>How to test.</strong>
+- Activate legitimately (in an authorized lab) while capturing traffic in Burp/mitmproxy. Identify the activation request/response and any stored token/receipt.
+- Go offline and relaunch. Does it still work? For how long? A never-expiring offline grant is the finding.
+- Replay the captured "approved" response to the client (proxy match-and-replace, or serve a canned response). If the client accepts a replayed response, it isn't verifying freshness.
+- Inspect the stored approval on disk/registry for a nonce, timestamp, server signature, and device fingerprint. Missing freshness/binding = replayable.
+- Test clock manipulation in tandem (see Trial Reset), roll the system clock back and see if an "expired" grant revives.</p>
+<p><strong>Framework notes.</strong>
+- Applies across .NET/Java/native equally, this is a protocol/state design flaw, not a language flaw.
+- Watch for locally cached JWTs or license blobs, decode them (jwt.io offline, or <code>base64</code>), and check whether the client validates the signature or merely reads the claims.</p>
+<p><strong>Impact.</strong> Perpetual unlicensed use from a single (or forged) approval; license servers effectively bypassed after first contact.</p>
+<p><strong>Remediation.</strong> Require periodic online re-validation with server-issued, short-lived, signed grants that include a nonce, hard expiry, and device binding. The server must reject replays and stale tokens. Treat "offline grace" as a bounded, server-defined window, not an open door.</p>
+<hr />
+<h3 id="exposed-key-generation-crypto-logic">Exposed Key-Generation &amp; Crypto Logic<a class="headerlink" href="#exposed-key-generation-crypto-logic" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> If the client can <em>verify</em> a license key locally, it contains the algorithm and often the key material to do so, and where verification lives, forgery frequently follows. Symmetric secrets, hardcoded public/private keys, or a fully local key-derivation scheme let a tester generate accepting inputs. This is assessed to prove the licensing crypto is client-recoverable, not to build or distribute a generator.</p>
+<p><strong>How to test.</strong>
+- Decompile and read the verification routine. Identify the scheme: checksum/format check, symmetric MAC with an embedded secret, or public-key signature verification.
+- Hunt for embedded secrets: strings, entropy scans (binwalk, <code>strings</code>, or a custom entropy pass), and hardcoded keys in resources/config. In .NET/Java these are usually plainly readable.
+- If a <em>private</em> signing key or a symmetric secret is embedded, that is the whole ballgame, document that keys sufficient to mint valid licenses are recoverable from the client. Do <strong>not</strong> publish working forgeries of a real product; describe the exposure and prove it minimally (e.g., a lab-only self-signed value the app accepts).
+- If only a public key is present and the scheme is sound (server holds the private key), note that as the <em>correct</em> pattern, then pivot to whether the signature is actually verified (see Hooking / Patching).</p>
+<p><strong>Framework notes.</strong>
+- <strong>.NET/Java:</strong> obfuscation (Dotfuscator-class tools, ProGuard) raises effort but rarely changes the conclusion, secrets shipped to the client are recoverable.
+- <strong>Native:</strong> whitebox crypto and protectors increase cost; scope accordingly and report the design weakness even if full extraction is deferred.</p>
+<p><strong>Impact.</strong> Attacker can produce inputs the client accepts, unlimited self-service licensing, with no server involvement.</p>
+<p><strong>Remediation.</strong> Only the server should hold signing secrets; the client verifies a signature it cannot forge and, critically, the server re-checks entitlement server-side. Never embed symmetric license secrets or private keys in shipped code. Rotate anything found exposed.</p>
+<hr />
+<h3 id="trial-reset-local-state-manipulation">Trial Reset &amp; Local State Manipulation<a class="headerlink" href="#trial-reset-local-state-manipulation" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> Time-limited trials and usage counters that live on the client are just editable state: registry keys, files, hidden "phone-home once" flags, or install timestamps. Resetting or forging that state yields an infinite trial. Same class as license patching, different storage.</p>
+<p><strong>How to test.</strong>
+- Baseline the clean state, then install/run and diff. Use ProcMon to capture every registry and file write during first launch, activation, and trial countdown. Regshot for before/after registry diffs.
+- Look in the obvious and the sneaky places: <code>HKCU</code>/<code>HKLM</code> under vendor keys, <code>%APPDATA%</code>, <code>%PROGRAMDATA%</code>, <code>%LOCALAPPDATA%</code>, hidden files, alternate data streams (<code>dir /r</code>, Streams from Sysinternals), and orphaned keys that survive uninstall.
+- Delete/reset the identified state and relaunch, does the trial reset? That's the finding.
+- Test the system clock: roll it forward to expire, back to revive. Note whether the app anchors time to a server or trusts the local clock.
+- Check for "highest install date ever seen" anti-rollback markers, and whether they too are just local (and thus resettable) state.</p>
+<p><strong>Framework notes.</strong>
+- Cross-framework, this is OS-level state. Electron apps additionally stash state in their user-data directory (JSON, LevelDB, <code>localStorage</code>), which is trivially editable.
+- Watch for state hidden outside the profile specifically to survive uninstall, call this out; it is user-hostile and still bypassable.</p>
+<p><strong>Impact.</strong> Unlimited free use of trial/metered functionality; usage limits are unenforceable.</p>
+<p><strong>Remediation.</strong> Anchor trial/quota state to a server-side account keyed on server-observed time and identity. Local counters and local clocks cannot be trusted. If offline trials are a product requirement, treat any bypass as accepted risk and document it, don't pretend the client enforces it.</p>
+<hr />
+<h3 id="multi-user-separation-on-a-shared-host">Multi-User Separation on a Shared Host<a class="headerlink" href="#multi-user-separation-on-a-shared-host" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> On a shared or multi-session Windows host (fast user switching, RDS/Citrix, kiosk, family PC), a thick client must not let one OS user read another's stored credentials, tokens, cached data, or active session. Apps that store secrets in world-readable locations, cache under machine-wide paths, or reuse a session across OS users leak across the user boundary.</p>
+<p><strong>How to test.</strong>
+- Create two OS users. As user A, log in / activate / populate data. As user B, inspect A's artifacts, config files, token caches, saved credentials, SQLite caches, logs, temp files.
+- Check ACLs on every storage location the app writes (icacls, AccessEnum from Sysinternals). Flag anything under <code>%PROGRAMDATA%</code>, <code>C:\Temp</code>, or other shared paths that contains user-specific secrets with permissive DACLs.
+- Test credential storage: is it in Windows DPAPI/Credential Manager (per-user protected) or a plaintext/obfuscated file any user can read? Try decrypting A's blob while running as B, DPAPI in user scope should fail; a machine-scope or homebrew scheme may succeed.
+- Test session reuse: does A's live token or "remember me" state grant B access without re-auth? Copy tokens across profiles and see if the app accepts them.
+- Look at IPC surfaces (named pipes, local sockets, COM) for missing per-user access control that lets B drive A's session.</p>
+<p><strong>Framework notes.</strong>
+- <strong>Electron/Java/.NET</strong> all commonly roll their own token caches, prime spots for permissive ACLs or plaintext.
+- <strong>DPAPI</strong> is the right primitive on Windows but only when used in <em>user</em> scope; machine scope or a shipped key defeats the boundary.</p>
+<p><strong>Impact.</strong> Local privilege/data-boundary break: credential theft, session hijack, and cross-user data disclosure on shared hosts, often achievable by a standard (non-admin) user.</p>
+<p><strong>Remediation.</strong> Store secrets with per-user OS protection (DPAPI user scope, Windows Credential Manager) under per-user paths with correct ACLs. Bind sessions to the OS user and re-authenticate on user switch. Never place user secrets in shared/machine-readable locations.</p>
+<hr />
+<h3 id="in-app-privilege-boundaries-tokensession-handling">In-App Privilege Boundaries &amp; Token/Session Handling<a class="headerlink" href="#in-app-privilege-boundaries-tokensession-handling" title="Permanent link">&para;</a></h3>
+<p><strong>What &amp; why.</strong> Even after legitimate login, thick clients often enforce role/privilege boundaries (admin vs standard user, feature gating, approval workflows) on the client, hiding buttons, disabling menus, filtering views, while the backend accepts the underlying request from anyone. And the session token itself is frequently mishandled: over-broad scope, no expiry, stored in the clear, or accepted without server-side validation. Both collapse to "client says no, server says yes."</p>
+<p><strong>How to test.</strong>
+- Enumerate privileged UI (admin panels, disabled controls, hidden features). For each, force-enable it (hook/patch the client) and drive the backend call directly, does the server authorize it based on the caller's actual role, or just the presence of a request?
+- Intercept API calls in Burp/mitmproxy and replay a low-privilege user's session against high-privilege endpoints and objects (horizontal and vertical IDOR/BOLA, same discipline as web testing, thick clients are just fatter API clients).
+- Inspect the token: decode JWTs and check claims, scope, and expiry; test whether tampering with role/scope claims is detected (bad signature validation, or <code>alg:none</code>-style acceptance). Confirm tokens actually expire and can be revoked.
+- Test session storage: is the token in memory only, or persisted to a readable file/registry? Can it be lifted and reused from another machine (no device binding)?
+- Probe for privilege state held only client-side (a local <code>isAdmin</code> flag) and flip it, then observe whether the server cares.</p>
+<p><strong>Framework notes.</strong>
+- Cross-framework; the interesting boundary is almost always the client↔backend API, use the same tooling regardless of UI stack.
+- For thick clients speaking custom/binary protocols, you may need a protocol-aware proxy or Frida hooks at the send/recv boundary rather than an HTTP proxy.</p>
+<p><strong>Impact.</strong> Vertical privilege escalation (standard user performs admin actions), horizontal access to other users' objects, and session hijack/replay, all despite a "correct-looking" client UI.</p>
+<p><strong>Remediation.</strong> Enforce authorization on the server for every request, per object and per action, from the server-authenticated identity, never from client-supplied role state. Issue short-lived, correctly-scoped, signed, revocable tokens; validate them server-side on every call; bind sessions appropriately. The client UI may <em>reflect</em> privileges but must never be the thing that <em>grants</em> them.</p>
+<hr />
+<blockquote>
+<p><strong>Recurring finding, one sentence:</strong> <em>This control is enforced on the client, which the user fully controls; move the decision to a server the user does not control and re-check it on every request.</em> If you write that once and cite it throughout the report, you've captured 90% of this chapter.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 pa7ch3s — authorized testing only.
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.top", "navigation.tracking", "navigation.sections", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/matrix.js"></script>
+      
+        <script src="../js/hero-bg.js"></script>
+      
+        <script src="../js/search-cap.js"></script>
+      
+    
+  </body>
+</html>
