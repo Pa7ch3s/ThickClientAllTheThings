@@ -17,7 +17,14 @@ PREVIEW = os.environ.get("PREVIEW") == "1"
 
 SRC = "logo.png"
 SS = 2                  # supersample factor for anti-aliasing
-CANVAS = 480 * SS
+# Wide-short canvas, not square: a square canvas gives the circular spark
+# field equal room in every direction, but the mark only occupies a
+# horizontal band through the middle -- the leftover top/bottom margin
+# rendered as dead vertical space on the actual page (reported directly:
+# "the padding above and below is excessive in a browser view"). Sizing
+# by height keeps the same spark travel room with far less wasted height.
+CANVAS_W = 560 * SS
+CANVAS_H = 320 * SS
 FRAMES = 20 if PREVIEW else 60   # preview: fewer frames, still spans a full cycle
 FPS = 15
 DURATION_MS = round(1000 / FPS)
@@ -26,15 +33,15 @@ ACID = (57, 255, 94)
 ACID_HOT = (200, 255, 214)
 
 mark = Image.open(SRC).convert("RGBA")
-mark_scale = 0.40  # mark occupies 40% of canvas width -- leaves room around it
-mw = int(CANVAS * mark_scale)
-mh = int(mw * mark.height / mark.width)
+mark_scale = 0.42  # mark occupies 42% of canvas HEIGHT (the constraining dimension)
+mh = int(CANVAS_H * mark_scale)
+mw = int(mh * mark.width / mark.height)
 mark = mark.resize((mw, mh), Image.LANCZOS)
-mark_pos = ((CANVAS - mw) // 2, (CANVAS - mh) // 2)
+mark_pos = ((CANVAS_W - mw) // 2, (CANVAS_H - mh) // 2)
 mark_r = math.hypot(mw, mh) / 2  # half-diagonal: real spawn-clear radius
 
-cx, cy = CANVAS / 2, CANVAS / 2
-edge_r = CANVAS / 2 - 10 * SS
+cx, cy = CANVAS_W / 2, CANVAS_H / 2
+edge_r = min(CANVAS_W, CANVAS_H) / 2 - 10 * SS
 
 # ---- particle sim: precompute every particle's full lifetime up front so
 # the loop is deterministic and we can stagger spawn times across FRAMES ----
@@ -101,7 +108,7 @@ def particle_state(p, frame):
 
 frames_out = []
 for f in range(FRAMES):
-    canvas = Image.new("RGBA", (CANVAS, CANVAS), (0, 0, 0, 0))
+    canvas = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
 
     # 1) breathing glow tucked mostly behind the mark -- a soft halo peeking
     #    at its edges, NOT a wash covering the stage (first attempt used
@@ -110,7 +117,7 @@ for f in range(FRAMES):
     #    sparks -- verified visually, not assumed)
     glow_t = (math.sin(f / FRAMES * math.tau) + 1) / 2  # 0..1
     glow_r = mark_r * (0.58 + glow_t * 0.08)
-    glow = Image.new("RGBA", (CANVAS, CANVAS), (0, 0, 0, 0))
+    glow = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
     gd = ImageDraw.Draw(glow)
     gd.ellipse([cx - glow_r, cy - glow_r, cx + glow_r, cy + glow_r],
                fill=ACID + (int(30 + glow_t * 30),))
@@ -119,7 +126,7 @@ for f in range(FRAMES):
 
     # 2) sparks + bolts -- drawn BEFORE the mark, so step 5 (mark on top)
     #    physically cannot be covered by them
-    spark_layer = Image.new("RGBA", (CANVAS, CANVAS), (0, 0, 0, 0))
+    spark_layer = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
     sd = ImageDraw.Draw(spark_layer)
     for p in particles:
         state = particle_state(p, f)
@@ -141,7 +148,7 @@ for f in range(FRAMES):
     canvas = Image.alpha_composite(canvas, spark_layer)
 
     # 3) sharp bright cores on top of the blurred glow (readability)
-    core_layer = Image.new("RGBA", (CANVAS, CANVAS), (0, 0, 0, 0))
+    core_layer = Image.new("RGBA", (CANVAS_W, CANVAS_H), (0, 0, 0, 0))
     cd = ImageDraw.Draw(core_layer)
     for p in particles:
         state = particle_state(p, f)
@@ -163,7 +170,7 @@ for f in range(FRAMES):
         frame_mark = glitch_mark(mark, f)
     canvas.paste(frame_mark, mark_pos, frame_mark)
 
-    canvas = canvas.resize((CANVAS // SS, CANVAS // SS), Image.LANCZOS)
+    canvas = canvas.resize((CANVAS_W // SS, CANVAS_H // SS), Image.LANCZOS)
     frames_out.append(canvas)
 
 if PREVIEW:
